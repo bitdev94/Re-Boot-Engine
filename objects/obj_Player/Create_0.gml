@@ -858,10 +858,11 @@ enum Beam
 	Ice,
 	Wave,
 	Spazer,
-	Plasma
+	Plasma,
+	SIZE
 };
 // 5 Beams
-beam = array_create(5);
+beam = array_create(Beam.SIZE);
 
 enum Item
 {
@@ -869,10 +870,11 @@ enum Item
 	SMissile,
 	PBomb,
 	Grapple,
-	XRay
+	XRay,
+	SIZE
 };
 // 5 Items
-item = array_create(5);
+item = array_create(Item.SIZE);
 
 hasSuit = array_create(array_length(suit));
 hasMisc = array_create(array_length(misc));
