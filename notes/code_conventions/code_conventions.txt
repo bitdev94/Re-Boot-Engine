@@ -1,0 +1,6 @@
+
+Is possible to get the size of a enum by putting a "SIZE" element in the last possition.
+enum <TYPE> {
+	...,
+	SIZE
+}

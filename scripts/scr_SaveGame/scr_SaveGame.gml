@@ -51,9 +51,9 @@ function scr_SaveGame()
 		{
 			ds_map_add(_map, "suit"+string(i), suit[i]);
 		}
-		for(var i = 0; i < array_length(hasSuit); i++)
+		for(var i = 0; i < array_length(capabilities.suits); i++)
 		{
-			ds_map_add(_map, "hasSuit"+string(i), hasSuit[i]);
+			ds_map_add(_map, "hasSuit"+string(i), capabilities.suits[i].obtained);
 		}
 	
 		for(var i = 0; i < array_length(boots); i++)

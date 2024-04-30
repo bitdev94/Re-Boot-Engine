@@ -94,11 +94,18 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 			powerBombMax = 50;//2 * powerBombTanks;
 			powerBombStat = powerBombMax;
 		
+		/*
 			for(var i = 0; i < array_length(suit); i++)
 			{
 				suit[i] = true;
 				hasSuit[i] = suit[i];
 			}
+			*/
+			for (var _index = 0; _index < array_length(capabilities.suits); ++_index) {
+				suit[_index] = true;
+				capabilities.suits[_index] = suit[_index];
+			}
+			
 			for(var i = 0; i < array_length(misc); i++)
 			{
 				misc[i] = true;
@@ -229,7 +236,7 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 						rnum2 = ilen;
 					while(rnum2 > 0)
 					{
-						if(!hasSuit[rnum])
+						if(!capabilities.suits[rnum].obtained)
 						{
 							suit[rnum] = true;
 							break;
@@ -245,9 +252,9 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 		
 			for(var i = 0; i < array_length(suit); i++)
 			{
-				if(!hasSuit[i] && suit[i])
+				if(!capabilities.suits[i].obtained && suit[i])
 				{
-					hasSuit[i] = true;
+					capabilities.suits[i].obtained = true;
 				}
 			}
 			for(var i = 0; i < array_length(beam); i++)

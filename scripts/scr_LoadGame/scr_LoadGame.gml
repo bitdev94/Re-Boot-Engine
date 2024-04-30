@@ -43,9 +43,9 @@ function scr_LoadGame()
 				{
 					suit[i] = _map[? "suit"+string(i)];
 				}
-				for(var i = 0; i < array_length(hasSuit); i++)
+				for(var i = 0; i < array_length(capabilities.suits); i++)
 				{
-					hasSuit[i] = _map[? "hasSuit"+string(i)];
+					capabilities.suits[i].obtained = _map[? "hasSuit"+string(i)];
 				}
 	
 				for(var i = 0; i < array_length(boots); i++)

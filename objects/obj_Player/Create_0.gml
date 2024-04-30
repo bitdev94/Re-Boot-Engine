@@ -299,7 +299,6 @@ waveDir = 1;
 
 immune = false;
 
-
 cRight = false;
 cLeft = false;
 cUp = false;
@@ -820,13 +819,15 @@ superMissileStat = superMissileMax;
 powerBombMax = 0;//50;//2 * powerBombTanks;
 powerBombStat = powerBombMax;
 
+
 enum Suit
 {
 	Varia,
-	Gravity
+	Gravity,
+	SIZE
 };
 // 2 Suits
-suit = array_create(2);
+suit = array_create(Suit.SIZE);
 
 enum Boots
 {
@@ -834,10 +835,11 @@ enum Boots
 	SpaceJump,
 	Dodge,
 	SpeedBoost,
-	ChainSpark
+	ChainSpark,
+	SIZE
 };
 // 5 Boots
-boots = array_create(5);
+boots = array_create(Boots.SIZE);
 
 enum Misc
 {
@@ -847,10 +849,11 @@ enum Misc
 	Spring,
 	Boost,
 	Spider,
-	ScrewAttack
+	ScrewAttack,
+	SIZE
 };
 // 7 Misc
-misc = array_create(7);
+misc = array_create(Misc.SIZE);
 
 enum Beam
 {
@@ -876,10 +879,42 @@ enum Item
 // 5 Items
 item = array_create(Item.SIZE);
 
-hasSuit = array_create(array_length(suit));
+
+capabilities = {
+	suits: [
+		new SimpleItem("Varia"),
+		new SimpleItem("Gravity")
+		],
+	items: [
+		new CountableItem("Missile"), 
+		new CountableItem("SMissile"), 
+		new CountableItem("PBomb"), 
+		new SimpleItem("Grapple"), 
+		new SimpleItem("XRay")
+		],
+	boots: [
+		new SimpleItem("HiJump"),
+		new SimpleItem("SpaceJump"),
+		new SimpleItem("Dodge"),
+		new SimpleItem("SpeedBoost"),
+		new SimpleItem("ChainSpark")
+		],
+	beams: [
+		new SimpleItem("Charge"),
+		new SimpleItem("Ice"),
+		new SimpleItem("Wave"),
+		new SimpleItem("Spazer"),
+		new SimpleItem("Plasma")
+	],
+	energy: [
+		new CountableItem("Tank")
+	],
+};
+
+//hasSuit = array_create(array_length(suit));
 hasMisc = array_create(array_length(misc));
 hasBoots = array_create(array_length(boots));
-hasBeam = array_create(array_length(beam));
+hasBeam = array_create(Beam.SIZE);
 hasItem = array_create(array_length(item));
 
 //starting items

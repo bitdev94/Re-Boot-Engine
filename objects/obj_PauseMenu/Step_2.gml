@@ -118,9 +118,9 @@ if(canPause && pause && pauseFade >= 1 && !loadGame && !gameEnd)
 		}
 		else if(ds_list_empty(invListL))
 		{
-			for(var i = 0; i < array_length(P.hasSuit); i++)
+			for(var i = 0; i < array_length(P.capabilities.suits); i++)
 			{
-				if(P.hasSuit[i])
+				if(P.capabilities.suits[i].obtained)
 				{
 					ds_list_add(invListL,"Suit_"+string(i));
 				}
