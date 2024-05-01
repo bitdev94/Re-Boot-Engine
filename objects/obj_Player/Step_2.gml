@@ -2864,7 +2864,8 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 							var _charge_amount = beam_state.charge_amount
 							var _beam_is_wave = beam_state.is_wave
 							var _wave_style_offset = beam_state.wave_style_offset
-							animate_shoot(_charge_shoot, damage*chargeMult, sSpeed, beamChargeDelay, _charge_amount, _charge_sound, _beam_is_wave, _wave_style_offset);
+							var _charge_delay = beam_state.charge_delay
+							animate_shoot(_charge_shoot, damage*chargeMult, sSpeed, _charge_delay, _charge_amount, _charge_sound, _beam_is_wave, _wave_style_offset);
 							recoil = true;
 						}
 						else if(statCharge >= 20)
