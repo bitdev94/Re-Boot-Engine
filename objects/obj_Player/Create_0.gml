@@ -918,6 +918,7 @@ beam_state = {
 	animation_index: 0,
 	sound_index: 0,
 	amount: 0,
+	charge_amount: 0,
 	charge_sound_index: 0,
 	shot_combinations: [
 	/* +------ Plasma
@@ -981,6 +982,30 @@ beam_state = {
 		snd_Spazer_ChargeShot,
 		snd_PlasmaBeam_ChargeShot,
 	],
+	get_charge_amount: function(_flags = []) {
+		/* Spazer > Wave > Plasma, Ice, Power*/
+		var _amount = 1
+		
+		if (_flags[Beam.Wave])
+			_amount = 2
+		
+		if (_flags[Beam.Spazer])
+			_amount = 3
+			
+		return _amount
+	},
+	get_simple_charge_amount: function(_type = -1) {
+		/* Spazer > Wave > Plasma, Ice, Power*/
+		var _amount = 1
+		
+		if (_type == Beam.Wave)
+			_amount = 2
+		
+		if (_type == Beam.Spazer)
+			_amount = 3
+			
+		return _amount
+	},
 	find_shot: function(_flags = [], _offset = 1) {
 		var _state = 0
 		var _level = power(2, _offset)
@@ -1110,7 +1135,6 @@ beamDmg = 20;
 
 beamDelay = 6;
 beamChargeDelay = 18;
-beamChargeAmt = 1;
 beamIconIndex = 0;
 
 beamIsWave = false;
@@ -2458,7 +2482,7 @@ function Set_Beams()
 	beam_state.sound_index = beam_state.find_shoot_sound(beam)
 	beam_state.charge_sound_index = beam_state.find_charge_sound(beam)
 	beam_state.amount = 1
-	beamChargeAmt = 1;
+	beam_state.charge_amount = beam_state.get_charge_amount(beam)
 	beamIconIndex = 0;
 	beamFlare = sprt_PowerBeamChargeFlare;
 	
@@ -2477,7 +2501,6 @@ function Set_Beams()
 		{
 			// Spazer
 			beam_state.amount = 3
-			beamChargeAmt = 3;
 			beamIconIndex = 4;
 			beamFlare = sprt_SpazerChargeFlare;
 			beamWaveStyleOffset = 0;
@@ -2529,7 +2552,6 @@ function Set_Beams()
 			if(beam[Beam.Wave])
 			{
 				// Ice Wave
-				beamChargeAmt = 2;
 				beamIconIndex = 3;
 				if(beam[Beam.Plasma])
 				{
@@ -2547,7 +2569,6 @@ function Set_Beams()
 		else if(beam[Beam.Wave])
 		{
 			// Wave
-			beamChargeAmt = 2;
 			beamIconIndex = 2;
 			beamFlare = sprt_WaveBeamChargeFlare;
 			if(beam[Beam.Plasma])
@@ -2571,6 +2592,7 @@ function Set_Beams()
 		beam_state.sound_index = itemHighlighted[0]
 		beam_state.animation_index = itemHighlighted[0]
 		beam_state.charge_sound_index = itemHighlighted[0]
+		beam_state.charge_amount = beam_state.get_simple_charge_amount(itemHighlighted[0])
 		switch (itemHighlighted[0]) {
 			case Beam.Ice: {
 				beamIconIndex = 1;
@@ -2578,7 +2600,6 @@ function Set_Beams()
 			}
 			break;
 			case Beam.Wave: {
-				beamChargeAmt = 2;
 				beamIconIndex = 2;
 				beamFlare = sprt_WaveBeamChargeFlare;
 			}
@@ -2586,7 +2607,6 @@ function Set_Beams()
 			case Beam.Spazer: {
 				// Spazer
 				beam_state.amount = 3
-				beamChargeAmt = 3;
 				beamIconIndex = 4;
 				beamFlare = sprt_SpazerChargeFlare;
 			}

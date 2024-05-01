@@ -2840,7 +2840,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 								flareDir = angle_difference(shootDir,180);
 							}
 							var flare = instance_create_layer(shootPosX+lengthdir_x(5,shootDir),shootPosY+lengthdir_y(5,shootDir),layer_get_id("Projectiles_fg"),obj_ChargeFlare);
-							flare.damage = (damage*chargeMult*beamChargeAmt);// / 2;
+							flare.damage = (damage * chargeMult * beam_state.charge_amount); // / 2;
 							flare.sprite_index = beamFlare;
 							flare.damageSubType[2] = (beam[Beam.Ice] || (noBeamsActive && itemHighlighted[0] == 1));
 							flare.damageSubType[3] = (beam[Beam.Wave] || (noBeamsActive && itemHighlighted[0] == 2));
@@ -2859,7 +2859,8 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 							chargeReleaseFlash = 4;
 							var _charge_shoot = beam_state.shot_combinations[beam_state.shot_index + 1];
 							var _charge_sound = beam_state.charge_shoot_sound[beam_state.charge_sound_index];
-							animate_shoot(_charge_shoot, damage*chargeMult, sSpeed, beamChargeDelay, beamChargeAmt, _charge_sound, beamIsWave, beamWaveStyleOffset);
+							var _charge_amount = beam_state.charge_amount
+							animate_shoot(_charge_shoot, damage*chargeMult, sSpeed, beamChargeDelay, _charge_amount, _charge_sound, beamIsWave, beamWaveStyleOffset);
 							recoil = true;
 						}
 						else if(statCharge >= 20)
