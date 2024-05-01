@@ -2858,7 +2858,8 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 							
 							chargeReleaseFlash = 4;
 							var _charge_shoot = beam_state.shot_combinations[beam_state.shot_index + 1];
-							animate_shoot(_charge_shoot, damage*chargeMult, sSpeed, beamChargeDelay, beamChargeAmt, beamChargeSound, beamIsWave, beamWaveStyleOffset);
+							var _charge_sound = beam_state.charge_shoot_sound[beam_state.charge_sound_index];
+							animate_shoot(_charge_shoot, damage*chargeMult, sSpeed, beamChargeDelay, beamChargeAmt, _charge_sound, beamIsWave, beamWaveStyleOffset);
 							recoil = true;
 						}
 						else if(statCharge >= 20)
