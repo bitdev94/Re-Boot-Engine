@@ -2086,14 +2086,17 @@ function ChangeState(newState,newStateFrame,newMask,isGrounded,stallCam = true)
 #endregion
 
 #region Shoot
-// @func Shoot(_shot_index, _damage, speed, cooldown, shot_amount, sound_index, is_wave, wave_style_offset)
+// @func animate_hoot(_shot_index, _damage, speed, cooldown, shot_amount, sound_index, is_wave, wave_style_offset)
 // @desc create the shot animations
 // @param {Asset.GMObject} _shot_index
 // @param {Real} _damage
 // @param {Real} _spped
 // @param {Real} _cooldown
 // @param {Real} _amount
-function Shoot(_shot_index, _damage, _speed, _cooldown, _amount, _sound_index, _is_wave = false, _wave_style_offset = 0)
+// @param {Asset.GMSound} _sound_index
+// @param {Bool} _is_wave
+// @param {Real} _wave_style_offset
+function animate_shoot(_shot_index, _damage, _speed, _cooldown, _amount, _sound_index, _is_wave = false, _wave_style_offset = 0)
 {
 	var _spawn_x = scr_round(shootPosX - 2 * sign(lengthdir_x(2, shootDir))),
 		_spawn_y = scr_round(shootPosY - 2 * sign(lengthdir_y(2, shootDir)));
