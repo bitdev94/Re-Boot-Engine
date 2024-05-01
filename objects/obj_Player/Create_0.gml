@@ -911,6 +911,61 @@ capabilities = {
 	],
 };
 
+
+beam_state = {
+	basic_index: 2,
+	index: 0,
+	combinations: [
+	/* +------ Plasma               
+	   |+----- Spazer              
+	   ||+---- Wave             
+	   |||+--- Ice     
+	   ||||+-- Charge
+	   |||||          
+	/* 00000 */ obj_PowerBeamShot,
+	/* 00001 */ obj_PowerBeamChargeShot,
+	/* 00010 */ obj_IceBeamShot,
+	/* 00011 */ obj_IceBeamChargeShot,
+	/* 00100 */ obj_WaveBeamShot,
+	/* 00101 */ obj_WaveBeamChargeShot,
+	/* 00110 */ obj_IceWaveBeamShot,
+	/* 00111 */ obj_IceWaveBeamChargeShot,
+	/* 01000 */ obj_SpazerBeamShot,
+	/* 01001 */ obj_SpazerBeamChargeShot,
+	/* 01010 */ obj_IceSpazerBeamShot,
+	/* 01011 */ obj_IceSpazerBeamChargeShot,
+	/* 01100 */ obj_WaveSpazerBeamShot,
+	/* 01101 */ obj_WaveSpazerPlasmaBeamChargeShot,
+	/* 01110 */ obj_IceWaveSpazerBeamShot,
+	/* 01111 */ obj_IceWaveSpazerBeamChargeShot,
+	/* 10000 */ obj_PlasmaBeamShot,
+	/* 10001 */ obj_PlasmaBeamChargeShot,
+	/* 10010 */ obj_IcePlasmaBeamShot,
+	/* 10011 */ obj_IcePlasmaBeamChargeShot,
+	/* 10100 */ obj_WavePlasmaBeamShot,
+	/* 10101 */ obj_WavePlasmaBeamChargeShot,
+	/* 10110 */ obj_IceWavePlasmaBeamShot,
+	/* 10111 */ obj_IceWavePlasmaBeamChargeShot,
+	/* 11000 */ obj_SpazerPlasmaBeamShot,
+	/* 11001 */ obj_SpazerPlasmaBeamChargeShot,
+	/* 11010 */ obj_IceSpazerPlasmaBeamShot,
+	/* 11011 */ obj_IceSpazerPlasmaBeamChargeShot,
+	/* 11100 */ obj_WaveSpazerPlasmaBeamShot,
+	/* 11101 */ obj_WaveSpazerPlasmaBeamChargeShot,
+	/* 11110 */ obj_IceWaveSpazerPlasmaBeamShot,
+	/* 11111 */ obj_IceWaveSpazerPlasmaBeamChargeShot
+	],
+	find: function(_flags = []) {
+		var _state = 0
+		var _level = 1
+		for (var _index = 0; _index < array_length(_flags); ++_index) {
+			_state += _level * _flags[_index]
+			_level *= 2
+		}
+		return _state
+	}
+};
+
 //hasSuit = array_create(array_length(suit));
 hasMisc = array_create(array_length(misc));
 hasBoots = array_create(array_length(boots));
@@ -961,7 +1016,7 @@ hyperBeam = false;
 
 chargeMult = 5;
 beamDmg = 20;
-beamShot = obj_PowerBeamShot;
+
 beamCharge = obj_PowerBeamChargeShot;
 beamDelay = 6;
 beamChargeDelay = 18;
@@ -2294,7 +2349,7 @@ function EntityLiquid_Large(_velX, _velY)
 #region Set Beams
 function Set_Beams()
 {
-	beamShot = obj_PowerBeamShot;
+	beam_state.index = beam_state.find(beam);
 	beamCharge = obj_PowerBeamChargeShot;
 	beamChargeAnim = sprt_PowerBeamChargeAnim;
 	beamSound = snd_PowerBeam_Shot;
@@ -2307,17 +2362,17 @@ function Set_Beams()
 	beamIsWave = false;
 	beamWaveStyleOffset = 1;
 	
-	var noBeamsActive = ((beam[Beam.Ice]+beam[Beam.Wave]+beam[Beam.Spazer]+beam[Beam.Plasma]) <= 0);
+	var noBeamsActive = (beam_state.index < beam_state.basic_index);
 	
-	if(beam[Beam.Wave] || (noBeamsActive && itemHighlighted[0] == 2))
+	if (beam[Beam.Wave] || (noBeamsActive && itemHighlighted[0] == 2))
 	{
 		beamIsWave = true;
 	}
-	
+
+	// TODO: Adding logic for itemHighlighted to beam_state.index
 	if(beam[Beam.Spazer] || (noBeamsActive && itemHighlighted[0] == 3))
 	{
 		// Spazer
-		beamShot = obj_SpazerBeamShot;
 		beamCharge = obj_SpazerBeamChargeShot;
 		beamChargeAnim = sprt_SpazerChargeAnim;
 		beamSound = snd_Spazer_Shot;
@@ -2331,7 +2386,6 @@ function Set_Beams()
 		if(beam[Beam.Ice])
 		{
 			// Ice Spazer
-			beamShot = obj_IceSpazerBeamShot;
 			beamCharge = obj_IceSpazerBeamChargeShot;
 			beamChargeAnim = sprt_IceBeamChargeAnim;
 			beamSound = snd_IceComboShot;
@@ -2341,13 +2395,11 @@ function Set_Beams()
 			if(beam[Beam.Wave])
 			{
 				// Ice Wave Spazer
-				beamShot = obj_IceWaveSpazerBeamShot;
 				beamCharge = obj_IceWaveSpazerBeamChargeShot;
 				beamIconIndex = 7;
 				if(beam[Beam.Plasma])
 				{
 					// Ice Wave Spazer Plasma
-					beamShot = obj_IceWaveSpazerPlasmaBeamShot;
 					beamCharge = obj_IceWaveSpazerPlasmaBeamChargeShot;
 					beamIconIndex = 15;
 				}
@@ -2355,7 +2407,6 @@ function Set_Beams()
 			else if(beam[Beam.Plasma])
 			{
 				// Ice Spazer Plasma
-				beamShot = obj_IceSpazerPlasmaBeamShot;
 				beamCharge = obj_IceSpazerPlasmaBeamChargeShot;
 				beamIconIndex = 13;
 			}
@@ -2363,7 +2414,6 @@ function Set_Beams()
 		else if(beam[Beam.Wave])
 		{
 			// Wave Spazer
-			beamShot = obj_WaveSpazerBeamShot;
 			beamCharge = obj_WaveSpazerBeamChargeShot;
 			beamChargeAnim = sprt_WaveBeamChargeAnim;
 			beamIconIndex = 6;
@@ -2371,7 +2421,6 @@ function Set_Beams()
 			if(beam[Beam.Plasma])
 			{
 				// Wave Spazer Plasma
-				beamShot = obj_WaveSpazerPlasmaBeamShot;
 				beamCharge = obj_WaveSpazerPlasmaBeamChargeShot;
 				beamChargeAnim = sprt_PlasmaBeamChargeAnim;
 				beamSound = snd_PlasmaBeam_Shot;
@@ -2383,7 +2432,6 @@ function Set_Beams()
 		else if(beam[Beam.Plasma])
 		{
 			// Spazer Plasma
-			beamShot = obj_SpazerPlasmaBeamShot;
 			beamCharge = obj_SpazerPlasmaBeamChargeShot;
 			beamChargeAnim = sprt_PlasmaBeamChargeAnim;
 			beamSound = snd_PlasmaBeam_Shot;
@@ -2395,7 +2443,6 @@ function Set_Beams()
 	else if(beam[Beam.Ice] || (noBeamsActive && itemHighlighted[0] == 1))
 	{
 		// Ice
-		beamShot = obj_IceBeamShot;
 		beamCharge = obj_IceBeamChargeShot;
 		beamChargeAnim = sprt_IceBeamChargeAnim;
 		beamSound = snd_IceBeam_Shot;
@@ -2405,14 +2452,12 @@ function Set_Beams()
 		if(beam[Beam.Wave])
 		{
 			// Ice Wave
-			beamShot = obj_IceWaveBeamShot;
 			beamCharge = obj_IceWaveBeamChargeShot;
 			beamChargeAmt = 2;
 			beamIconIndex = 3;
 			if(beam[Beam.Plasma])
 			{
 				// Ice Wave Plasma
-				beamShot = obj_IceWavePlasmaBeamShot;
 				beamCharge = obj_IceWavePlasmaBeamChargeShot;
 				beamSound = snd_IceComboShot;
 				beamAmt = 2;
@@ -2422,7 +2467,6 @@ function Set_Beams()
 		else if(beam[Beam.Plasma])
 		{
 			// Ice Plasma
-			beamShot = obj_IcePlasmaBeamShot;
 			beamCharge = obj_IcePlasmaBeamChargeShot;
 			beamSound = snd_IceComboShot;
 			beamIconIndex = 9;
@@ -2431,7 +2475,6 @@ function Set_Beams()
 	else if(beam[Beam.Wave] || (noBeamsActive && itemHighlighted[0] == 2))
 	{
 		// Wave
-		beamShot = obj_WaveBeamShot;
 		beamCharge = obj_WaveBeamChargeShot;
 		beamChargeAnim = sprt_WaveBeamChargeAnim;
 		beamSound = snd_WaveBeam_Shot;
@@ -2442,7 +2485,6 @@ function Set_Beams()
 		if(beam[Beam.Plasma])
 		{
 			// Wave Plasma
-			beamShot = obj_WavePlasmaBeamShot;
 			beamCharge = obj_WavePlasmaBeamChargeShot;
 			beamChargeAnim = sprt_PlasmaBeamChargeAnim;
 			beamSound = snd_PlasmaBeam_Shot;
@@ -2455,7 +2497,6 @@ function Set_Beams()
 	else if(beam[Beam.Plasma] || (noBeamsActive && itemHighlighted[0] == 4))
 	{
 		// Plasma
-		beamShot = obj_PlasmaBeamShot;
 		beamCharge = obj_PlasmaBeamChargeShot;
 		beamChargeAnim = sprt_PlasmaBeamChargeAnim;
 		beamSound = snd_PlasmaBeam_Shot;
@@ -2463,6 +2504,7 @@ function Set_Beams()
 		beamIconIndex = 8;
 		beamFlare = sprt_PlasmaBeamChargeFlare;
 	}
+	// TODO: Adding logic for itemHighlighted
 	
 	beamDmg = 20;
 	beamDelay = 8;

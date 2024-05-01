@@ -2540,7 +2540,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 		shootPosX = x+sprtOffsetX+shotOffsetX;
 		shootPosY = y+sprtOffsetY+runYOffset+shotOffsetY;
 	
-		var shotIndex = beamShot,
+		var shotIndex = beam_state.combinations[beam_state.index],
 			damage = beamDmg,
 			sSpeed = shootSpeed,
 			delay = beamDelay,
