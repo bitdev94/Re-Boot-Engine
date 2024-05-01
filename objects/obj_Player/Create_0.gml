@@ -2161,7 +2161,7 @@ function animate_shoot(_shot_index, _damage, _speed, _cooldown, _amount, _sound_
 		for (var _index = 0; _index < _amount; ++_index)
 		{
 			_shot = instance_create_layer(_spawn_x, _spawn_y, layer_get_id("Projectiles"), _shot_index);
-			_shot.Damage = _damage;
+			_shot.damage = _damage;
 			_shot.velX = lengthdir_x(_speed,shootDir);
 			_shot.velY = lengthdir_y(_speed,shootDir);
 			_shot.direction = shootDir;
@@ -2540,13 +2540,9 @@ function Set_Beams()
 			beamFlare = sprt_PlasmaBeamChargeFlare;
 		}
 		beamChargeAnim = beam_state.shot_animations[beam_state.find_charge_animation(beam)]
-		// show_debug_message("Current beam: " + string_format(beam_state.find_charge_animation(beam), 1, 0))
 	
 	if (_no_beam_active) {
 		beam_state.shot_index = beam_state.find_simple_shot(itemHighlighted[0])
-		show_debug_message("Shoot index (highlight): " + string_format(beam_state.shot_index, 1, 0))
-		show_debug_message("Item highlighted: " + string_format(itemHighlighted[0], 1, 0))
-		// show_debug_message("Current beam index from highlight : " + string_format(beam_state.shot_index, 1, 0))
 		beamChargeAnim = beam_state.shot_animations[itemHighlighted[0]]
 		switch (itemHighlighted[0]) {
 			case Beam.Ice: {
