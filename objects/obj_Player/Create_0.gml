@@ -915,6 +915,7 @@ capabilities = {
 beam_state = {
 	basic_index: 2,
 	shot_index: 0,
+	animation_index: 0,
 	shot_combinations: [
 	/* +------ Plasma
 	   |+----- Spazer    
@@ -1051,7 +1052,6 @@ beamDmg = 20;
 
 beamDelay = 6;
 beamChargeDelay = 18;
-// beamChargeAnim = sprt_PowerBeamChargeAnim;
 beamSound = snd_PowerBeam_Shot;
 beamChargeSound = snd_PowerBeam_ChargeShot;
 beamAmt = 1;
@@ -2399,7 +2399,7 @@ function EntityLiquid_Large(_velX, _velY)
 function Set_Beams()
 {
 	beam_state.shot_index = beam_state.find_shot(beam);
-	beamChargeAnim = beam_state.shot_combinations[beam_state.find_charge_animation(beam)];
+	beam_state.animation_index = beam_state.find_charge_animation(beam)
 	beamSound = snd_PowerBeam_Shot;
 	beamChargeSound = snd_PowerBeam_ChargeShot;
 	beamAmt = 1;
@@ -2410,10 +2410,7 @@ function Set_Beams()
 	beamIsWave = false;
 	beamWaveStyleOffset = 1;
 	
-	show_debug_message("Shoot index: " + string_format(beam_state.shot_index, 1, 0))
-
 	var _no_beam_active = (beam_state.shot_index < beam_state.basic_index);
-	
 
 	if (beam[Beam.Wave] || (_no_beam_active && itemHighlighted[0] == Beam.Wave))
 	{
@@ -2424,7 +2421,6 @@ function Set_Beams()
 		if (beam[Beam.Spazer])
 		{
 			// Spazer
-			// beamChargeAnim = sprt_SpazerChargeAnim;
 			beamSound = snd_Spazer_Shot;
 			beamChargeSound = snd_Spazer_ChargeShot;
 			beamAmt = 3;
@@ -2435,7 +2431,6 @@ function Set_Beams()
 			if(beam[Beam.Ice])
 			{
 				// Ice Spazer
-				// beamChargeAnim = sprt_IceBeamChargeAnim;
 				beamSound = snd_IceComboShot;
 				beamChargeSound = snd_IceBeam_ChargeShot;
 				beamIconIndex = 5;
@@ -2459,13 +2454,11 @@ function Set_Beams()
 			else if(beam[Beam.Wave])
 			{
 				// Wave Spazer
-				// beamChargeAnim = sprt_WaveBeamChargeAnim;
 				beamIconIndex = 6;
 				beamFlare = sprt_WaveBeamChargeFlare;
 				if(beam[Beam.Plasma])
 				{
 					// Wave Spazer Plasma
-					// beamChargeAnim = sprt_PlasmaBeamChargeAnim;
 					beamSound = snd_PlasmaBeam_Shot;
 					beamChargeSound = snd_PlasmaBeam_ChargeShot;
 					beamIconIndex = 14;
@@ -2475,7 +2468,6 @@ function Set_Beams()
 			else if(beam[Beam.Plasma])
 			{
 				// Spazer Plasma
-				// beamChargeAnim = sprt_PlasmaBeamChargeAnim;
 				beamSound = snd_PlasmaBeam_Shot;
 				beamChargeSound = snd_PlasmaBeam_ChargeShot;
 				beamIconIndex = 12;
@@ -2485,7 +2477,6 @@ function Set_Beams()
 		else if(beam[Beam.Ice])
 		{
 			// Ice
-			// beamChargeAnim = sprt_IceBeamChargeAnim;
 			beamSound = snd_IceBeam_Shot;
 			beamChargeSound = snd_IceBeam_ChargeShot;
 			beamIconIndex = 1;
@@ -2513,7 +2504,6 @@ function Set_Beams()
 		else if(beam[Beam.Wave])
 		{
 			// Wave
-			// beamChargeAnim = sprt_WaveBeamChargeAnim;
 			beamSound = snd_WaveBeam_Shot;
 			beamChargeSound = snd_WaveBeam_ChargeShot;
 			beamChargeAmt = 2;
@@ -2522,7 +2512,6 @@ function Set_Beams()
 			if(beam[Beam.Plasma])
 			{
 				// Wave Plasma
-				// beamChargeAnim = sprt_PlasmaBeamChargeAnim;
 				beamSound = snd_PlasmaBeam_Shot;
 				beamChargeSound = snd_PlasmaBeam_ChargeShot;
 				beamAmt = 2;
@@ -2533,20 +2522,18 @@ function Set_Beams()
 		else if(beam[Beam.Plasma])
 		{
 			// Plasma
-			// beamChargeAnim = sprt_PlasmaBeamChargeAnim;
 			beamSound = snd_PlasmaBeam_Shot;
 			beamChargeSound = snd_PlasmaBeam_ChargeShot;
 			beamIconIndex = 8;
 			beamFlare = sprt_PlasmaBeamChargeFlare;
 		}
-		beamChargeAnim = beam_state.shot_animations[beam_state.find_charge_animation(beam)]
+		beam_state.animation_index = beam_state.find_charge_animation(beam)
 	
 	if (_no_beam_active) {
 		beam_state.shot_index = beam_state.find_simple_shot(itemHighlighted[0])
-		beamChargeAnim = beam_state.shot_animations[itemHighlighted[0]]
+		beam_state.animation_index = itemHighlighted[0]
 		switch (itemHighlighted[0]) {
 			case Beam.Ice: {
-				// beamChargeAnim = sprt_IceBeamChargeAnim;
 				beamSound = snd_IceBeam_Shot;
 				beamChargeSound = snd_IceBeam_ChargeShot;
 				beamIconIndex = 1;
@@ -2554,7 +2541,6 @@ function Set_Beams()
 			}
 			break;
 			case Beam.Wave: {
-				// beamChargeAnim = sprt_WaveBeamChargeAnim;
 				beamSound = snd_WaveBeam_Shot;
 				beamChargeSound = snd_WaveBeam_ChargeShot;
 				beamChargeAmt = 2;
@@ -2564,7 +2550,6 @@ function Set_Beams()
 			break;
 			case Beam.Spazer: {
 				// Spazer
-				// beamChargeAnim = sprt_SpazerChargeAnim;
 				beamSound = snd_Spazer_Shot;
 				beamChargeSound = snd_Spazer_ChargeShot;
 				beamAmt = 3;
@@ -2574,7 +2559,6 @@ function Set_Beams()
 			}
 			break;
 			case Beam.Plasma: {
-				// beamChargeAnim = sprt_PlasmaBeamChargeAnim;
 				beamSound = snd_PlasmaBeam_Shot;
 				beamChargeSound = snd_PlasmaBeam_ChargeShot;
 				beamIconIndex = 8;
@@ -3380,19 +3364,19 @@ function PaletteSurface()
 		#endregion
 		#region -- Beam charge, Shine Spark charge, and Accel dash flash --
 		var beamPalInd = PlayerPal2.Beam_Power;
-		if (beamChargeAnim == sprt_IceBeamChargeAnim)
+		if (beam_state.animation_index == Beam.Ice)
 		{
 			beamPalInd = PlayerPal2.Beam_Ice;
 		}
-		else if (beamChargeAnim == sprt_PlasmaBeamChargeAnim)
+		else if (beam_state.animation_index == Beam.Plasma)
 		{
 			beamPalInd = PlayerPal2.Beam_Plasma;
 		}
-		else if (beamChargeAnim == sprt_WaveBeamChargeAnim)
+		else if (beam_state.animation_index == Beam.Wave)
 		{
 			beamPalInd = PlayerPal2.Beam_Wave;
 		}
-		else if (beamChargeAnim == sprt_SpazerChargeAnim)
+		else if (beam_state.animation_index == Beam.Spazer)
 		{
 			beamPalInd = PlayerPal2.Beam_Spazer;
 		}
@@ -4210,10 +4194,10 @@ function PostDrawPlayer(posX, posY, rot, alph)
 			}
 			chargeSetFrame += chargeFrame;
 	
-			var isIce = (beamChargeAnim == sprt_IceBeamChargeAnim),
-				isWave = (beamChargeAnim == sprt_WaveBeamChargeAnim),
-				isSpazer = (beamChargeAnim == sprt_SpazerChargeAnim),
-				isPlasma = (beamChargeAnim == sprt_PlasmaBeamChargeAnim);
+			var isIce = (beam_state.animation_index == Beam.Ice),
+				isWave = (beam_state.animation_index == Beam.Wave),
+				isSpazer = (beam_state.animation_index == Beam.Spazer),
+				isPlasma = (beam_state.animation_index == Beam.Plasma)
 			
 			if(particleFrame >= particleFrameMax && !global.roomTrans && !global.gamePaused)
 			{
@@ -4262,7 +4246,8 @@ function PostDrawPlayer(posX, posY, rot, alph)
 			}
 			if (stateFrame != State.Morph)
 			{
-				draw_sprite_ext(beamChargeAnim, chargeSetFrame, xx+sprtOffsetX+armOffsetX, yy+sprtOffsetY+runYOffset+armOffsetY, image_xscale, image_yscale, 0, c_white, alph);
+				var _beam_charge_animation = beam_state.shot_animations[beam_state.animation_index]
+				draw_sprite_ext(_beam_charge_animation, chargeSetFrame, xx + sprtOffsetX+armOffsetX, yy + sprtOffsetY+runYOffset+armOffsetY, image_xscale, image_yscale, 0, c_white, alph);
 				var blend = make_color_rgb(230,120,32);
 	            if(isIce)
 	            {
