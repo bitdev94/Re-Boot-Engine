@@ -2541,7 +2541,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 		shootPosY = y+sprtOffsetY+runYOffset+shotOffsetY;
 	
 		var shotIndex = beam_state.shot_combinations[beam_state.shot_index],
-			damage = beamDmg,
+			damage = beam_state.damage,
 			sSpeed = shootSpeed,
 			delay = beamDelay,
 			amount = beam_state.shot_amount,
@@ -2662,7 +2662,8 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 									delay *= 2;
 								}
 								var _beam_is_wave = beam_state.is_wave
-								animate_shoot(shotIndex,damage,sSpeed,delay,amount,sound, _beam_is_wave, beamWaveStyleOffset);
+								var _wave_style_offset = beam_state.wave_style_offset
+								animate_shoot (shotIndex,damage,sSpeed,delay,amount,sound, _beam_is_wave, _wave_style_offset);
 								if (hyperBeam && shotIndex == obj_HyperBeamShot)
 								{
 									if(beam[Beam.Spazer])
@@ -2862,13 +2863,15 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 							var _charge_sound = beam_state.charge_shoot_sound[beam_state.charge_sound_index];
 							var _charge_amount = beam_state.charge_amount
 							var _beam_is_wave = beam_state.is_wave
-							animate_shoot(_charge_shoot, damage*chargeMult, sSpeed, beamChargeDelay, _charge_amount, _charge_sound, _beam_is_wave, beamWaveStyleOffset);
+							var _wave_style_offset = beam_state.wave_style_offset
+							animate_shoot(_charge_shoot, damage*chargeMult, sSpeed, beamChargeDelay, _charge_amount, _charge_sound, _beam_is_wave, _wave_style_offset);
 							recoil = true;
 						}
 						else if(statCharge >= 20)
 						{
 							var _beam_is_wave = beam_state.is_wave
-							animate_shoot(shotIndex, damage, sSpeed, delay, amount, sound, _beam_is_wave, beamWaveStyleOffset);
+							var _wave_style_offset = beam_state.wave_style_offset
+							animate_shoot(shotIndex, damage, sSpeed, delay, amount, sound, _beam_is_wave, _wave_style_offset);
 							recoil = true;
 						}
 					}
@@ -2979,7 +2982,8 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 		}
 		else if(isChargeSomersaulting)
 		{
-		    var psDmg = beamDmg*chargeMult;
+			var _beam_damage = beam_state.damage
+		    var psDmg = _beam_damage *chargeMult;
 		    if(beam[Beam.Spazer] || (noBeamsActive && itemHighlighted[0] == 3))
 		    {
 		        psDmg *= 2;

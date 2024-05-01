@@ -919,7 +919,9 @@ beam_state = {
 	sound_index: 0,
 	icon_index: 0,
 	shot_amount: 0,
+	damage: 0,
 	is_wave: false,
+	wave_style_offset: 0,
 	charge_amount: 0,
 	charge_sound_index: 0,
 	charge_flare_index: 0,
@@ -992,6 +994,44 @@ beam_state = {
 		sprt_SpazerChargeFlare,
 		sprt_PlasmaBeamChargeFlare
 	],
+	damage_table: [
+	/* +------ Plasma   
+	   |+---- Wave
+	   ||+--- Ice
+	   |||
+	/* 000 */ 20,
+	/* 001 */ 30,
+	/* 010 */ 50,
+	/* 011 */ 60,
+	/* 100 */ 150,
+	/* 101 */ 200,
+	/* 110 */ 250,
+	/* 111 */ 300,
+	],
+	get_damage: function(_flags = [], _damage_table = []) {
+		var _damage = _damage_table[(_flags[Beam.Ice] + 2 * _flags[Beam.Wave] + 4 * _flags[Beam.Plasma])]
+		if (_flags[Beam.Spazer])
+			_damage *= (2 / 3)
+		return _damage
+	},
+	get_simple_damage: function(_type = -1, _damage_table = []) {
+		var _damage = _damage_table[(_type == Beam.Ice) + 2 * (_type == Beam.Wave) * 4 * (_type == Beam.Plasma)]
+		if (_type == Beam.Spazer)
+			_damage *= (2 / 3)
+		return _damage
+	},
+	get_wave_style_offset: function(_flags = []) {
+		var _offset = 1
+		if (_flags[Beam.Spazer])
+			_offset = 0
+		return _offset
+	},
+	get_simple_wave_style_offset: function(_type = -1) {
+		var _offset = 1
+		if (_type == Beam.Spazer)
+			_offset = 0
+		return _offset
+	},
 	check_if_is_wave: function(_flags = []) {
 		return _flags[Beam.Wave]
 	},
@@ -1191,12 +1231,9 @@ hyperBeam = false;
 //beam variables
 
 chargeMult = 5;
-beamDmg = 20;
 
 beamDelay = 6;
 beamChargeDelay = 18;
-
-beamWaveStyleOffset = 1;
 
 #endregion
 #region HUD
@@ -2542,17 +2579,10 @@ function Set_Beams()
 	beam_state.charge_flare_index = beam_state.get_charge_flare_index(beam)
 	beam_state.animation_index = beam_state.find_charge_animation(beam)
 	beam_state.icon_index = beam_state.get_icon_index(beam)
-	
 	beam_state.is_wave = beam_state.check_if_is_wave(beam)
-	beamWaveStyleOffset = 1;
+	beam_state.wave_style_offset = beam_state.get_wave_style_offset(beam)
 	
 	var _no_beam_active = (beam_state.shot_index < beam_state.basic_index);
-
-	if (beam[Beam.Spazer])
-	{
-		// Spazer
-		beamWaveStyleOffset = 0;
-	}
 
 	if (_no_beam_active) {
 		beam_state.shot_index = beam_state.find_simple_shot(itemHighlighted[0])
@@ -2564,10 +2594,15 @@ function Set_Beams()
 		beam_state.charge_flare_index = beam_state.get_simple_charge_flare_index(itemHighlighted[0])
 		beam_state.shot_amount = beam_state.get_simple_shot_amount(itemHighlighted[0])
 		beam_state.is_wave = beam_state.check_simple_if_is_wave(itemHighlighted[0])
+		beam_state.wave_style_offset = beam_state.get_simple_wave_style_offset(itemHighlighted[0])
 	}
 	
+	beam_state.damage = beam_state.get_damage(beam, beam_state.damage_table)
 	
-	beamDmg = 20;
+	if (_no_beam_active) {
+		beam_state.damage = beam_state.get_simple_damage(itemHighlighted[0], beam_state.damage_table)
+	}
+	
 	beamDelay = 8;
 	beamChargeDelay = 20;
 	var iceDelay = 4,
@@ -2577,19 +2612,16 @@ function Set_Beams()
 	if(beam[Beam.Ice] || (_no_beam_active && itemHighlighted[0] == 1))
 	{
 		// Ice
-		beamDmg = 30;
 		beamDelay += iceDelay;
 		beamChargeDelay += iceDelay;
 		if(beam[Beam.Wave])
 		{
 			// Ice Wave
-			beamDmg = 60;
 			beamDelay += waveDelay;
 			beamChargeDelay += waveDelay;
 			if(beam[Beam.Plasma])
 			{
 				// Ice Wave Plasma
-				beamDmg = 300;
 				beamDelay += plasmaDelay;
 				beamChargeDelay += plasmaDelay;
 			}
@@ -2597,7 +2629,6 @@ function Set_Beams()
 		else if(beam[Beam.Plasma])
 		{
 			// Ice Plasma
-			beamDmg = 200;
 			beamDelay += plasmaDelay;
 			beamChargeDelay += plasmaDelay;
 		}
@@ -2605,13 +2636,11 @@ function Set_Beams()
 	else if(beam[Beam.Wave] || (_no_beam_active && itemHighlighted[0] == 2))
 	{
 		// Wave
-		beamDmg = 50;
 		beamDelay += waveDelay;
 		beamChargeDelay += waveDelay;
 		if(beam[Beam.Plasma])
 		{
 			// Wave Plasma
-			beamDmg = 250;
 			beamDelay += plasmaDelay;
 			beamChargeDelay += plasmaDelay;
 		}
@@ -2619,14 +2648,13 @@ function Set_Beams()
 	else if(beam[Beam.Plasma] || (_no_beam_active && itemHighlighted[0] == 4))
 	{
 		// Plasma
-		beamDmg = 150;
 		beamDelay += plasmaDelay;
 		beamChargeDelay += plasmaDelay;
 	}
+	
 	if(beam[Beam.Spazer] || (_no_beam_active && itemHighlighted[0] == 3))
 	{
 		// Spazer
-		beamDmg *= (2/3);
 		beamDelay += spazerDelay;
 		beamChargeDelay += spazerDelay;
 	}
