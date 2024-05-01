@@ -920,6 +920,7 @@ beam_state = {
 	icon_index: 0,
 	shot_amount: 0,
 	damage: 0,
+	delay: 0,
 	is_wave: false,
 	wave_style_offset: 0,
 	charge_amount: 0,
@@ -1008,6 +1009,23 @@ beam_state = {
 	/* 110 */ 250,
 	/* 111 */ 300,
 	],
+	delay_table: [
+		8, // Power
+		4, // Ice
+		0, // Wave
+		0, // Spazer
+		3  // Plasma
+	],
+	get_delay: function(_flags = [], _delay_table = []) {
+		var _delay = 0
+		for (var _index = 0; _index < array_length(_flags); ++_index) {
+			_delay += _delay_table[_index] * _flags[_index]
+		}
+		return _delay
+	},
+	get_simple_delay: function(_type = -1, _delay_table = []) {
+		return _delay_table[_type]
+	},
 	get_damage: function(_flags = [], _damage_table = []) {
 		var _damage = _damage_table[(_flags[Beam.Ice] + 2 * _flags[Beam.Wave] + 4 * _flags[Beam.Plasma])]
 		if (_flags[Beam.Spazer])
@@ -1232,7 +1250,6 @@ hyperBeam = false;
 
 chargeMult = 5;
 
-beamDelay = 6;
 beamChargeDelay = 18;
 
 #endregion
@@ -2581,11 +2598,14 @@ function Set_Beams()
 	beam_state.icon_index = beam_state.get_icon_index(beam)
 	beam_state.is_wave = beam_state.check_if_is_wave(beam)
 	beam_state.wave_style_offset = beam_state.get_wave_style_offset(beam)
+	beam_state.damage = beam_state.get_damage(beam, beam_state.damage_table)
+	beam_state.delay = beam_state.get_delay(beam, beam_state.delay_table)
 	
 	var _no_beam_active = (beam_state.shot_index < beam_state.basic_index);
 
 	if (_no_beam_active) {
-		beam_state.shot_index = beam_state.find_simple_shot(itemHighlighted[0])
+		var _beam_type = itemHighlighted[0]
+		beam_state.shot_index = beam_state.find_simple_shot(_beam_type)
 		beam_state.sound_index = itemHighlighted[0]
 		beam_state.animation_index = itemHighlighted[0]
 		beam_state.charge_sound_index = itemHighlighted[0]
@@ -2595,15 +2615,10 @@ function Set_Beams()
 		beam_state.shot_amount = beam_state.get_simple_shot_amount(itemHighlighted[0])
 		beam_state.is_wave = beam_state.check_simple_if_is_wave(itemHighlighted[0])
 		beam_state.wave_style_offset = beam_state.get_simple_wave_style_offset(itemHighlighted[0])
-	}
-	
-	beam_state.damage = beam_state.get_damage(beam, beam_state.damage_table)
-	
-	if (_no_beam_active) {
 		beam_state.damage = beam_state.get_simple_damage(itemHighlighted[0], beam_state.damage_table)
+		beam_state.delay = beam_state.get_simple_delay(itemHighlighted[0], beam_state.delay_table)
 	}
 	
-	beamDelay = 8;
 	beamChargeDelay = 20;
 	var iceDelay = 4,
 		waveDelay = 0,//2,
@@ -2612,50 +2627,42 @@ function Set_Beams()
 	if(beam[Beam.Ice] || (_no_beam_active && itemHighlighted[0] == 1))
 	{
 		// Ice
-		beamDelay += iceDelay;
 		beamChargeDelay += iceDelay;
 		if(beam[Beam.Wave])
 		{
 			// Ice Wave
-			beamDelay += waveDelay;
 			beamChargeDelay += waveDelay;
 			if(beam[Beam.Plasma])
 			{
 				// Ice Wave Plasma
-				beamDelay += plasmaDelay;
 				beamChargeDelay += plasmaDelay;
 			}
 		}
 		else if(beam[Beam.Plasma])
 		{
 			// Ice Plasma
-			beamDelay += plasmaDelay;
 			beamChargeDelay += plasmaDelay;
 		}
 	}
 	else if(beam[Beam.Wave] || (_no_beam_active && itemHighlighted[0] == 2))
 	{
 		// Wave
-		beamDelay += waveDelay;
 		beamChargeDelay += waveDelay;
 		if(beam[Beam.Plasma])
 		{
 			// Wave Plasma
-			beamDelay += plasmaDelay;
 			beamChargeDelay += plasmaDelay;
 		}
 	}
 	else if(beam[Beam.Plasma] || (_no_beam_active && itemHighlighted[0] == 4))
 	{
 		// Plasma
-		beamDelay += plasmaDelay;
 		beamChargeDelay += plasmaDelay;
 	}
 	
 	if(beam[Beam.Spazer] || (_no_beam_active && itemHighlighted[0] == 3))
 	{
 		// Spazer
-		beamDelay += spazerDelay;
 		beamChargeDelay += spazerDelay;
 	}
 }

@@ -2543,7 +2543,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 		var shotIndex = beam_state.shot_combinations[beam_state.shot_index],
 			damage = beam_state.damage,
 			sSpeed = shootSpeed,
-			delay = beamDelay,
+			delay = beam_state.delay,
 			amount = beam_state.shot_amount,
 			sound = beam_state.shoot_sound[beam_state.sound_index],
 			autoFire = 1;
