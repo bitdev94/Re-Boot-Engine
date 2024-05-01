@@ -918,7 +918,7 @@ beam_state = {
 	animation_index: 0,
 	sound_index: 0,
 	icon_index: 0,
-	amount: 0,
+	shot_amount: 0,
 	charge_amount: 0,
 	charge_sound_index: 0,
 	charge_flare_index: 0,
@@ -991,6 +991,23 @@ beam_state = {
 		sprt_SpazerChargeFlare,
 		sprt_PlasmaBeamChargeFlare
 	],
+	get_shot_amount: function(_flags = []) {
+		var _amount = 1
+
+		if (_flags[Beam.Wave] && _flags[Beam.Plasma])
+			_amount = 2
+
+		if (_flags[Beam.Spazer])
+			_amount = 3
+
+		return _amount
+	},
+	get_simple_shot_amount: function(_type = 0) {
+		var _amount = 1
+		if (_type == Beam.Spazer)
+			_amount = 3
+		return _amount
+	},
 	get_charge_flare_index: function(_flags = []) {
 		/* Ice > Plasma > Wave > Spazer > Power */
 		var _index = Beam.Charge
@@ -2514,9 +2531,12 @@ function Set_Beams()
 	beam_state.animation_index = beam_state.find_charge_animation(beam)
 	beam_state.sound_index = beam_state.find_shoot_sound(beam)
 	beam_state.charge_sound_index = beam_state.find_charge_sound(beam)
-	beam_state.amount = 1
+	beam_state.shot_amount = beam_state.get_shot_amount(beam)
 	beam_state.charge_amount = beam_state.get_charge_amount(beam)
 	beam_state.charge_flare_index = beam_state.get_charge_flare_index(beam)
+	beam_state.animation_index = beam_state.find_charge_animation(beam)
+	beam_state.icon_index = beam_state.get_icon_index(beam)
+	
 	beamIsWave = false;
 	beamWaveStyleOffset = 1;
 	
@@ -2531,69 +2551,12 @@ function Set_Beams()
 		if (beam[Beam.Spazer])
 		{
 			// Spazer
-			beam_state.amount = 3
 			beamWaveStyleOffset = 0;
-			if(beam[Beam.Ice])
-			{
-				// Ice Spazer
-				if(beam[Beam.Wave])
-				{
-					// Ice Wave Spazer
-					if(beam[Beam.Plasma])
-					{
-						// Ice Wave Spazer Plasma
-					}
-				}
-				else if(beam[Beam.Plasma])
-				{
-					// Ice Spazer Plasma
-				}
-			}
-			else if(beam[Beam.Wave])
-			{
-				// Wave Spazer
-				if(beam[Beam.Plasma])
-				{
-					// Wave Spazer Plasma
-				}
-			}
-			else if(beam[Beam.Plasma])
-			{
-				// Spazer Plasma
-			}
+	
 		}
-		else if(beam[Beam.Ice])
-		{
-			// Ice
-			if(beam[Beam.Wave])
-			{
-				// Ice Wave
-				if(beam[Beam.Plasma])
-				{
-					// Ice Wave Plasma
-					beam_state.amount = 2
-				}
-			}
-			else if(beam[Beam.Plasma])
-			{
-				// Ice Plasma
-			}
-		}
-		else if(beam[Beam.Wave])
-		{
-			// Wave
-			if(beam[Beam.Plasma])
-			{
-				// Wave Plasma
-				beam_state.amount = 2
-			}
-		}
-		else if(beam[Beam.Plasma])
-		{
-			// Plasma
-		}
-		beam_state.animation_index = beam_state.find_charge_animation(beam)
-		beam_state.icon_index = beam_state.get_icon_index(beam)
+
+
+
 	
 	if (_no_beam_active) {
 		beam_state.shot_index = beam_state.find_simple_shot(itemHighlighted[0])
@@ -2603,12 +2566,7 @@ function Set_Beams()
 		beam_state.charge_amount = beam_state.get_simple_charge_amount(itemHighlighted[0])
 		beam_state.icon_index = beam_state.get_simple_icon_index(itemHighlighted[0])
 		beam_state.charge_flare_index = beam_state.get_simple_charge_flare_index(itemHighlighted[0])
-		switch (itemHighlighted[0]) {
-			case Beam.Spazer: {
-				// Spazer
-				beam_state.amount = 3
-			}
-		}
+		beam_state.shot_amount = beam_state.get_simple_shot_amount(itemHighlighted[0])
 	}
 	
 	
