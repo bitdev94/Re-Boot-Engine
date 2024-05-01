@@ -916,12 +916,12 @@ beam_state = {
 	basic_index: 2,
 	shot_index: 0,
 	shot_combinations: [
-	/* +------ Plasma               
-	   |+----- Spazer              
-	   ||+---- Wave             
-	   |||+--- Ice     
+	/* +------ Plasma
+	   |+----- Spazer    
+	   ||+---- Wave
+	   |||+--- Ice
 	   ||||+-- Charge
-	   |||||          
+	   |||||
 	/* 00000 */ obj_PowerBeamShot,
 	/* 00001 */ obj_PowerBeamChargeShot,
 	/* 00010 */ obj_IceBeamShot,
@@ -957,12 +957,15 @@ beam_state = {
 	],
 	find_shot: function(_flags = []) {
 		var _state = 0
-		var _level = 1
-		for (var _index = 0; _index < array_length(_flags); ++_index) {
+		var _level = 2
+		for (var _index = 1; _index < array_length(_flags); ++_index) {
 			_state += _level * _flags[_index]
 			_level *= 2
 		}
 		return _state
+	},
+	find_simple_shot: function(_type = -1) {
+		return int64(power(2, _type))
 	}
 };
 
@@ -1055,7 +1058,12 @@ moveH = 0;
 moveHPrev = 1;
 
 itemSelected = 0;
-/** Item Hud */
+/** Player Item Hud */
+player_hud = {
+	_beam: Beam.Charge,
+	_item: Item.Grapple
+}
+
 itemHighlighted[1] = 0;
 
 pauseSelect = false;
@@ -2377,147 +2385,191 @@ function Set_Beams()
 	
 	var noBeamsActive = (beam_state.shot_index < beam_state.basic_index);
 	
-	if (beam[Beam.Wave] || (noBeamsActive && itemHighlighted[0] == 2))
+
+	if (beam[Beam.Wave] || (noBeamsActive && itemHighlighted[0] == Beam.Wave))
 	{
 		beamIsWave = true;
 	}
 
-	// TODO: Adding logic for itemHighlighted to beam_state.shot_index
-	if(beam[Beam.Spazer] || (noBeamsActive && itemHighlighted[0] == 3))
-	{
-		// Spazer
-		beamCharge = obj_SpazerBeamChargeShot;
-		beamChargeAnim = sprt_SpazerChargeAnim;
-		beamSound = snd_Spazer_Shot;
-		beamChargeSound = snd_Spazer_ChargeShot;
-		beamAmt = 3;
-		beamChargeAmt = 3;
-		beamIconIndex = 4;
-		beamFlare = sprt_SpazerChargeFlare;
-		
-		beamWaveStyleOffset = 0;
-		if(beam[Beam.Ice])
+	if (!noBeamsActive) {
+		if(beam[Beam.Spazer])
 		{
-			// Ice Spazer
-			beamCharge = obj_IceSpazerBeamChargeShot;
-			beamChargeAnim = sprt_IceBeamChargeAnim;
-			beamSound = snd_IceComboShot;
-			beamChargeSound = snd_IceBeam_ChargeShot;
-			beamIconIndex = 5;
-			beamFlare = sprt_IceBeamChargeFlare;
-			if(beam[Beam.Wave])
+			// Spazer
+			beamCharge = obj_SpazerBeamChargeShot;
+			beamChargeAnim = sprt_SpazerChargeAnim;
+			beamSound = snd_Spazer_Shot;
+			beamChargeSound = snd_Spazer_ChargeShot;
+			beamAmt = 3;
+			beamChargeAmt = 3;
+			beamIconIndex = 4;
+			beamFlare = sprt_SpazerChargeFlare;
+			beamWaveStyleOffset = 0;
+			if(beam[Beam.Ice])
 			{
-				// Ice Wave Spazer
-				beamCharge = obj_IceWaveSpazerBeamChargeShot;
-				beamIconIndex = 7;
+				// Ice Spazer
+				beamCharge = obj_IceSpazerBeamChargeShot;
+				beamChargeAnim = sprt_IceBeamChargeAnim;
+				beamSound = snd_IceComboShot;
+				beamChargeSound = snd_IceBeam_ChargeShot;
+				beamIconIndex = 5;
+				beamFlare = sprt_IceBeamChargeFlare;
+				if(beam[Beam.Wave])
+				{
+					// Ice Wave Spazer
+					beamCharge = obj_IceWaveSpazerBeamChargeShot;
+					beamIconIndex = 7;
+					if(beam[Beam.Plasma])
+					{
+						// Ice Wave Spazer Plasma
+						beamCharge = obj_IceWaveSpazerPlasmaBeamChargeShot;
+						beamIconIndex = 15;
+					}
+				}
+				else if(beam[Beam.Plasma])
+				{
+					// Ice Spazer Plasma
+					beamCharge = obj_IceSpazerPlasmaBeamChargeShot;
+					beamIconIndex = 13;
+				}
+			}
+			else if(beam[Beam.Wave])
+			{
+				// Wave Spazer
+				beamCharge = obj_WaveSpazerBeamChargeShot;
+				beamChargeAnim = sprt_WaveBeamChargeAnim;
+				beamIconIndex = 6;
+				beamFlare = sprt_WaveBeamChargeFlare;
 				if(beam[Beam.Plasma])
 				{
-					// Ice Wave Spazer Plasma
-					beamCharge = obj_IceWaveSpazerPlasmaBeamChargeShot;
-					beamIconIndex = 15;
+					// Wave Spazer Plasma
+					beamCharge = obj_WaveSpazerPlasmaBeamChargeShot;
+					beamChargeAnim = sprt_PlasmaBeamChargeAnim;
+					beamSound = snd_PlasmaBeam_Shot;
+					beamChargeSound = snd_PlasmaBeam_ChargeShot;
+					beamIconIndex = 14;
+					beamFlare = sprt_PlasmaBeamChargeFlare;
 				}
 			}
 			else if(beam[Beam.Plasma])
 			{
-				// Ice Spazer Plasma
-				beamCharge = obj_IceSpazerPlasmaBeamChargeShot;
-				beamIconIndex = 13;
+				// Spazer Plasma
+				beamCharge = obj_SpazerPlasmaBeamChargeShot;
+				beamChargeAnim = sprt_PlasmaBeamChargeAnim;
+				beamSound = snd_PlasmaBeam_Shot;
+				beamChargeSound = snd_PlasmaBeam_ChargeShot;
+				beamIconIndex = 12;
+				beamFlare = sprt_PlasmaBeamChargeFlare;
+			}
+		}
+		else if(beam[Beam.Ice])
+		{
+			// Ice
+			beamCharge = obj_IceBeamChargeShot;
+			beamChargeAnim = sprt_IceBeamChargeAnim;
+			beamSound = snd_IceBeam_Shot;
+			beamChargeSound = snd_IceBeam_ChargeShot;
+			beamIconIndex = 1;
+			beamFlare = sprt_IceBeamChargeFlare;
+			if(beam[Beam.Wave])
+			{
+				// Ice Wave
+				beamCharge = obj_IceWaveBeamChargeShot;
+				beamChargeAmt = 2;
+				beamIconIndex = 3;
+				if(beam[Beam.Plasma])
+				{
+					// Ice Wave Plasma
+					beamCharge = obj_IceWavePlasmaBeamChargeShot;
+					beamSound = snd_IceComboShot;
+					beamAmt = 2;
+					beamIconIndex = 11;
+				}
+			}
+			else if(beam[Beam.Plasma])
+			{
+				// Ice Plasma
+				beamCharge = obj_IcePlasmaBeamChargeShot;
+				beamSound = snd_IceComboShot;
+				beamIconIndex = 9;
 			}
 		}
 		else if(beam[Beam.Wave])
 		{
-			// Wave Spazer
-			beamCharge = obj_WaveSpazerBeamChargeShot;
+			// Wave
+			beamCharge = obj_WaveBeamChargeShot;
 			beamChargeAnim = sprt_WaveBeamChargeAnim;
-			beamIconIndex = 6;
+			beamSound = snd_WaveBeam_Shot;
+			beamChargeSound = snd_WaveBeam_ChargeShot;
+			beamChargeAmt = 2;
+			beamIconIndex = 2;
 			beamFlare = sprt_WaveBeamChargeFlare;
 			if(beam[Beam.Plasma])
 			{
-				// Wave Spazer Plasma
-				beamCharge = obj_WaveSpazerPlasmaBeamChargeShot;
+				// Wave Plasma
+				beamCharge = obj_WavePlasmaBeamChargeShot;
 				beamChargeAnim = sprt_PlasmaBeamChargeAnim;
 				beamSound = snd_PlasmaBeam_Shot;
 				beamChargeSound = snd_PlasmaBeam_ChargeShot;
-				beamIconIndex = 14;
+				beamAmt = 2;
+				beamIconIndex = 10;
 				beamFlare = sprt_PlasmaBeamChargeFlare;
 			}
 		}
 		else if(beam[Beam.Plasma])
 		{
-			// Spazer Plasma
-			beamCharge = obj_SpazerPlasmaBeamChargeShot;
+			// Plasma
+			beamCharge = obj_PlasmaBeamChargeShot;
 			beamChargeAnim = sprt_PlasmaBeamChargeAnim;
 			beamSound = snd_PlasmaBeam_Shot;
 			beamChargeSound = snd_PlasmaBeam_ChargeShot;
-			beamIconIndex = 12;
+			beamIconIndex = 8;
 			beamFlare = sprt_PlasmaBeamChargeFlare;
 		}
-	}
-	else if(beam[Beam.Ice] || (noBeamsActive && itemHighlighted[0] == 1))
-	{
-		// Ice
-		beamCharge = obj_IceBeamChargeShot;
-		beamChargeAnim = sprt_IceBeamChargeAnim;
-		beamSound = snd_IceBeam_Shot;
-		beamChargeSound = snd_IceBeam_ChargeShot;
-		beamIconIndex = 1;
-		beamFlare = sprt_IceBeamChargeFlare;
-		if(beam[Beam.Wave])
-		{
-			// Ice Wave
-			beamCharge = obj_IceWaveBeamChargeShot;
-			beamChargeAmt = 2;
-			beamIconIndex = 3;
-			if(beam[Beam.Plasma])
-			{
-				// Ice Wave Plasma
-				beamCharge = obj_IceWavePlasmaBeamChargeShot;
-				beamSound = snd_IceComboShot;
-				beamAmt = 2;
-				beamIconIndex = 11;
+	} else {
+		beam_state.shot_index = beam_state.find_simple_shot(itemHighlighted[0])
+		switch (itemHighlighted[0]) {
+			case Beam.Ice: {
+				beamCharge = obj_IceBeamChargeShot;
+				beamChargeAnim = sprt_IceBeamChargeAnim;
+				beamSound = snd_IceBeam_Shot;
+				beamChargeSound = snd_IceBeam_ChargeShot;
+				beamIconIndex = 1;
+				beamFlare = sprt_IceBeamChargeFlare;
 			}
-		}
-		else if(beam[Beam.Plasma])
-		{
-			// Ice Plasma
-			beamCharge = obj_IcePlasmaBeamChargeShot;
-			beamSound = snd_IceComboShot;
-			beamIconIndex = 9;
+			break;
+			case Beam.Wave: {
+				beamCharge = obj_WaveBeamChargeShot;
+				beamChargeAnim = sprt_WaveBeamChargeAnim;
+				beamSound = snd_WaveBeam_Shot;
+				beamChargeSound = snd_WaveBeam_ChargeShot;
+				beamChargeAmt = 2;
+				beamIconIndex = 2;
+				beamFlare = sprt_WaveBeamChargeFlare;
+			}
+			break;
+			case Beam.Spazer: {
+				// Spazer
+				beamCharge = obj_SpazerBeamChargeShot;
+				beamChargeAnim = sprt_SpazerChargeAnim;
+				beamSound = snd_Spazer_Shot;
+				beamChargeSound = snd_Spazer_ChargeShot;
+				beamAmt = 3;
+				beamChargeAmt = 3;
+				beamIconIndex = 4;
+				beamFlare = sprt_SpazerChargeFlare;
+			}
+			break;
+			case Beam.Plasma: {
+				beamCharge = obj_PlasmaBeamChargeShot;
+				beamChargeAnim = sprt_PlasmaBeamChargeAnim;
+				beamSound = snd_PlasmaBeam_Shot;
+				beamChargeSound = snd_PlasmaBeam_ChargeShot;
+				beamIconIndex = 8;
+				beamFlare = sprt_PlasmaBeamChargeFlare;
+			}
+			break;
 		}
 	}
-	else if(beam[Beam.Wave] || (noBeamsActive && itemHighlighted[0] == 2))
-	{
-		// Wave
-		beamCharge = obj_WaveBeamChargeShot;
-		beamChargeAnim = sprt_WaveBeamChargeAnim;
-		beamSound = snd_WaveBeam_Shot;
-		beamChargeSound = snd_WaveBeam_ChargeShot;
-		beamChargeAmt = 2;
-		beamIconIndex = 2;
-		beamFlare = sprt_WaveBeamChargeFlare;
-		if(beam[Beam.Plasma])
-		{
-			// Wave Plasma
-			beamCharge = obj_WavePlasmaBeamChargeShot;
-			beamChargeAnim = sprt_PlasmaBeamChargeAnim;
-			beamSound = snd_PlasmaBeam_Shot;
-			beamChargeSound = snd_PlasmaBeam_ChargeShot;
-			beamAmt = 2;
-			beamIconIndex = 10;
-			beamFlare = sprt_PlasmaBeamChargeFlare;
-		}
-	}
-	else if(beam[Beam.Plasma] || (noBeamsActive && itemHighlighted[0] == 4))
-	{
-		// Plasma
-		beamCharge = obj_PlasmaBeamChargeShot;
-		beamChargeAnim = sprt_PlasmaBeamChargeAnim;
-		beamSound = snd_PlasmaBeam_Shot;
-		beamChargeSound = snd_PlasmaBeam_ChargeShot;
-		beamIconIndex = 8;
-		beamFlare = sprt_PlasmaBeamChargeFlare;
-	}
-	// TODO: Adding logic for itemHighlighted
 	
 	beamDmg = 20;
 	beamDelay = 8;
