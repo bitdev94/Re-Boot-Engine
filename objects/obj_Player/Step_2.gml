@@ -2661,12 +2661,13 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 								{
 									delay *= 2;
 								}
-								animate_shoot(shotIndex,damage,sSpeed,delay,amount,sound,beamIsWave,beamWaveStyleOffset);
-								if(hyperBeam && shotIndex == obj_HyperBeamShot)
+								var _beam_is_wave = beam_state.is_wave
+								animate_shoot(shotIndex,damage,sSpeed,delay,amount,sound, _beam_is_wave, beamWaveStyleOffset);
+								if (hyperBeam && shotIndex == obj_HyperBeamShot)
 								{
 									if(beam[Beam.Spazer])
 									{
-										animate_shoot(obj_HyperBeamLesserShot,damage,sSpeed,delay,2+2*beamIsWave,noone,beamIsWave,1);
+										animate_shoot(obj_HyperBeamLesserShot,damage,sSpeed,delay,2+2*_beam_is_wave, noone,_beam_is_wave,1);
 									}
 									
 									var flareDir = shootDir;
@@ -2860,12 +2861,14 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 							var _charge_shoot = beam_state.shot_combinations[beam_state.shot_index + 1];
 							var _charge_sound = beam_state.charge_shoot_sound[beam_state.charge_sound_index];
 							var _charge_amount = beam_state.charge_amount
-							animate_shoot(_charge_shoot, damage*chargeMult, sSpeed, beamChargeDelay, _charge_amount, _charge_sound, beamIsWave, beamWaveStyleOffset);
+							var _beam_is_wave = beam_state.is_wave
+							animate_shoot(_charge_shoot, damage*chargeMult, sSpeed, beamChargeDelay, _charge_amount, _charge_sound, _beam_is_wave, beamWaveStyleOffset);
 							recoil = true;
 						}
 						else if(statCharge >= 20)
 						{
-							animate_shoot(shotIndex, damage, sSpeed, delay, amount, sound, beamIsWave, beamWaveStyleOffset);
+							var _beam_is_wave = beam_state.is_wave
+							animate_shoot(shotIndex, damage, sSpeed, delay, amount, sound, _beam_is_wave, beamWaveStyleOffset);
 							recoil = true;
 						}
 					}

@@ -3,7 +3,7 @@
 if(setWave)
 {
 	//isWave = creator.beam[Beam.Wave];
-	isWave = creator.beamIsWave;
+	isWave = creator.beam_state.is_wave;
 	tileCollide = !isWave;
 	setWave = false;
 }

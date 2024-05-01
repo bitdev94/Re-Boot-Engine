@@ -919,6 +919,7 @@ beam_state = {
 	sound_index: 0,
 	icon_index: 0,
 	shot_amount: 0,
+	is_wave: false,
 	charge_amount: 0,
 	charge_sound_index: 0,
 	charge_flare_index: 0,
@@ -991,6 +992,12 @@ beam_state = {
 		sprt_SpazerChargeFlare,
 		sprt_PlasmaBeamChargeFlare
 	],
+	check_if_is_wave: function(_flags = []) {
+		return _flags[Beam.Wave]
+	},
+	check_simple_if_is_wave: function(_type = 0) {
+		return _type == Beam.Wave
+	},
 	get_shot_amount: function(_flags = []) {
 		var _amount = 1
 
@@ -1189,7 +1196,6 @@ beamDmg = 20;
 beamDelay = 6;
 beamChargeDelay = 18;
 
-beamIsWave = false;
 beamWaveStyleOffset = 1;
 
 #endregion
@@ -2537,27 +2543,17 @@ function Set_Beams()
 	beam_state.animation_index = beam_state.find_charge_animation(beam)
 	beam_state.icon_index = beam_state.get_icon_index(beam)
 	
-	beamIsWave = false;
+	beam_state.is_wave = beam_state.check_if_is_wave(beam)
 	beamWaveStyleOffset = 1;
 	
 	var _no_beam_active = (beam_state.shot_index < beam_state.basic_index);
 
-	if (beam[Beam.Wave] || (_no_beam_active && itemHighlighted[0] == Beam.Wave))
+	if (beam[Beam.Spazer])
 	{
-		beamIsWave = true;
+		// Spazer
+		beamWaveStyleOffset = 0;
 	}
 
-
-		if (beam[Beam.Spazer])
-		{
-			// Spazer
-			beamWaveStyleOffset = 0;
-	
-		}
-
-
-
-	
 	if (_no_beam_active) {
 		beam_state.shot_index = beam_state.find_simple_shot(itemHighlighted[0])
 		beam_state.sound_index = itemHighlighted[0]
@@ -2567,6 +2563,7 @@ function Set_Beams()
 		beam_state.icon_index = beam_state.get_simple_icon_index(itemHighlighted[0])
 		beam_state.charge_flare_index = beam_state.get_simple_charge_flare_index(itemHighlighted[0])
 		beam_state.shot_amount = beam_state.get_simple_shot_amount(itemHighlighted[0])
+		beam_state.is_wave = beam_state.check_simple_if_is_wave(itemHighlighted[0])
 	}
 	
 	
