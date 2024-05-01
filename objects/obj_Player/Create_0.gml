@@ -914,8 +914,8 @@ capabilities = {
 
 beam_state = {
 	basic_index: 2,
-	index: 0,
-	combinations: [
+	shot_index: 0,
+	shot_combinations: [
 	/* +------ Plasma               
 	   |+----- Spazer              
 	   ||+---- Wave             
@@ -955,7 +955,7 @@ beam_state = {
 	/* 11110 */ obj_IceWaveSpazerPlasmaBeamShot,
 	/* 11111 */ obj_IceWaveSpazerPlasmaBeamChargeShot
 	],
-	find: function(_flags = []) {
+	find_shot: function(_flags = []) {
 		var _state = 0
 		var _level = 1
 		for (var _index = 0; _index < array_length(_flags); ++_index) {
@@ -2086,58 +2086,67 @@ function ChangeState(newState,newStateFrame,newMask,isGrounded,stallCam = true)
 #endregion
 
 #region Shoot
-function Shoot(ShotIndex, Damage, Speed, CoolDown, ShotAmount, SoundIndex, IsWave = false, WaveStyleOffset = 0)
+// @func Shoot(_shot_index, _damage, speed, cooldown, shot_amount, sound_index, is_wave, wave_style_offset)
+// @desc create the shot animations
+// @param {Asset.GMObject} _shot_index
+// @param {Real} _damage
+// @param {Real} _spped
+// @param {Real} _cooldown
+// @param {Real} _amount
+function Shoot(_shot_index, _damage, _speed, _cooldown, _amount, _sound_index, _is_wave = false, _wave_style_offset = 0)
 {
-	var spawnX = scr_round(shootPosX - 2*sign(lengthdir_x(2,shootDir))),
-		spawnY = scr_round(shootPosY - 2*sign(lengthdir_y(2,shootDir)));
+	var _spawn_x = scr_round(shootPosX - 2 * sign(lengthdir_x(2, shootDir))),
+		_spawn_y = scr_round(shootPosY - 2 * sign(lengthdir_y(2, shootDir)));
 
-	if(SoundIndex != noone)
+	if (audio_exists(_sound_index))
 	{
-		if(audio_is_playing(global.prevShotSndIndex))
+		if (audio_is_playing(global.prevShotSndIndex))
 		{
-			var gain = 0;
-			if(asset_get_index(audio_get_name(global.prevShotSndIndex)) != SoundIndex)
+			var _gain = 0;
+			if (asset_get_index(audio_get_name(global.prevShotSndIndex)) != _sound_index)
 			{
-				gain = audio_sound_get_gain(global.prevShotSndIndex);
+				_gain = audio_sound_get_gain(global.prevShotSndIndex);
 			}
-			audio_sound_gain(global.prevShotSndIndex,gain,25);
+			audio_sound_gain(global.prevShotSndIndex, _gain, 25);
 		}
-		var snd = audio_play_sound(SoundIndex,1,false);
-		audio_sound_gain(snd,1,0);
-		global.prevShotSndIndex = snd;
+		var _snd = audio_play_sound(_sound_index, 1, false);
+		audio_sound_gain(_snd, 1, 0);
+		global.prevShotSndIndex = _snd;
 	}
 
-	if(ShotIndex != noone)
+	if (object_exists(_shot_index))
 	{
-		var shot = noone;
-		for(var i = 0; i < ShotAmount; i++)
+		var _shot = noone;
+		// TODO: Check if is possible to remove this loop
+		for (var _index = 0; _index < _amount; ++_index)
 		{
-			shot = instance_create_layer(spawnX,spawnY,layer_get_id("Projectiles"),ShotIndex);
-			shot.damage = Damage;
-			shot.velX = lengthdir_x(Speed,shootDir);
-			shot.velY = lengthdir_y(Speed,shootDir);
-			shot.direction = shootDir;
-			shot.waveStyle = i + WaveStyleOffset;
-			shot.dir = dir2;
-			shot.waveDir = waveDir;
-			shot.creator = id;
+			_shot = instance_create_layer(_spawn_x, _spawn_y, layer_get_id("Projectiles"), _shot_index);
+			_shot.Damage = _damage;
+			_shot.velX = lengthdir_x(_speed,shootDir);
+			_shot.velY = lengthdir_y(_speed,shootDir);
+			_shot.direction = shootDir;
+			_shot.waveStyle = _index + _wave_style_offset;
+			_shot.dir = dir2;
+			_shot.waveDir = waveDir;
+			_shot.creator = id;
 		}
-		if(instance_exists(shot))
+		
+		if (instance_exists(_shot))
 		{
-			shotDelayTime = CoolDown;
-			if(shot.particleType >= 0 && !shot.isGrapple)
+			shotDelayTime = _cooldown;
+			if (_shot.particleType >= 0 && !_shot.isGrapple)
 			{
-				var partSys = obj_Particles.partSystemB;
-				if(IsWave)
+				var _particle_system = obj_Particles.partSystemB;
+				if (_is_wave)
 				{
-					partSys = obj_Particles.partSystemA;
+					_particle_system = obj_Particles.partSystemA;
 				}
 		
-				part_particles_create(partSys,shootPosX,shootPosY,obj_Particles.bTrails[shot.particleType],7+(5*(statCharge >= maxCharge)));
-		        part_particles_create(partSys,shootPosX,shootPosY,obj_Particles.mFlare[shot.particleType],1);
+				part_particles_create(_particle_system, shootPosX, shootPosY, obj_Particles.bTrails[_shot.particleType], 7 + (5*(statCharge >= maxCharge)));
+		        part_particles_create(_particle_system, shootPosX, shootPosY, obj_Particles.mFlare[_shot.particleType], 1);
 			}
 			waveDir *= -1;
-			return shot;
+			return _shot;
 		}
 	}
 	return noone;
@@ -2349,7 +2358,7 @@ function EntityLiquid_Large(_velX, _velY)
 #region Set Beams
 function Set_Beams()
 {
-	beam_state.index = beam_state.find(beam);
+	beam_state.shot_index = beam_state.find_shot(beam);
 	beamCharge = obj_PowerBeamChargeShot;
 	beamChargeAnim = sprt_PowerBeamChargeAnim;
 	beamSound = snd_PowerBeam_Shot;
@@ -2362,14 +2371,14 @@ function Set_Beams()
 	beamIsWave = false;
 	beamWaveStyleOffset = 1;
 	
-	var noBeamsActive = (beam_state.index < beam_state.basic_index);
+	var noBeamsActive = (beam_state.shot_index < beam_state.basic_index);
 	
 	if (beam[Beam.Wave] || (noBeamsActive && itemHighlighted[0] == 2))
 	{
 		beamIsWave = true;
 	}
 
-	// TODO: Adding logic for itemHighlighted to beam_state.index
+	// TODO: Adding logic for itemHighlighted to beam_state.shot_index
 	if(beam[Beam.Spazer] || (noBeamsActive && itemHighlighted[0] == 3))
 	{
 		// Spazer
