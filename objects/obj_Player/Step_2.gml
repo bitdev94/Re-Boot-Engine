@@ -2544,7 +2544,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 			damage = beamDmg,
 			sSpeed = shootSpeed,
 			delay = beamDelay,
-			amount = beamAmt,
+			amount = beam_state.amount,
 			sound = beam_state.shoot_sound[beam_state.sound_index],
 			autoFire = 1;
 		if(itemSelected == 1 && itemHighlighted[1] <= 1)
