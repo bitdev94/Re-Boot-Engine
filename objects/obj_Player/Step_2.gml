@@ -2858,6 +2858,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 							
 							chargeReleaseFlash = 4;
 							var _charge_shoot = beam_state.shot_combinations[beam_state.shot_index + 1];
+							show_debug_message("Current beam index: " + string_format(beam_state.shot_index, 1, 0))
 							animate_shoot(_charge_shoot, damage*chargeMult, sSpeed, beamChargeDelay, beamChargeAmt, beamChargeSound, beamIsWave, beamWaveStyleOffset);
 							recoil = true;
 						}
