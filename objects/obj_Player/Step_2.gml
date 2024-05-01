@@ -2841,7 +2841,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 							}
 							var flare = instance_create_layer(shootPosX+lengthdir_x(5,shootDir),shootPosY+lengthdir_y(5,shootDir),layer_get_id("Projectiles_fg"),obj_ChargeFlare);
 							flare.damage = (damage * chargeMult * beam_state.charge_amount); // / 2;
-							flare.sprite_index = beamFlare;
+							flare.sprite_index = beam_state.charge_shoot_flare[beam_state.charge_flare_index];
 							flare.damageSubType[2] = (beam[Beam.Ice] || (noBeamsActive && itemHighlighted[0] == 1));
 							flare.damageSubType[3] = (beam[Beam.Wave] || (noBeamsActive && itemHighlighted[0] == 2));
 							flare.damageSubType[4] = (beam[Beam.Spazer] || (noBeamsActive && itemHighlighted[0] == 3));
