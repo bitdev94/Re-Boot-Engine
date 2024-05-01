@@ -76,7 +76,8 @@ function scr_DrawHUD_Alt() {
 	    draw_set_alpha(1);
     
 	    draw_sprite_ext(sprt_HWepSlot,(itemSelected == 0),floor(vX2+66),floor(vY+10),1,1,0,c_white,1);
-	    draw_sprite_ext(sprt_HBeamIcon,beamIconIndex,floor(vX2+66),floor(vY+10),1,1,0,c_white,1);
+		// TODO: Check if this is needed
+	    draw_sprite_ext(sprt_HBeamIcon, beam_state.icon_index, floor(vX2+66),floor(vY+10),1,1,0,c_white,1);
     
 	    if(itemNum > 0)
 	    {

@@ -117,3 +117,15 @@ function array_shuffle(_array) {
 	
 	return _array;
 }
+
+/// @func bitarray_value()
+/// @desc convert a array of booleans to a value with bitend notation
+function bitarray_value(_array = [], _offset = 1) {
+	var _state = 0
+	var _level = power(2, _offset)
+	for (var _index = _offset; _index < array_length(_array); ++_index) {
+		_state += _level * _array[_index]
+		_level *= 2
+	}
+	return _state
+}
