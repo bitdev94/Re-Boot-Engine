@@ -1055,6 +1055,7 @@ moveH = 0;
 moveHPrev = 1;
 
 itemSelected = 0;
+/** Item Hud */
 itemHighlighted[1] = 0;
 
 pauseSelect = false;

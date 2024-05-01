@@ -20,23 +20,27 @@ function scr_floor(val)
 	return val2 * sign(val);
 }
 
-function scr_wrap(val,vmin,vmax)
+/// @func scr_wrap(_val, _vmin, _vmax)
+/// @desc return a value between _vmin and _vmax
+/// @param {Real} _val
+/// @param {Real} _vmin
+/// @param {Real} _vmax
+/// @returns {Real}
+function scr_wrap(_val, _vmin, _vmax)
 {
-	/// @param val
-	/// @param min
-	/// @param max
-	while(val >= vmax || val < vmin)
+	// TODO: improve logic
+	while (_val >= _vmax || _val < _vmin)
 	{
-	    if(val >= vmax)
+	    if (_val >= _vmax)
 	    {
-	        val -= (vmax-vmin);
+	        _val -= (_vmax - _vmin);
 	    }
-	    else if(val < vmin)
+	    else if (_val < _vmin)
 	    {
-	        val += ((vmax-vmin));
+	        _val += ((_vmax - _vmin));
 	    }
 	}
-	return val;
+	return _val;
 }
 
 function AngleFlip(angle, dir)
