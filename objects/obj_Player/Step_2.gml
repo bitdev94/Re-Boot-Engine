@@ -2545,7 +2545,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 			sSpeed = shootSpeed,
 			delay = beamDelay,
 			amount = beamAmt,
-			sound = beamSound,
+			sound = beam_state.shoot_sound[beam_state.sound_index],
 			autoFire = 1;
 		if(itemSelected == 1 && itemHighlighted[1] <= 1)
 		{
