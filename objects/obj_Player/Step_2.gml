@@ -2525,9 +2525,9 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 	#endregion
 	
 	
-	if(!global.roomTrans)
+	if (!global.roomTrans)
 	{
-		var noBeamsActive = (beam[Beam.Ice]+beam[Beam.Wave]+beam[Beam.Spazer]+beam[Beam.Plasma] <= 0);
+		var noBeamsActive = check_if_not_active(beam);
 		
 		var canShoot = (!startClimb && !brake && !moonFallState && !isPushing && state != State.Somersault && state != State.Spark && state != State.BallSpark && 
 						state != State.Hurt && (stateFrame != State.DmgBoost || dBoostFrame >= 19) && state != State.Dodge && state != State.Death);
@@ -2547,6 +2547,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 			amount = beam_state.shot_amount,
 			sound = get_shoot_sound(beam_state.sound_index),
 			autoFire = 1;
+			
 		if(itemSelected == 1 && itemHighlighted[1] <= 1)
 		{
 			if(itemHighlighted[1] == 0 && missileStat > 0 && item[Item.Missile])
@@ -2596,12 +2597,12 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 						{
 							if(rShoot || enqueShot)
 							{
-								grapple = animate_shoot(obj_GrappleBeamShot,20,0,0,1,snd_GrappleBeam_Shoot);
+								grapple = animate_shoot(obj_GrappleBeamShot,20, 0, 0, 1, snd_GrappleBeam_Shoot);
 								recoil = true;
 							}
 							enqueShot = false;
 						}
-						else if(rShoot && shotDelayTime < delay/2)
+						else if(rShoot && shotDelayTime < delay / 2)
 						{
 							enqueShot = true;
 						}
@@ -3066,7 +3067,12 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 		{
 			justShot = 0;
 		}
-		shotDelayTime = max(shotDelayTime - 1, 0);
+		// TODO: it became 'undefined' after shoot charge beam
+		if (!is_undefined(shotDelayTime))
+			shotDelayTime = max(shotDelayTime - 1, 0)
+		else
+			shotDelayTime = 0
+			
 		justShot = max(justShot - 1, 0);
 	
 		if(!instance_exists(obj_PowerBomb) && !instance_exists(obj_PowerBombExplosion))

@@ -350,6 +350,11 @@ function get_wave_style_offset(_flags = []) {
 	return _offset
 }
 
+function check_if_not_active(_flags = []) {
+	var _not_active = array_sum(_flags)
+	return check_if_is_not_active(_not_active)
+}
+
 function check_if_is_not_active(_index = 0) {
 	static default_active_index = 2
 	return _index < default_active_index

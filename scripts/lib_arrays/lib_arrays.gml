@@ -129,3 +129,10 @@ function bitarray_value(_array = [], _offset = 1) {
 	}
 	return _state
 }
+
+function array_sum(_array = []) {
+	var _sum = 0
+	for (var _index = 0; _index < array_length(_array); ++_index)
+		_sum += _array[_index]
+	return _sum
+}

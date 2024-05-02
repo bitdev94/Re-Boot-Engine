@@ -903,7 +903,6 @@ capabilities = {
 	],
 };
 
-
 beam_state = {
 	default_charge_delay: 12,
 	shot_index: 0,
