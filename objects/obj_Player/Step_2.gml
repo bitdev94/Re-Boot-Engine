@@ -2,7 +2,7 @@
 
 var xRayActive = instance_exists(XRay);
 
-Set_Beams();
+setup_beams();
 
 var sndFlag = false;
 
@@ -2540,12 +2540,12 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 		shootPosX = x+sprtOffsetX+shotOffsetX;
 		shootPosY = y+sprtOffsetY+runYOffset+shotOffsetY;
 	
-		var shotIndex = beam_state.shot_combinations[beam_state.shot_index],
+		var shotIndex = get_shoot(beam_state.shot_index),
 			damage = beam_state.damage,
 			sSpeed = shootSpeed,
 			delay = beam_state.delay,
 			amount = beam_state.shot_amount,
-			sound = beam_state.shoot_sound[beam_state.sound_index],
+			sound = get_shoot_sound(beam_state.sound_index),
 			autoFire = 1;
 		if(itemSelected == 1 && itemHighlighted[1] <= 1)
 		{
@@ -2843,7 +2843,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 							}
 							var flare = instance_create_layer(shootPosX+lengthdir_x(5,shootDir),shootPosY+lengthdir_y(5,shootDir),layer_get_id("Projectiles_fg"),obj_ChargeFlare);
 							flare.damage = (damage * chargeMult * beam_state.charge_amount); // / 2;
-							flare.sprite_index = beam_state.charge_shoot_flare[beam_state.charge_flare_index];
+							flare.sprite_index = get_charge_shoot_flare_item(beam_state.charge_flare_index);
 							flare.damageSubType[2] = (beam[Beam.Ice] || (noBeamsActive && itemHighlighted[0] == 1));
 							flare.damageSubType[3] = (beam[Beam.Wave] || (noBeamsActive && itemHighlighted[0] == 2));
 							flare.damageSubType[4] = (beam[Beam.Spazer] || (noBeamsActive && itemHighlighted[0] == 3));
@@ -2859,8 +2859,8 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 							}
 							
 							chargeReleaseFlash = 4;
-							var _charge_shoot = beam_state.shot_combinations[beam_state.shot_index + 1];
-							var _charge_sound = beam_state.charge_shoot_sound[beam_state.charge_sound_index];
+							var _charge_shoot = get_shoot(beam_state.shot_index + 1);
+							var _charge_sound = get_charge_shoot_sound_item(beam_state.charge_sound_index);
 							var _charge_amount = beam_state.charge_amount
 							var _beam_is_wave = beam_state.is_wave
 							var _wave_style_offset = beam_state.wave_style_offset
