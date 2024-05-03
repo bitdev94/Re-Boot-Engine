@@ -2,7 +2,7 @@
 
 var xRayActive = instance_exists(XRay);
 
-setup_beams();
+reload_beam_state_with_highlight(hud_state, beam_state)
 
 var sndFlag = false;
 
@@ -2527,7 +2527,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 	
 	if (!global.roomTrans)
 	{
-		var noBeamsActive = check_if_not_active(beam_state._is_active);
+		var noBeamsActive = beam_check_if_none_is_active(beam_state);
 		
 		var canShoot = (!startClimb && !brake && !moonFallState && !isPushing && state != State.Somersault && state != State.Spark && state != State.BallSpark && 
 						state != State.Hurt && (stateFrame != State.DmgBoost || dBoostFrame >= 19) && state != State.Dodge && state != State.Death);

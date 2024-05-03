@@ -152,7 +152,7 @@ if(!global.roomTrans && !obj_PauseMenu.pause)
 				itemSelected = scr_wrap(itemSelected + 1, 0, 1);
 				audio_play_sound(snd_MenuTick,0,false);
 			}*/
-			if((itemSelected == 0 && beam_check_if_not_active(beam_state)) || (itemSelected == 1 && itemNum > 1))
+			if((itemSelected == 0 && beam_check_if_noone_active(beam_state)) || (itemSelected == 1 && itemNum > 1))
 			{
 				moveH = (cHRight && rHRight) - (cHLeft && rHLeft);
 				if(moveH != 0)

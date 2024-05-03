@@ -420,18 +420,14 @@ function get_wave_style_offset(_flags = []) {
 	return _offset
 }
 
-function check_if_not_active(_flags = []) {
-	var _not_active = array_sum(_flags)
-	return check_if_is_not_active(_not_active)
-}
-
 function check_if_is_not_active(_index = 0) {
 	static default_active_index = 2
 	return _index < default_active_index
 }
 
-function beam_check_if_not_active(_state) {
-	check_if_not_active(_state._is_enable)
+function beam_check_if_none_is_active(_beam_state) {
+	var _index = find_shoot(_beam_state._is_active)
+	return check_if_is_not_active(_index)
 }
 
 /// @func beam_enable_length
@@ -462,9 +458,33 @@ function beam_load_from_active(_beam_state) {
 	_beam_state._icon_index = get_icon_index(_beam_flags)
 	_beam_state._is_wave = check_if_is_wave(_beam_flags)
 	_beam_state._shot_amount = get_shot_amount(_beam_flags)
-	_beam_state._shot_index = _beam_index
+	_beam_state._shot_index = find_shoot(_beam_flags)
 	_beam_state._sound_index = find_shoot_sound(_beam_flags)
 	_beam_state._wave_style_offset = get_wave_style_offset(_beam_flags)
+}
+
+function beam_load_from_type(_beam_state, _beam_type) {
+	_beam_state._animation_index = _beam_type
+	_beam_state._charge_amount = get_simple_charge_amount(_beam_type)
+	_beam_state._charge_delay = get_simple_charge_delay(_beam_type)
+	_beam_state._charge_flare_index = get_simple_charge_flare_index(_beam_type)
+	_beam_state._charge_sound_index = _beam_type
+	_beam_state._damage = get_simple_damage(_beam_type)
+	_beam_state._delay = get_simple_delay(_beam_type)
+	_beam_state._icon_index = get_simple_icon_index(_beam_type)
+	_beam_state._is_wave = check_simple_if_is_wave(_beam_type)
+	_beam_state._shot_amount = get_simple_shot_amount(_beam_type)
+	_beam_state._shot_index = find_simple_shoot(_beam_type)
+	_beam_state._sound_index = _beam_type
+	_beam_state._wave_style_offset = get_simple_wave_style_offset(_beam_type)
+}
+
+function beam_load_with_check(_beam_state, _default_type) {
+	if (beam_check_if_none_is_active(beam_state)) {
+		beam_load_from_type(beam_state, _default_type)
+	} else {
+		beam_load_from_active(beam_state)
+	}
 }
 
 #endregion // Public Methods

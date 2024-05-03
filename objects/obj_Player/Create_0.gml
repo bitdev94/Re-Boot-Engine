@@ -2238,45 +2238,6 @@ function EntityLiquid_Large(_velX, _velY)
 
 #endregion
 
-#region Set Beams
-function setup_beams()
-{
-	var _beam_index = find_shoot(beam_state._is_active)
-	
-	if (check_if_is_not_active(_beam_index)) {
-		var _beam_type = hud_get_highlighted_beam(hud_state)
-		beam_state._animation_index = _beam_type
-		beam_state._charge_amount = get_simple_charge_amount(_beam_type)
-		beam_state._charge_delay = get_simple_charge_delay(_beam_type)
-		beam_state._charge_flare_index = get_simple_charge_flare_index(_beam_type)
-		beam_state._charge_sound_index = _beam_type
-		beam_state._damage = get_simple_damage(_beam_type)
-		beam_state._delay = get_simple_delay(_beam_type)
-		beam_state._icon_index = get_simple_icon_index(_beam_type)
-		beam_state._is_wave = check_simple_if_is_wave(_beam_type)
-		beam_state._shot_amount = get_simple_shot_amount(_beam_type)
-		beam_state._shot_index = find_simple_shoot(_beam_type)
-		beam_state._sound_index = _beam_type
-		beam_state._wave_style_offset = get_simple_wave_style_offset(_beam_type)
-	} else {
-		var _beam_flags = beam_state._is_active
-		beam_state._animation_index = find_charge_animation(_beam_flags)
-		beam_state._charge_amount = get_charge_amount(_beam_flags)
-		beam_state._charge_delay = get_charge_delay(_beam_flags)
-		beam_state._charge_flare_index = get_charge_flare_index(_beam_flags)
-		beam_state._charge_sound_index = find_charge_sound(_beam_flags)
-		beam_state._damage = get_damage(_beam_flags)
-		beam_state._delay = get_delay(_beam_flags)
-		beam_state._icon_index = get_icon_index(_beam_flags)
-		beam_state._is_wave = check_if_is_wave(_beam_flags)
-		beam_state._shot_amount = get_shot_amount(_beam_flags)
-		beam_state._shot_index = _beam_index
-		beam_state._sound_index = find_shoot_sound(_beam_flags)
-		beam_state._wave_style_offset = get_wave_style_offset(_beam_flags)
-	}
-}
-#endregion
-
 #region ConstantDamage
 function ConstantDamage(damage,delay)
 {
@@ -2300,7 +2261,6 @@ function ConstantDamage(damage,delay)
 	constantDamageDelay = max(constantDamageDelay - 1,0);
 }
 #endregion
-
 #region ArmPos
 function ArmPos(px, py)
 {
