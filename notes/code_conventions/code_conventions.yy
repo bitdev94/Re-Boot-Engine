@@ -1,0 +1,11 @@
+{
+  "$GMNotes":"",
+  "%Name":"code_conventions",
+  "name":"code_conventions",
+  "parent":{
+    "name":"Notes",
+    "path":"folders/Notes.yy",
+  },
+  "resourceType":"GMNotes",
+  "resourceVersion":"2.0",
+}

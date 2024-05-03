@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"lib_elements",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"lib_elements",
+  "parent":{
+    "name":"Libraries",
+    "path":"folders/Extensions/Libraries.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
