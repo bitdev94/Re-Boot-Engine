@@ -9,7 +9,7 @@ var sndFlag = false;
 if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTrans && stateFrame != State.Grapple)) && !obj_PauseMenu.pause && !pauseSelect))
 {
 	#region X-Ray
-	if((cDash || global.HUD == 1) && itemSelected == 1 && itemHighlighted[1] == 4 && dir != 0 && fVelX == 0 && fVelY == 0 && (state == State.Stand || state == State.Crouch) && grounded && (move2 == 0 || instance_exists(XRay)))
+	if ((cDash || global.HUD == 1) && itemSelected == 1 && hud_is_item_highlighted(hud_state, Item.XRay)  && dir != 0 && fVelX == 0 && fVelY == 0 && (state == State.Stand || state == State.Crouch) && grounded && (move2 == 0 || instance_exists(XRay)))
     {
         if(instance_exists(XRay))
         {
@@ -59,9 +59,9 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
             }
         }
     }
-	#endregion
+	#endregion // X-ray
 
-	var unchargeable = ((itemSelected == 1 && (itemHighlighted[1] == 0 || itemHighlighted[1] == 1 || itemHighlighted[1] == 3)) || xRayActive || hyperBeam);
+	var unchargeable = ((itemSelected == 1 && hud_have_projectile_highlighted(hud_state)) || xRayActive || hyperBeam);
 	
 	if(!global.roomTrans)
 	{
@@ -260,7 +260,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 	
 	drawMissileArm = false;
 	shootFrame = (gunReady || justShot > 0 || instance_exists(grapple) || (cShoot && (rShoot || (beam[Beam.Charge] && !unchargeable)) && (itemSelected == 1 ||
-				((itemHighlighted[1] != 0 || missileStat > 0) && (itemHighlighted[1] != 1 || superMissileStat > 0)))));
+				((hud_is_item_highlighted(hud_state, Item.Missile) || missileStat > 0) && (hud_is_item_highlighted(hud_state, Item.SMissile) || superMissileStat > 0)))));
 	sprtOffsetX = 0;
 	sprtOffsetY = 0;
 	torsoR = sprt_StandCenter;
@@ -2548,23 +2548,23 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 			sound = get_shoot_sound(beam_state.sound_index),
 			autoFire = 1;
 			
-		if(itemSelected == 1 && itemHighlighted[1] <= 1)
+		if(itemSelected == 1 && hud_have_missile_highlighted(hud_state))
 		{
-			if(itemHighlighted[1] == 0 && missileStat > 0 && item[Item.Missile])
+			if (hud_is_item_highlighted(hud_state, Item.Missile) && missileStat > 0 && item[Item.Missile])
 			{
 				shotIndex = obj_MissileShot;
 				damage = 100;
-				sSpeed = shootSpeed/2;
+				sSpeed = shootSpeed / 2;
 				delay = 9;
 				amount = 1;
 				sound = snd_Missile_Shot;
 				autoFire = 0;
 			}
-			if(itemHighlighted[1] == 1 && superMissileStat > 0 && item[Item.SMissile])
+			if (hud_is_item_highlighted(hud_state, Item.SMissile) && superMissileStat > 0 && item[Item.SMissile])
 			{
 				shotIndex = obj_SuperMissileShot;
 				damage = 300;
-				sSpeed = shootSpeed/3;
+				sSpeed = shootSpeed / 3;
 				delay = 19;
 				amount = 1;
 				sound = snd_SuperMissile_Shot;
@@ -2581,23 +2581,22 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 			autoFire = 2;
 		}
 	
-		// ----- Shoot -----
 		#region Shoot
 		if((cShoot || enqueShot || (state == State.Grapple && grapWJCounter > 0)) && dir != 0 && !xRayActive && state != State.Death)
 		{
 			if(state != State.Morph && stateFrame != State.Morph)
 			{
-				if(itemSelected == 1 && itemHighlighted[1] == 3 && item[Item.Grapple] && canShoot)
+				if (itemSelected == 1 && hud_is_item_highlighted(hud_state, Item.Grapple) && item[Item.Grapple] && canShoot)
 				{
 					delay = 14;
 					
-					if(!instance_exists(grapple))
+					if (!instance_exists(grapple))
 					{
 						if(shotDelayTime <= 0)
 						{
 							if(rShoot || enqueShot)
 							{
-								grapple = animate_shoot(obj_GrappleBeamShot,20, 0, 0, 1, snd_GrappleBeam_Shoot);
+								grapple = animate_shoot(obj_GrappleBeamShot, 20, 0, 0, 1, snd_GrappleBeam_Shoot);
 								recoil = true;
 							}
 							enqueShot = false;
@@ -2635,7 +2634,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 					instance_destroy(grapple);
 					grappleDist = 0;
 					
-					if(canShoot && (itemSelected == 0 || ((itemHighlighted[1] != 0 || missileStat > 0) && (itemHighlighted[1] != 1 || superMissileStat > 0))))
+					if (canShoot && (itemSelected == 0 || ((!hud_is_item_highlighted(hud_state, Item.Missile) || missileStat > 0) && (!hud_is_item_highlighted(hud_state, Item.SMissile) || superMissileStat > 0))))
 					{
 						if(autoFire > 0)
 						{
@@ -2647,13 +2646,13 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 						{
 							if(rShoot || enqueShot || (!beam[Beam.Charge] && autoFire > 0) || autoFire == 2)
 							{
-								if(itemSelected == 1 && itemHighlighted[1] <= 1)
+								if (itemSelected == 1 && hud_have_missile_highlighted(hud_state) )
 								{
-									if(itemHighlighted[1] == 0 && missileStat > 0 && item[Item.Missile])
+									if (hud_is_item_highlighted(hud_state, Item.Missile) && missileStat > 0 && item[Item.Missile])
 									{
 										missileStat--;
 									}
-									if(itemHighlighted[1] == 1 && superMissileStat > 0 && item[Item.SMissile])
+									if (hud_is_item_highlighted(hud_state, Item.SMissile) && superMissileStat > 0 && item[Item.SMissile])
 									{
 										superMissileStat--;
 									}
@@ -2713,7 +2712,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 			}
 			else if(bombDelayTime <= 0 && canShoot && rShoot)
 			{
-				if(itemSelected == 1 && (itemHighlighted[1] == 2 || global.HUD > 0) && powerBombStat > 0 && item[Item.PBomb])
+				if(itemSelected == 1 && (hud_is_item_highlighted(hud_state, Item.PBomb) || global.HUD > 0) && powerBombStat > 0 && item[Item.PBomb])
 				{
 					var pBomb = instance_create_layer(x,y+11,"Projectiles_fg",obj_PowerBomb);
 					pBomb.damage = 20;
@@ -2762,7 +2761,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 			}
 		
 			if(beam[Beam.Charge] && !unchargeable && !enqueShot && !isPushing && 
-			((state != State.Morph && stateFrame != State.Morph) || (statCharge >= 10 && (itemSelected == 0 || (global.HUD <= 0 && itemHighlighted[1] == 4)) && misc[Misc.Bomb])))
+			((state != State.Morph && stateFrame != State.Morph) || (statCharge >= 10 && (itemSelected == 0 || (global.HUD <= 0 && hud_is_item_highlighted(hud_state, Item.XRay) )) && misc[Misc.Bomb])))
 			{
 				statCharge = min(statCharge + 1, maxCharge);
 				if(statCharge >= 10)
@@ -2845,15 +2844,15 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 							var flare = instance_create_layer(shootPosX+lengthdir_x(5,shootDir),shootPosY+lengthdir_y(5,shootDir),layer_get_id("Projectiles_fg"),obj_ChargeFlare);
 							flare.damage = (damage * chargeMult * beam_state.charge_amount); // / 2;
 							flare.sprite_index = get_charge_shoot_flare_item(beam_state.charge_flare_index);
-							flare.damageSubType[2] = (beam[Beam.Ice] || (noBeamsActive && itemHighlighted[0] == 1));
-							flare.damageSubType[3] = (beam[Beam.Wave] || (noBeamsActive && itemHighlighted[0] == 2));
-							flare.damageSubType[4] = (beam[Beam.Spazer] || (noBeamsActive && itemHighlighted[0] == 3));
-							flare.damageSubType[5] = (beam[Beam.Plasma] || (noBeamsActive && itemHighlighted[0] == 4));
+							flare.damageSubType[2] = (beam[Beam.Ice] || (noBeamsActive && hud_is_beam_highlighted(hud_state, Beam.Ice)));
+							flare.damageSubType[3] = (beam[Beam.Wave] || (noBeamsActive && hud_is_beam_highlighted(hud_state, Beam.Wave)));
+							flare.damageSubType[4] = (beam[Beam.Spazer] || (noBeamsActive && hud_is_beam_highlighted(hud_state, Beam.Spazer)));
+							flare.damageSubType[5] = (beam[Beam.Plasma] || (noBeamsActive && hud_is_beam_highlighted(hud_state, Beam.Plasma)));
 							flare.direction = flareDir;
 							flare.image_angle = flareDir;
 							flare.image_xscale = dir;
 							flare.creator = object_index;
-							if(beam[Beam.Ice] || (noBeamsActive && itemHighlighted[0] == 1))
+							if (beam[Beam.Ice] || (noBeamsActive && hud_is_beam_highlighted(hud_state, Beam.Ice)))
 							{
 								flare.freezeType = 2;
 								flare.freezeKill = true;
@@ -2969,7 +2968,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 		{
 			bombCharge = 0;
 		}
-		#endregion
+		#endregion // Shoot
 	
 		if(isSpeedBoosting || isScrewAttacking)
 		{
@@ -2986,17 +2985,17 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 		{
 			var _beam_damage = beam_state.damage
 		    var psDmg = _beam_damage *chargeMult;
-		    if(beam[Beam.Spazer] || (noBeamsActive && itemHighlighted[0] == 3))
+		    if (beam[Beam.Spazer] || (noBeamsActive && hud_is_beam_highlighted(hud_state, Beam.Spazer)))
 		    {
 		        psDmg *= 2;
 		    }
 			var dmgST;
 			dmgST[0] = true;
 			dmgST[1] = true;
-			dmgST[2] = (beam[Beam.Ice] || (noBeamsActive && itemHighlighted[0] == 1));
-			dmgST[3] = (beam[Beam.Wave] || (noBeamsActive && itemHighlighted[0] == 2));
-			dmgST[4] = (beam[Beam.Spazer] || (noBeamsActive && itemHighlighted[0] == 3));
-			dmgST[5] = (beam[Beam.Plasma] || (noBeamsActive && itemHighlighted[0] == 4));
+			dmgST[2] = (beam[Beam.Ice] || (noBeamsActive && hud_is_beam_highlighted(hud_state, Beam.Ice)));
+			dmgST[3] = (beam[Beam.Wave] || (noBeamsActive && hud_is_beam_highlighted(hud_state, Beam.Wave)));
+			dmgST[4] = (beam[Beam.Spazer] || (noBeamsActive && hud_is_beam_highlighted(hud_state, Beam.Spazer)));
+			dmgST[5] = (beam[Beam.Plasma] || (noBeamsActive && hud_is_beam_highlighted(hud_state, Beam.Plasma)));
 		    scr_DamageNPC(x,y,psDmg,DmgType.Charge,dmgST,0,3,0);
 		}
 		if(boostBallDmgCounter > 0)
@@ -3137,6 +3136,6 @@ if(sndFlag)
 	audio_stop_sound(snd_HeatDamageLoop);
     audio_stop_sound(snd_LavaDamageLoop);
 	
-	audio_sound_loop(pushSnd,false);
+	audio_sound_loop(pushSnd, false);
 	pushSndPlayed = false;
 }

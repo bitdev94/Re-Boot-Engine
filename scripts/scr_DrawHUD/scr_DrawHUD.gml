@@ -61,7 +61,7 @@ function scr_DrawHUD() {
 					}
 				}
 				var index = 0;
-				if((itemHighlighted[1] == i && (global.HUD == 0 || stateFrame != State.Morph)) || (global.HUD == 1 && stateFrame == State.Morph && i == 2))
+				if((hud_is_item_highlighted(hud_state, i) && (global.HUD == 0 || stateFrame != State.Morph)) || (global.HUD == 1 && stateFrame == State.Morph && i == 2))
 				{
 					if(global.HUD == 1)
 					{
@@ -123,14 +123,14 @@ function scr_DrawHUD() {
 		
 		draw_set_color(c_white);
 	
-		if(selecting)
+		if (selecting)
 		{
 			draw_set_font(fnt_Menu2);
 			draw_set_halign(fa_left);
 			draw_set_valign(fa_top);
-			var strg = itemName[itemHighlighted[1]],
+			var strg = itemName[hud_state._item],
 	        tX = 123 - scr_round(string_width(strg) / 2);
-	        draw_text_transformed(vX+tX,vY+21,itemName[itemHighlighted[1]],1,1,0);
+	        draw_text_transformed(vX+tX, vY+21, strg, 1, 1, 0);
 			var xx = 69,
 				yy = 38;
 			for(var i = 0; i < array_length(item); i++)
@@ -138,7 +138,7 @@ function scr_DrawHUD() {
 				xx = 50 + 36*i;
 				if(item[i])
 				{
-					draw_sprite_ext(sprt_HItemMisc,i+5*(itemHighlighted[1] == i),vX+xx,vY+yy,1,1,0,c_white,1);
+					draw_sprite_ext(sprt_HItemMisc,i + 5*(hud_is_item_highlighted(hud_state, i)), vX+xx,vY+yy,1,1,0,c_white,1);
 				}
 			}
 		}

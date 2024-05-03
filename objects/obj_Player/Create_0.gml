@@ -531,7 +531,7 @@ fVelY = 0;
 shiftX = 0;
 shiftY = 0;
 
-#endregion
+#endregion // Physics Vars
 #region Animation
 
 stateFrame = State.Stand;
@@ -855,19 +855,9 @@ enum Misc
 // 7 Misc
 misc = array_create(Misc.SIZE);
 
-
 // 5 Beams
 beam = array_create(Beam.SIZE);
 
-enum Item
-{
-	Missile,
-	SMissile,
-	PBomb,
-	Grapple,
-	XRay,
-	SIZE
-};
 // 5 Items
 item = array_create(Item.SIZE);
 
@@ -999,7 +989,7 @@ player_hud = {
 	_item: Item.Grapple
 }
 
-itemHighlighted[1] = 0;
+hud_state = new PlayerHud()
 
 pauseSelect = false;
 
@@ -2308,7 +2298,7 @@ function setup_beams()
 	var _beam_index = find_shoot(beam)
 	
 	if (check_if_is_not_active(_beam_index)) {
-		var _beam_type = itemHighlighted[0]
+		var _beam_type = hud_get_highlighted_beam(hud_state)
 		beam_state.animation_index = _beam_type
 		beam_state.charge_amount = get_simple_charge_amount(_beam_type)
 		beam_state.charge_delay = get_simple_charge_delay(_beam_type)
@@ -3420,7 +3410,7 @@ function UpdatePlayerSurface(_palSurface)
 			}
 		}
 	
-		if(itemSelected == 1 && (itemHighlighted[1] == 0 || itemHighlighted[1] == 1 || itemHighlighted[1] == 3))
+		if(itemSelected == 1 && hud_have_projectile_highlighted(hud_state))
 		{
 			missileArmFrame = min(missileArmFrame + 1, 4);
 		}
@@ -3781,7 +3771,7 @@ function PostDrawPlayer(posX, posY, rot, alph)
 		screwFrameCounter = 0;
 	}
 	
-	if(itemSelected == 1 && itemHighlighted[1] == 3 && item[Item.Grapple] && state != State.Morph && morphFrame <= 0 && instance_exists(grapple) && state != State.Somersault)
+	if (itemSelected == 1 &&  hud_is_item_highlighted(hud_state, Item.Grapple) && item[Item.Grapple] && state != State.Morph && morphFrame <= 0 && instance_exists(grapple) && state != State.Somersault)
 	{
 	    var sPosX = xx+sprtOffsetX+armOffsetX,
 	        sPosY = yy+sprtOffsetY+runYOffset+armOffsetY;

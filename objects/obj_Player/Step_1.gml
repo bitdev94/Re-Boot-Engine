@@ -14,7 +14,7 @@ if(!global.roomTrans && !obj_PauseMenu.pause)
 {
 	if(global.HUD == 0)
 	{
-		itemHighlighted[0] = 0;
+		hud_reset_beam(hud_state)
 		moveHPrev = 1;
 		pauseSelect = false;
 		
@@ -31,49 +31,49 @@ if(!global.roomTrans && !obj_PauseMenu.pause)
 				}
 				else
 				{
-					itemHighlighted[1]++;
+					hud_highlight_next_item(hud_state)
 				}
 				
 				var numH = 5;
-				while(!itemAmmo[scr_wrap(itemHighlighted[1], 0, 5)] && numH > 0)
+				while(!itemAmmo[scr_wrap(hud_state._item, 0, 5)] && numH > 0)
 				{
-					itemHighlighted[1]++;
+					hud_highlight_next_item(hud_state)
 				}
 				
-				if(itemHighlighted[1] > 4)
+				if (hud_is_last_item(hud_state))
 				{
 					itemSelected = 0;
-					itemHighlighted[1] = 0;
+					hud_reset_item(hud_state)
 				}
 				
 				audio_play_sound(snd_MenuTick,0,false);
 			}
-			else if(itemSelected == 1)
+			else if (itemSelected == 1)
 			{
-				if(!itemAmmo[scr_wrap(itemHighlighted[1], 0, 5)])
+				if(!itemAmmo[scr_wrap(hud_state._item, Item.Missile, Item.SIZE)])
 				{
-					if(itemHighlighted[1] == Item.Missile && itemAmmo[Item.SMissile])
+					if (hud_is_item_highlighted(hud_state, Item.Missile) && itemAmmo[Item.SMissile])
 					{
-						itemHighlighted[1] = Item.SMissile;
+						hud_state._item = Item.SMissile
 					}
-					else if(itemHighlighted[1] == Item.SMissile && itemAmmo[Item.Missile])
+					else if (hud_is_item_highlighted(hud_state, Item.SMissile) && itemAmmo[Item.Missile])
 					{
-						itemHighlighted[1] = Item.Missile;
+						hud_state._item = Item.Missile
 					}
 					else
 					{
 						itemSelected = 0;
-						itemHighlighted[1] = 0;
+						hud_reset_item(hud_state)
 					}
 					audio_play_sound(snd_MenuTick,0,false);
 				}
 			}
 			
-			if(itemSelected == 1 && ((cHCancel && rHCancel) || itemHighlighted[1] > 4))
+			if (itemSelected == 1 && ((cHCancel && rHCancel) || hud_is_last_item(hud_state)))
 			{
 				itemSelected = 0;
-				itemHighlighted[1] = 0;
-				if(cHCancel)
+				hud_reset_item(hud_state)
+				if (cHCancel)
 				{
 					audio_play_sound(snd_MenuTick,0,false);
 				}
@@ -82,18 +82,18 @@ if(!global.roomTrans && !obj_PauseMenu.pause)
 		else
 		{
 			itemSelected = 0;
-			itemHighlighted[1] = 0;
+			hud_reset_item(hud_state)
 		}
 		
-		if(itemSelected == 0)
+		if (itemSelected == 0)
 		{
-			itemHighlighted[1] = 0;
+			hud_reset_item(hud_state)
 		}
 	}
 	else if(global.HUD == 1)
 	{
-		itemHighlighted[0] = 0;
-		if(cHCancel && itemNum > 0)
+		hud_reset_beam(hud_state)
+		if (cHCancel && itemNum > 0)
 		{
 			if(cHCancel && rHCancel)
 			{
@@ -114,14 +114,14 @@ if(!global.roomTrans && !obj_PauseMenu.pause)
 				global.gamePaused = true;
 					
 				moveH = (cHRight && rHRight) - (cHLeft && rHLeft);
-				if(moveH != 0)
+				if (moveH != 0)
 				{
 					//hudBOffsetX = 28*moveH;
 					//hudIOffsetX = 28*moveH;
 					moveHPrev = moveH;
 					audio_play_sound(snd_MenuTick,0,false);
 				}
-				itemHighlighted[1] += moveH;
+				hud_increment_item(hud_state, moveH)
 			}
 			else
 			{
@@ -163,15 +163,15 @@ if(!global.roomTrans && !obj_PauseMenu.pause)
 					moveHPrev = moveH;
 					audio_play_sound(snd_MenuTick,0,false);
 				}
-				itemHighlighted[itemSelected] += moveH;
+				hud_increment_selected(hud_state, moveH)
 			}
-			var itemHighlighted2 = scr_wrap(itemHighlighted[0], 1, 5);
-			if(itemSelected == 0 && itemHighlighted[0] != 0)
+			if (itemSelected == 0 && !hud_is_beam_highlighted(hud_state, Beam.Charge))
 			{
-				if(cHToggle && rHToggle && hasBeam[itemHighlighted2])
+				var _beam_highlighted = hud_find_active_beam(hud_state);
+				if(cHToggle && rHToggle && hasBeam[_beam_highlighted])
 				{
-					beam[itemHighlighted2] = !beam[itemHighlighted2];
-					audio_play_sound(snd_MenuShwsh,0,false);
+					beam[_beam_highlighted] = !beam[_beam_highlighted];
+					audio_play_sound(snd_MenuShwsh, 0, false);
 				}
 			}
 		}
@@ -184,25 +184,23 @@ if(!global.roomTrans && !obj_PauseMenu.pause)
 }
 
 var numH = 5;
-while(!hasBeam[scr_wrap(itemHighlighted[0], 1, 5)] && itemHighlighted[0] != 0 && numH > 0)
+while (!hasBeam[hud_find_active_beam(hud_state)] && hud_is_beam_highlighted(hud_state, Beam.Charge) && numH > 0)
 {
-	itemHighlighted[0] += moveHPrev;
+	hud_increment_beam(hud_state, moveHPrev)
 	hudBOffsetX += 28*moveHPrev;
 	hudIOffsetX += 28*moveHPrev;
 	numH--;
 }
 numH = 5;
-while(!item[scr_wrap(itemHighlighted[1], 0, 5)] && numH > 0)
+while(!item[hud_find_active_item(hud_state)] && numH > 0)
 {
-	itemHighlighted[1] += moveHPrev;
+	hud_increment_item(hud_state, moveHPrev)
 	hudBOffsetX += 28*moveHPrev;
 	hudIOffsetX += 28*moveHPrev;
 	numH--;
 }
-for(var i = 0; i < array_length(itemHighlighted); i++)
-{
-	itemHighlighted[i] = scr_wrap(itemHighlighted[i], 0, 5);
-}
+
+hud_rectify(hud_state)
 
 rHSelect = !cHSelect;
 rHCancel = !cHCancel;
