@@ -58,7 +58,7 @@ function get_shoot(_index = 0) {
 		/* 01010 */ obj_IceSpazerBeamShot,
 		/* 01011 */ obj_IceSpazerBeamChargeShot,
 		/* 01100 */ obj_WaveSpazerBeamShot,
-		/* 01101 */ obj_WaveSpazerPlasmaBeamChargeShot,
+		/* 01101 */ obj_WaveSpazerBeamChargeShot,
 		/* 01110 */ obj_IceWaveSpazerBeamShot,
 		/* 01111 */ obj_IceWaveSpazerBeamChargeShot,
 		/* 10000 */ obj_PlasmaBeamShot,
@@ -212,6 +212,7 @@ function find_simple_shoot(_type = -1) {
 function find_charge_animation(_flags = []) {
 	/* Ice > Plasma > Wave > Spazer > Power */
 	// TODO: Implement verification if charge is active
+	
 	var _index = Beam.Charge
 	
 	if (_flags[Beam.Spazer])
