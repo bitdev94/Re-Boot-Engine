@@ -10,7 +10,33 @@ enum Beam
 	SIZE
 };
 
+
+function PlayerBeam() constructor {
+	_shot_index = 0
+	_animation_index = 0
+	_sound_index = 0
+	_icon_index = 0
+	_shot_amount = 0
+	_damage = 0
+	_delay = 0
+	_charge_delay = 0
+	_is_wave = false
+	_wave_style_offset = 0
+	_charge_amount = 0
+	_charge_sound_index = 0
+	_charge_flare_index = 0
+	_is_active = array_create(Beam.SIZE, false)
+	_is_enable = array_create(Beam.SIZE, false)
+}
+
+
+#region Private Methods
+#endregion // Private Methods
+
+
+#region Public Methods
 #region Base
+
 function get_shoot(_index = 0) {
 	static shoot_combinations =[
 		/* +------ Plasma
@@ -204,9 +230,6 @@ function find_charge_animation(_flags = []) {
 }
 
 
-
-
-
 function get_simple_delay(_type = -1, _default = 0) {
 	return get_delay_item(_type) + _default
 }
@@ -317,6 +340,52 @@ function check_if_is_wave(_flags = []) {
 	return _flags[Beam.Wave]
 }
 
+function beam_activate(_state, _beam) {
+	_state._is_active[_beam] = true
+}
+
+function beam_enable(_state, _beam) {
+	_state._is_enable[_beam] = true
+}
+
+function beam_is_active(_state, _beam) {
+	return _state._is_active[_beam]
+}
+
+/// @func beam_is_enabled
+/// @param {Struct.PlayerBeam} _state
+/// @param {Real} _beam
+/// @return {Bool}
+function beam_is_enabled(_state, _beam) {
+	return _state._is_enable[_beam]
+}
+
+function beam_get_enable_map_tag(_state, _beam_type) {
+	return "hasBeam" + string(_beam_type)
+}
+
+function beam_get_active_map_tag(_state, _beam_type) {
+	return "beam" + string(_beam_type)
+}
+
+function beam_get_list_tag(_state, _beam_type) {
+	return "Beam_" + string(_beam_type)
+}
+
+
+function beam_activate_all(_state) {
+	for (var _index = 0; _index < array_length(_state._is_active); ++_index) {
+		beam_activate(_state, _index)
+	}
+}
+
+function beam_enable_all(_state) {
+	for (var _index = 0; _index < array_length(_state._is_active); ++_index) {
+		beam_enable(_state, _index)
+	}
+}
+
+
 function get_simple_shot_amount(_type = 0) {
 	var _amount = 1
 	if (_type == Beam.Spazer)
@@ -359,4 +428,44 @@ function check_if_is_not_active(_index = 0) {
 	static default_active_index = 2
 	return _index < default_active_index
 }
+
+function beam_check_if_not_active(_state) {
+	check_if_not_active(_state._is_enable)
+}
+
+/// @func beam_enable_length
+/// @param {Struct.PlayerBeam}
+/// @returns {Real}
+function beam_enable_length(_state) {
+	return array_length(_state._is_enable)
+}
+
+function beam_number(_state) {
+	return array_sum(_state._is_enable)
+}
+
+function beam_toggle_active(_beam_state, _beam) {
+	_beam_state._is_active[_beam] = !beam_is_active(_beam_state, _beam)
+}
+
+
+function beam_load_from_active(_beam_state) {
+	var _beam_flags = _beam_state._is_active
+	_beam_state._animation_index = find_charge_animation(_beam_flags)
+	_beam_state._charge_amount = get_charge_amount(_beam_flags)
+	_beam_state._charge_delay = get_charge_delay(_beam_flags)
+	_beam_state._charge_flare_index = get_charge_flare_index(_beam_flags)
+	_beam_state._charge_sound_index = find_charge_sound(_beam_flags)
+	_beam_state._damage = get_damage(_beam_flags)
+	_beam_state._delay = get_delay(_beam_flags)
+	_beam_state._icon_index = get_icon_index(_beam_flags)
+	_beam_state._is_wave = check_if_is_wave(_beam_flags)
+	_beam_state._shot_amount = get_shot_amount(_beam_flags)
+	_beam_state._shot_index = _beam_index
+	_beam_state._sound_index = find_shoot_sound(_beam_flags)
+	_beam_state._wave_style_offset = get_wave_style_offset(_beam_flags)
+}
+
+#endregion // Public Methods
+
 

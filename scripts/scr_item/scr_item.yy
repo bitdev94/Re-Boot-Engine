@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_item",
   "parent":{
-    "name":"Player",
-    "path":"folders/Objects/Entities/Player.yy",
+    "name":"data",
+    "path":"folders/Objects/Entities/Player/data.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

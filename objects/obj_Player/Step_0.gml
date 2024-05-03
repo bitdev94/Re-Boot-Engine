@@ -80,7 +80,7 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 		}
 		#endregion
 		#region 7
-		if(keyboard_check(ord("7")))
+		if (keyboard_check(ord("7")))
 		{
 			energyMax = 1499;//99 + (100 * energyTanks);
 			energy = energyMax;
@@ -116,11 +116,11 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 				boots[i] = true;
 				hasBoots[i] = boots[i];
 			}
-			for(var i = 0; i < array_length(beam); i++)
-			{
-				beam[i] = true;
-				hasBeam[i] = beam[i];
-			}
+
+			beam_enable_all(beam_state)
+
+			beam_activate_all(beam_state)
+
 			for(var i = 0; i < array_length(item); i++)
 			{
 				item[i] = true;
@@ -164,9 +164,9 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 						rnum2 = ilen;
 					while(rnum2 > 0)
 					{
-						if(!hasBeam[rnum])
+						if (!beam_is_enabled(beam_state, rnum))
 						{
-							beam[rnum] = true;
+							beam_activate(beam_state, rnum)
 							break;
 						}
 						else
@@ -259,9 +259,9 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 			}
 			for(var i = 0; i < array_length(beam); i++)
 			{
-				if(!hasBeam[i] && beam[i])
+				if (!beam_is_enabled(beam_state, i) && beam_is_active(beam_state, i))
 				{
-					hasBeam[i] = true;
+					beam_enable(beam_state, i)
 				}
 			}
 			for(var i = 0; i < array_length(item); i++)

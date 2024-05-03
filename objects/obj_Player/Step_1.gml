@@ -7,8 +7,7 @@ cHUp = obj_Control.up;
 cHDown = obj_Control.down;
 cHToggle = obj_Control.mSelect;
 
-var beamNum = (hasBeam[Beam.Ice]+hasBeam[Beam.Wave]+hasBeam[Beam.Spazer]+hasBeam[Beam.Plasma]),
-	itemNum = (item[Item.Missile]+item[Item.SMissile]+item[Item.PBomb]+item[Item.Grapple]+item[Item.XRay]);
+var itemNum = (item[Item.Missile]+item[Item.SMissile]+item[Item.PBomb]+item[Item.Grapple]+item[Item.XRay]);
 
 if(!global.roomTrans && !obj_PauseMenu.pause)
 {
@@ -153,7 +152,7 @@ if(!global.roomTrans && !obj_PauseMenu.pause)
 				itemSelected = scr_wrap(itemSelected + 1, 0, 1);
 				audio_play_sound(snd_MenuTick,0,false);
 			}*/
-			if((itemSelected == 0 && beamNum > 0) || (itemSelected == 1 && itemNum > 1))
+			if((itemSelected == 0 && beam_check_if_not_active(beam_state)) || (itemSelected == 1 && itemNum > 1))
 			{
 				moveH = (cHRight && rHRight) - (cHLeft && rHLeft);
 				if(moveH != 0)
@@ -168,9 +167,9 @@ if(!global.roomTrans && !obj_PauseMenu.pause)
 			if (itemSelected == 0 && !hud_is_beam_highlighted(hud_state, Beam.Charge))
 			{
 				var _beam_highlighted = hud_find_active_beam(hud_state);
-				if(cHToggle && rHToggle && hasBeam[_beam_highlighted])
+				if (cHToggle && rHToggle && beam_is_enabled(beam_state, _beam_highlighted))
 				{
-					beam[_beam_highlighted] = !beam[_beam_highlighted];
+					beam_toggle_active(beam_state, _beam_highlighted)
 					audio_play_sound(snd_MenuShwsh, 0, false);
 				}
 			}
@@ -184,7 +183,7 @@ if(!global.roomTrans && !obj_PauseMenu.pause)
 }
 
 var numH = 5;
-while (!hasBeam[hud_find_active_beam(hud_state)] && hud_is_beam_highlighted(hud_state, Beam.Charge) && numH > 0)
+while (!have_highlighted_beam_enabled(hud_state, beam_state) && hud_is_beam_highlighted(hud_state, Beam.Charge) && numH > 0)
 {
 	hud_increment_beam(hud_state, moveHPrev)
 	hudBOffsetX += 28*moveHPrev;

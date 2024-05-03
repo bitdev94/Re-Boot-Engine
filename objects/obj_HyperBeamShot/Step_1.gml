@@ -1,9 +1,8 @@
 /// @description 
 
-if(setWave)
+if (setWave)
 {
-	//isWave = creator.beam[Beam.Wave];
-	isWave = creator.beam_state.is_wave;
+	isWave = creator.beam_state._is_wave;
 	tileCollide = !isWave;
 	setWave = false;
 }

@@ -99,8 +99,6 @@ if(grappleState != GrappleState.None)
             audio_play_sound(snd_GrappleBeam_Loop,0,true);
         }
         
-        //part_particles_create(obj_Particles.partSystemA,x,y,obj_Particles.PartBeam[3],1);
-        //part_particles_create(obj_Particles.partSystemA,x,y,obj_Particles.PartBeam[2],1);
         part_particles_create(obj_Particles.partSystemA,x,y,obj_Particles.gTrail,1);
 		
 		layer = layer_get_id("Projectiles_fg");

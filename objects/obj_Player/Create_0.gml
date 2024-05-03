@@ -856,7 +856,7 @@ enum Misc
 misc = array_create(Misc.SIZE);
 
 // 5 Beams
-beam = array_create(Beam.SIZE);
+// beam = array_create(Beam.SIZE);
 
 // 5 Items
 item = array_create(Item.SIZE);
@@ -893,65 +893,11 @@ capabilities = {
 	],
 };
 
-beam_state = {
-	default_charge_delay: 12,
-	shot_index: 0,
-	animation_index: 0,
-	sound_index: 0,
-	icon_index: 0,
-	shot_amount: 0,
-	damage: 0,
-	delay: 0,
-	charge_delay: 0,
-	is_wave: false,
-	wave_style_offset: 0,
-	charge_amount: 0,
-	charge_sound_index: 0,
-	charge_flare_index: 0,
-};
+beam_state = new PlayerBeam()
 
-//hasSuit = array_create(array_length(suit));
 hasMisc = array_create(array_length(misc));
 hasBoots = array_create(array_length(boots));
-hasBeam = array_create(Beam.SIZE);
 hasItem = array_create(array_length(item));
-
-//starting items
-/*misc[Misc.PowerGrip] = true;
-hasMisc[Misc.PowerGrip] = true;
-misc[Misc.Morph] = true;
-hasMisc[Misc.Morph] = true;
-misc[Misc.Bomb] = true;
-hasMisc[Misc.Bomb] = true;
-beam[Beam.Charge] = true;
-hasBeam[Beam.Charge] = true;*/
-//boots[Boots.SpeedBoost] = true;
-
-/*for(var i = 0; i < array_length_1d(suit); i++)
-{
-	suit[i] = true;
-	hasSuit[i] = suit[i];
-}
-for(var i = 0; i < array_length_1d(misc); i++)
-{
-	misc[i] = true;
-	hasMisc[i] = misc[i];
-}
-for(var i = 0; i < array_length_1d(boots); i++)
-{
-	boots[i] = true;
-	hasBoots[i] = boots[i];
-}
-for(var i = 0; i < array_length_1d(beam); i++)
-{
-	beam[i] = true;
-	hasBeam[i] = beam[i];
-}
-for(var i = 0; i < array_length_1d(item); i++)
-{
-	item[i] = true;
-	hasItem[i] = item[i];
-}*/
 
 hyperBeam = false;
 
@@ -2295,38 +2241,38 @@ function EntityLiquid_Large(_velX, _velY)
 #region Set Beams
 function setup_beams()
 {
-	var _beam_index = find_shoot(beam)
+	var _beam_index = find_shoot(beam_state._is_active)
 	
 	if (check_if_is_not_active(_beam_index)) {
 		var _beam_type = hud_get_highlighted_beam(hud_state)
-		beam_state.animation_index = _beam_type
-		beam_state.charge_amount = get_simple_charge_amount(_beam_type)
-		beam_state.charge_delay = get_simple_charge_delay(_beam_type)
-		beam_state.charge_flare_index = get_simple_charge_flare_index(_beam_type)
-		beam_state.charge_sound_index = _beam_type
-		beam_state.damage = get_simple_damage(_beam_type)
-		beam_state.delay = get_simple_delay(_beam_type)
-		beam_state.icon_index = get_simple_icon_index(_beam_type)
-		beam_state.is_wave = check_simple_if_is_wave(_beam_type)
-		beam_state.shot_amount = get_simple_shot_amount(_beam_type)
-		beam_state.shot_index = find_simple_shoot(_beam_type)
-		beam_state.sound_index = _beam_type
-		beam_state.wave_style_offset = get_simple_wave_style_offset(_beam_type)
+		beam_state._animation_index = _beam_type
+		beam_state._charge_amount = get_simple_charge_amount(_beam_type)
+		beam_state._charge_delay = get_simple_charge_delay(_beam_type)
+		beam_state._charge_flare_index = get_simple_charge_flare_index(_beam_type)
+		beam_state._charge_sound_index = _beam_type
+		beam_state._damage = get_simple_damage(_beam_type)
+		beam_state._delay = get_simple_delay(_beam_type)
+		beam_state._icon_index = get_simple_icon_index(_beam_type)
+		beam_state._is_wave = check_simple_if_is_wave(_beam_type)
+		beam_state._shot_amount = get_simple_shot_amount(_beam_type)
+		beam_state._shot_index = find_simple_shoot(_beam_type)
+		beam_state._sound_index = _beam_type
+		beam_state._wave_style_offset = get_simple_wave_style_offset(_beam_type)
 	} else {
-		var _beam_flags = beam
-		beam_state.animation_index = find_charge_animation(_beam_flags)
-		beam_state.charge_amount = get_charge_amount(_beam_flags)
-		beam_state.charge_delay = get_charge_delay(_beam_flags)
-		beam_state.charge_flare_index = get_charge_flare_index(_beam_flags)
-		beam_state.charge_sound_index = find_charge_sound(_beam_flags)
-		beam_state.damage = get_damage(_beam_flags)
-		beam_state.delay = get_delay(_beam_flags)
-		beam_state.icon_index = get_icon_index(_beam_flags)
-		beam_state.is_wave = check_if_is_wave(_beam_flags)
-		beam_state.shot_amount = get_shot_amount(_beam_flags)
-		beam_state.shot_index = _beam_index
-		beam_state.sound_index = find_shoot_sound(_beam_flags)
-		beam_state.wave_style_offset = get_wave_style_offset(_beam_flags)
+		var _beam_flags = beam_state._is_active
+		beam_state._animation_index = find_charge_animation(_beam_flags)
+		beam_state._charge_amount = get_charge_amount(_beam_flags)
+		beam_state._charge_delay = get_charge_delay(_beam_flags)
+		beam_state._charge_flare_index = get_charge_flare_index(_beam_flags)
+		beam_state._charge_sound_index = find_charge_sound(_beam_flags)
+		beam_state._damage = get_damage(_beam_flags)
+		beam_state._delay = get_delay(_beam_flags)
+		beam_state._icon_index = get_icon_index(_beam_flags)
+		beam_state._is_wave = check_if_is_wave(_beam_flags)
+		beam_state._shot_amount = get_shot_amount(_beam_flags)
+		beam_state._shot_index = _beam_index
+		beam_state._sound_index = find_shoot_sound(_beam_flags)
+		beam_state._wave_style_offset = get_wave_style_offset(_beam_flags)
 	}
 }
 #endregion
@@ -3060,19 +3006,19 @@ function PaletteSurface()
 		#endregion
 		#region -- Beam charge, Shine Spark charge, and Accel dash flash --
 		var beamPalInd = PlayerPal2.Beam_Power;
-		if (beam_state.animation_index == Beam.Ice)
+		if (beam_state._animation_index == Beam.Ice)
 		{
 			beamPalInd = PlayerPal2.Beam_Ice;
 		}
-		else if (beam_state.animation_index == Beam.Plasma)
+		else if (beam_state._animation_index == Beam.Plasma)
 		{
 			beamPalInd = PlayerPal2.Beam_Plasma;
 		}
-		else if (beam_state.animation_index == Beam.Wave)
+		else if (beam_state._animation_index == Beam.Wave)
 		{
 			beamPalInd = PlayerPal2.Beam_Wave;
 		}
-		else if (beam_state.animation_index == Beam.Spazer)
+		else if (beam_state._animation_index == Beam.Spazer)
 		{
 			beamPalInd = PlayerPal2.Beam_Spazer;
 		}
@@ -3890,10 +3836,10 @@ function PostDrawPlayer(posX, posY, rot, alph)
 			}
 			chargeSetFrame += chargeFrame;
 	
-			var isIce = (beam_state.animation_index == Beam.Ice),
-				isWave = (beam_state.animation_index == Beam.Wave),
-				isSpazer = (beam_state.animation_index == Beam.Spazer),
-				isPlasma = (beam_state.animation_index == Beam.Plasma)
+			var isIce = (beam_state._animation_index == Beam.Ice),
+				isWave = (beam_state._animation_index == Beam.Wave),
+				isSpazer = (beam_state._animation_index == Beam.Spazer),
+				isPlasma = (beam_state._animation_index == Beam.Plasma)
 			
 			if(particleFrame >= particleFrameMax && !global.roomTrans && !global.gamePaused)
 			{
@@ -3942,7 +3888,7 @@ function PostDrawPlayer(posX, posY, rot, alph)
 			}
 			if (stateFrame != State.Morph)
 			{
-				var _beam_charge_animation = get_shoot_animation(beam_state.animation_index)
+				var _beam_charge_animation = get_shoot_animation(beam_state._animation_index)
 				draw_sprite_ext(_beam_charge_animation, chargeSetFrame, xx + sprtOffsetX+armOffsetX, yy + sprtOffsetY+runYOffset+armOffsetY, image_xscale, image_yscale, 0, c_white, alph);
 				var blend = make_color_rgb(230,120,32);
 	            if(isIce)

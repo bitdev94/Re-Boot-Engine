@@ -77,7 +77,7 @@ function scr_DrawHUD_Alt() {
     
 	    draw_sprite_ext(sprt_HWepSlot,(itemSelected == 0),floor(vX2+66),floor(vY+10),1,1,0,c_white,1);
 		// TODO: Check if this is needed
-	    draw_sprite_ext(sprt_HBeamIcon, beam_state.icon_index, floor(vX2+66),floor(vY+10),1,1,0,c_white,1);
+	    draw_sprite_ext(sprt_HBeamIcon, beam_state._icon_index, floor(vX2+66),floor(vY+10),1,1,0,c_white,1);
     
 	    if(itemNum > 0)
 	    {
@@ -110,12 +110,12 @@ function scr_DrawHUD_Alt() {
 	            for(var i = 0; i < 5; i += 1)
 	            {
 	                var j = i;
-	                if (hasBeam[j] || i == 0)
+	                if (beam_is_enabled(beam_state, j) || i == 0)
 	                {
-	                    comboNum = 10 * (beam[j] && i != 0);
+	                    comboNum = 10 * (beam_is_active(beam_state, j) && i != 0);
 	                    if (hud_is_beam_highlighted(hud_state, i))
 	                    {
-	                        draw_sprite_ext(sprt_HItemBeam, i + 5 + (5*(beam[j] && i != 0)), vX + xBPos, vY + yBPos, 1, 1, 0, c_white, 1);
+	                        draw_sprite_ext(sprt_HItemBeam, i + 5 + (5*(beam_is_active(beam_state, j) && i != 0)), vX + xBPos, vY + yBPos, 1, 1, 0, c_white, 1);
 	                    }
 						
 	                    if (hud_is_beam_highlighted(hud_state, i + 1))

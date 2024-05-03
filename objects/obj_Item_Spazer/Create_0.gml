@@ -9,9 +9,9 @@ itemDesc = "Fire 3 beams at once.";
 
 CollectItem = function()
 {
-	if(instance_exists(obj_Player))
+	if (instance_exists(obj_Player))
 	{
-		obj_Player.hasBeam[Beam.Spazer] = true;
-		obj_Player.beam[Beam.Spazer] = true;
+		beam_enable(obj_Player.beam_state, Beam.Spazer)
+		beam_activate(obj_Player.beam_state, Beam.Spazer)
 	}
 }

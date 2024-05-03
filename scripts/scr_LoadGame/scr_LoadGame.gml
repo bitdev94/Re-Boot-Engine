@@ -65,15 +65,8 @@ function scr_LoadGame()
 				{
 					hasMisc[i] = _map[? "hasMisc"+string(i)];
 				}
-	
-				for(var i = 0; i < array_length(beam); i++)
-				{
-					beam[i] = _map[? "beam"+string(i)];
-				}
-				for(var i = 0; i < array_length(hasBeam); i++)
-				{
-					hasBeam[i] = _map[? "hasBeam"+string(i)];
-				}
+
+				load_beam_from_map(_map, beam_state)
 	
 				for(var i = 0; i < array_length(item); i++)
 				{
@@ -111,10 +104,11 @@ function scr_LoadGame()
 		}
 		catch(_exception)
 		{
-			show_debug_message(_exception.message);
-			show_debug_message(_exception.longMessage);
-			show_debug_message(_exception.script);
-			show_debug_message(_exception.stacktrace);
+			show_debug_message("Error")
+			// show_debug_message(_exception);
+			// show_debug_message(_exception.longMessage);
+			// show_debug_message(_exception.script);
+			// show_debug_message(_exception.stacktrace);
 		}
 		/*finally
 		{

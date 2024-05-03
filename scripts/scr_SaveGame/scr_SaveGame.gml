@@ -73,15 +73,8 @@ function scr_SaveGame()
 		{
 			ds_map_add(_map, "hasMisc"+string(i), hasMisc[i]);
 		}
-	
-		for(var i = 0; i < array_length(beam); i++)
-		{
-			ds_map_add(_map, "beam"+string(i), beam[i]);
-		}
-		for(var i = 0; i < array_length(hasBeam); i++)
-		{
-			ds_map_add(_map, "hasBeam"+string(i), hasBeam[i]);
-		}
+
+		save_beam_to_map(_map, beam_state)
 	
 		for(var i = 0; i < array_length(item); i++)
 		{

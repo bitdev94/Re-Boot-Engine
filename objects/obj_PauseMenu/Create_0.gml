@@ -294,20 +294,19 @@ function DrawInventoryPlayer()
 		{
 			draw_sprite(sprt_Sub_Samus_Boots2,min(i,2),xx,yy+134);
 		}
-		
-		if(P.beam[Beam.Ice])
+		if (beam_is_active(P.beam_state, Beam.Ice))
 		{
-			draw_sprite(sprt_Sub_Samus_GunLights,0,xx-32,yy+57);
+			draw_sprite(sprt_Sub_Samus_GunLights, 0, xx - 32, yy + 57);
 		}
-		if(P.beam[Beam.Wave])
+		if (beam_is_active(P.beam_state, Beam.Wave))
 		{
 			draw_sprite(sprt_Sub_Samus_GunLights,1,xx-32,yy+57);
 		}
-		if(P.beam[Beam.Spazer])
+		if (beam_is_active(P.beam_state, Beam.Spazer))
 		{
 			draw_sprite(sprt_Sub_Samus_GunLights,2,xx-32,yy+57);
 		}
-		if(P.beam[Beam.Plasma])
+		if (beam_is_active(P.beam_state, Beam.Plasma))
 		{
 			draw_sprite(sprt_Sub_Samus_GunLights,3,xx-32,yy+57);
 		}
@@ -750,22 +749,22 @@ function DrawInventoryPlayer_Retro()
 		}
 		
 		var b = 0;
-		if(P.beam[Beam.Charge])
+		if (beam_is_active(P.beam_state, Beam.Charge))
 		{
 			b = 1;
-			if(P.beam[Beam.Spazer])
+			if (beam_is_active(P.beam_state, Beam.Spazer))
 			{
 				b = 4;
 			}
-			if(P.beam[Beam.Wave])
+			if (beam_is_active(P.beam_state, Beam.Wave))
 			{
 				b = 3;
 			}
-			if(P.beam[Beam.Plasma])
+			if (beam_is_active(P.beam_state, Beam.Plasma))
 			{
 				b = 5;
 			}
-			if(P.beam[Beam.Ice])
+			if (beam_is_active(P.beam_state, Beam.Ice))
 			{
 				b = 2;
 			}
@@ -935,9 +934,10 @@ function DrawInventoryPlayer_Retro()
 				}
 			}
 			
-			if(highlight_Beam)
+			if (highlight_Beam)
 			{
-				draw_sprite(sprt_Sub_Samus_GlowMask_Retro,2+P.beam[Beam.Charge]+2*P.suit[Suit.Varia],xx,yy);
+				var _sprite_index = 2 + beam_is_active(P.beam_state, Beam.Charge) + 2 * P.suit[Suit.Varia]
+				draw_sprite(sprt_Sub_Samus_GlowMask_Retro, _sprite_index, xx, yy);
 			}
 			if(highlight_Suit)
 			{

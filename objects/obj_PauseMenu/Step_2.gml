@@ -125,13 +125,9 @@ if(canPause && pause && pauseFade >= 1 && !loadGame && !gameEnd)
 					ds_list_add(invListL,"Suit_"+string(i));
 				}
 			}
-			for(var i = 0; i < array_length(P.hasBeam); i++)
-			{
-				if(P.hasBeam[i])
-				{
-					ds_list_add(invListL,"Beam_"+string(i));
-				}
-			}
+			
+			save_beam_to_list(invListL, P.beam_state)
+			
 			for(var i = 0; i < array_length(P.hasItem); i++)
 			{
 				if(P.hasItem[i])
@@ -336,13 +332,12 @@ if(canPause && pause && pauseFade >= 1 && !loadGame && !gameEnd)
 						{
 							P.suit[index] = !P.suit[index];
 						}
-						if(string_pos("Beam",ability) != 0)
+						if (string_pos("Beam", ability) != 0)
 						{
-							P.beam[index] = !P.beam[index];
+							beam_toggle_active(P.beam_state, index)
 						}
 						if(string_pos("Item",ability) != 0)
 						{
-							//toggleItem = false;
 							P.item[index] = !P.item[index];
 						}
 						//else

@@ -11,7 +11,7 @@ CollectItem = function()
 {
 	if(instance_exists(obj_Player))
 	{
-		obj_Player.hasBeam[Beam.Plasma] = true;
-		obj_Player.beam[Beam.Plasma] = true;
+		beam_enable(obj_Player.beam_state, Beam.Plasma)
+		beam_activate(obj_Player.beam_state, Beam.Plasma)
 	}
 }

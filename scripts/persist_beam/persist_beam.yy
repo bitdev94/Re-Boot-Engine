@@ -1,12 +1,12 @@
 {
   "$GMScript":"",
-  "%Name":"scr_beam",
+  "%Name":"persist_beam",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_beam",
+  "name":"persist_beam",
   "parent":{
-    "name":"data",
-    "path":"folders/Objects/Entities/Player/data.yy",
+    "name":"usecase",
+    "path":"folders/Objects/Entities/Player/usecase.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
