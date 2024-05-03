@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"scr_hud",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_hud",
+  "parent":{
+    "name":"Player",
+    "path":"folders/Objects/Entities/Player.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
