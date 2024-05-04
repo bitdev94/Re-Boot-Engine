@@ -79,15 +79,15 @@ function scr_DrawHUD_Alt() {
 		// TODO: Check if this is needed
 	    draw_sprite_ext(sprt_HBeamIcon, beam_state._icon_index, floor(vX2+66),floor(vY+10),1,1,0,c_white,1);
     
-	    if(itemNum > 0)
+	    if (itemNum > 0)
 	    {
 	        draw_sprite_ext(sprt_HWepSlot,(itemSelected == 1),floor(vX2+94),floor(vY+10),1,1,0,c_white,1);
-	        var iconIndex = hut_state.item;
+	        var _icon_index = hud_state._item;
 	        if (stateFrame == State.Morph && items_is_active(items_state, Item.Grapple))
 	        {
-	            iconIndex = 2;
+	            _icon_index = 2;
 	        }
-	        draw_sprite_ext(sprt_HItemIcon,iconIndex,floor(vX2+94),floor(vY+10),1,1,0,c_white,1);
+	        draw_sprite_ext(sprt_HItemIcon, _icon_index, floor(vX2+94), floor(vY+10), 1, 1, 0, c_white, 1);
 	    }
     
 	    if(selecting)
@@ -100,7 +100,7 @@ function scr_DrawHUD_Alt() {
 	            tY = 21;
 	        if(itemSelected == 0)
 	        {
-	            strg = beamName[hud_state.beam];
+	            strg = beamName[hud_state._beam];
 	            tX = scr_round(95 - (string_width(strg) / 2));
 	            draw_text_transformed(vX + tX, vY + tY, strg, 1, 1, 0);
             
@@ -277,7 +277,7 @@ function scr_DrawHUD_Alt() {
 	        var superMissileNum = floor(superMissileStat/10);
 	        draw_sprite_ext(sprt_HNumFont2,superMissileNum,floor(vX2+165),floor(vY+5),1,1,0,col2,1);
 	    }
-	    if(items_is_active(items_sate, Item.PBomb))
+	    if (items_is_active(items_state, Item.PBomb))
 	    {
 	        draw_sprite_ext(sprt_HAmmoIcon,4+(itemSelected == 1 && (hud_is_item_highlighted(hud_state, Item.PBomb) || stateFrame == State.Morph)),floor(vX2+184),floor(vY+4),1,1,0,c_white,1);
     
@@ -289,7 +289,7 @@ function scr_DrawHUD_Alt() {
 			
 	        draw_sprite_ext(sprt_HNumFont2,powerBombStat,floor(vX2+199),floor(vY+5),1,1,0,col2,1);
 	        var powerBombNum = floor(powerBombStat/10);
-	        draw_sprite_ext(sprt_HNumFont2,powerBombNum,floor(vX2+193),floor(vY+5),1,1,0,col2,1);
+	        draw_sprite_ext(sprt_HNumFont2,powerBombNum,floor(vX2+193),floor(vY+5),1,1,0,col2,1); 
 	    }
 	}
 
