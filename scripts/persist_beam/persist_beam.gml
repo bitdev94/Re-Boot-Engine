@@ -18,11 +18,9 @@ function load_beam_from_map(_map, _beam_state) {
 		var _beam_enable_tag = beam_get_enable_map_tag(_beam_state, _index)
 		var _beam_active_tag = beam_get_active_map_tag(_beam_state, _index)
 		
-		if (_map[? _beam_enable_tag])
-			beam_enable(_beam_state, _index)
+		beam_enable_set(_beam_state, _index, _map[? _beam_enable_tag])
 		
-		if (_map[? _beam_active_tag])
-			beam_activate(_beam_state, _index)
+		beam_active_set(_beam_state, _index, _map[? _beam_active_tag])
 	}
 }
 

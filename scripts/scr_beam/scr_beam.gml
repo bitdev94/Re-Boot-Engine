@@ -345,8 +345,31 @@ function beam_activate(_state, _beam) {
 	_state._is_active[_beam] = true
 }
 
+function beam_disactivate(_state, _beam) {
+	_state._is_active[_beam] = false
+}
+
+function beam_active_set(_beam_state, _beam, _state) {
+	if (_state)
+		beam_activate(_beam_state, _beam)
+	else
+		beam_disactivate(_beam_state, _beam)
+}
+
+
 function beam_enable(_state, _beam) {
 	_state._is_enable[_beam] = true
+}
+
+function beam_disable(_state, _beam) {
+	_state._is_enable[_beam] = false
+}
+
+function beam_enable_set(_beam_state, _beam, _state) {
+	if (_state)
+		beam_enable(_beam_state, _beam)
+	else
+		beam_disanable(_beam_state, _beam)
 }
 
 function beam_is_active(_state, _beam) {
