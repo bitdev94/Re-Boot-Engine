@@ -6,7 +6,7 @@ function scr_DrawHUD() {
 
 	var col = c_black, alpha = 0.4;
 
-	var itemNum = (item[Item.Missile]+item[Item.SMissile]+item[Item.PBomb]+item[Item.Grapple]+item[Item.XRay]);
+	var itemNum = items_active_number(items_state)
 
 	var selecting = (pauseSelect && !global.roomTrans && !obj_PauseMenu.pause);
     
@@ -22,9 +22,9 @@ function scr_DrawHUD() {
 	        draw_set_alpha(1);
 	    }
 
-	    for(var i = 0; i < array_length(item); i++)
+	    for(var i = 0; i < array_length(items_state._is_active); i++)
 	    {
-	        if(item[i])
+	        if (items_is_active(items_state, i))
 	        {
 	            draw_set_color(col);
 	            draw_set_alpha(alpha);
@@ -136,7 +136,7 @@ function scr_DrawHUD() {
 			for(var i = 0; i < array_length(item); i++)
 			{
 				xx = 50 + 36*i;
-				if(item[i])
+				if (items_is_active(items_state, i))
 				{
 					draw_sprite_ext(sprt_HItemMisc,i + 5*(hud_is_item_highlighted(hud_state, i)), vX+xx,vY+yy,1,1,0,c_white,1);
 				}

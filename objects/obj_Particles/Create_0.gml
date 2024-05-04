@@ -2,9 +2,13 @@
 
 //System
 partSystemA = part_system_create();
-part_system_layer(partSystemA,layer_get_id("Projectiles_fg"));
-part_system_automatic_update(partSystemA,false);
-partEmitA = part_emitter_create(partSystemA);
+{
+	var _layer_id = layer_get_id("Projectiles_fg")
+	show_debug_message(_layer_id)
+	part_system_layer(partSystemA, _layer_id);
+	part_system_automatic_update(partSystemA,false);
+	partEmitA = part_emitter_create(partSystemA);
+}
 
 partSystemB = part_system_create();
 part_system_layer(partSystemB,layer_get_id("WorldObjects"));

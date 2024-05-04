@@ -2550,7 +2550,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 			
 		if(itemSelected == 1 && hud_have_missile_highlighted(hud_state))
 		{
-			if (hud_is_item_highlighted(hud_state, Item.Missile) && missileStat > 0 && item[Item.Missile])
+			if (hud_is_item_highlighted(hud_state, Item.Missile) && missileStat > 0 && items_is_active(items_state, Item.Missile))
 			{
 				shotIndex = obj_MissileShot;
 				damage = 100;
@@ -2560,7 +2560,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 				sound = snd_Missile_Shot;
 				autoFire = 0;
 			}
-			if (hud_is_item_highlighted(hud_state, Item.SMissile) && superMissileStat > 0 && item[Item.SMissile])
+			if (hud_is_item_highlighted(hud_state, Item.SMissile) && superMissileStat > 0 && items_is_active(items_state, Item.SMissile))
 			{
 				shotIndex = obj_SuperMissileShot;
 				damage = 300;
@@ -2586,7 +2586,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 		{
 			if(state != State.Morph && stateFrame != State.Morph)
 			{
-				if (itemSelected == 1 && hud_is_item_highlighted(hud_state, Item.Grapple) && item[Item.Grapple] && canShoot)
+				if (itemSelected == 1 && hud_is_item_highlighted(hud_state, Item.Grapple) && items_is_active(items_state, Item.Grapple) && canShoot)
 				{
 					delay = 14;
 					
@@ -2648,11 +2648,11 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 							{
 								if (itemSelected == 1 && hud_have_missile_highlighted(hud_state) )
 								{
-									if (hud_is_item_highlighted(hud_state, Item.Missile) && missileStat > 0 && item[Item.Missile])
+									if (hud_is_item_highlighted(hud_state, Item.Missile) && missileStat > 0 && items_is_active(items_state, Item.Missile))
 									{
 										missileStat--;
 									}
-									if (hud_is_item_highlighted(hud_state, Item.SMissile) && superMissileStat > 0 && item[Item.SMissile])
+									if (hud_is_item_highlighted(hud_state, Item.SMissile) && superMissileStat > 0 && items_is_active(items_state, Item.SMissile))
 									{
 										superMissileStat--;
 									}
@@ -2712,7 +2712,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 			}
 			else if(bombDelayTime <= 0 && canShoot && rShoot)
 			{
-				if(itemSelected == 1 && (hud_is_item_highlighted(hud_state, Item.PBomb) || global.HUD > 0) && powerBombStat > 0 && item[Item.PBomb])
+				if (itemSelected == 1 && (hud_is_item_highlighted(hud_state, Item.PBomb) || global.HUD > 0) && powerBombStat > 0 && items_is_active(items_state, Item.PBomb))
 				{
 					var pBomb = instance_create_layer(x,y+11,"Projectiles_fg",obj_PowerBomb);
 					pBomb.damage = 20;

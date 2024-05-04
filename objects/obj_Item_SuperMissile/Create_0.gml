@@ -14,11 +14,11 @@ expanDesc = "+"+string(sMissileAmount)+" Super Missile Capacity";
 
 CollectItem = function()
 {
-	if(instance_exists(obj_Player))
+	if (instance_exists(obj_Player))
 	{
-		isExpansion = (obj_Player.hasItem[Item.SMissile]);
-		obj_Player.hasItem[Item.SMissile] = true;
-		obj_Player.item[Item.SMissile] = true;
+		isExpansion = (items_is_enabled(obj_Player.items_state, Item.SMissile));
+		items_enable(obj_Player.items_state, Item.SMissile)
+		items_activate(obj_Player.items_state, Item.SMissile)
 		obj_Player.superMissileMax += sMissileAmount;
 		obj_Player.superMissileStat += sMissileAmount;
 	}

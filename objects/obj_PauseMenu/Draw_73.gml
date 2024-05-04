@@ -168,7 +168,7 @@ if(room != rm_MainMenu && instance_exists(obj_Player))
 					{
 						iBoxY = 160+10*(i-suitMax-beamMax);
 						text = itemName[index];
-						enabled = P.item[index];
+						enabled = items_is_active(P.items_state, index);
 						isItem = true;
 						if(text == itemName[0])
 						{

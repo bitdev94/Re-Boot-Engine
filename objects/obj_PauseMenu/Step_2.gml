@@ -120,7 +120,7 @@ if(canPause && pause && pauseFade >= 1 && !loadGame && !gameEnd)
 		{
 			for(var i = 0; i < array_length(P.capabilities.suits); i++)
 			{
-				if(P.capabilities.suits[i].obtained)
+				if (P.capabilities.suits[i].enabled)
 				{
 					ds_list_add(invListL,"Suit_"+string(i));
 				}
@@ -128,13 +128,7 @@ if(canPause && pause && pauseFade >= 1 && !loadGame && !gameEnd)
 			
 			save_beam_to_list(invListL, P.beam_state)
 			
-			for(var i = 0; i < array_length(P.hasItem); i++)
-			{
-				if(P.hasItem[i])
-				{
-					ds_list_add(invListL,"Item_"+string(i));
-				}
-			}
+			save_items_to_list(invListL, P.items_state)
 		}
 		if(!ds_exists(invListR,ds_type_list))
 		{
@@ -338,7 +332,7 @@ if(canPause && pause && pauseFade >= 1 && !loadGame && !gameEnd)
 						}
 						if(string_pos("Item",ability) != 0)
 						{
-							P.item[index] = !P.item[index];
+							items_toggle_active(P.items_state, index)
 						}
 						//else
 						//{

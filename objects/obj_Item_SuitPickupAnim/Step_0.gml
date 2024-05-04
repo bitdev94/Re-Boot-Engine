@@ -29,7 +29,7 @@ if(instance_exists(player))
 	player.y = scr_round(player.position.Y);
 	if(animCounter == animCounterMax)
 	{
-		player.capabilities.suits[animType].obtained = true;
+		player.capabilities.suits[animType].enabled = true;
 		player.suit[animType] = true;
 	}
 }

@@ -1,12 +1,12 @@
 {
   "$GMScript":"",
-  "%Name":"scr_item",
+  "%Name":"persist_items",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_item",
+  "name":"persist_items",
   "parent":{
-    "name":"data",
-    "path":"folders/Objects/Entities/Player/data.yy",
+    "name":"usecase",
+    "path":"folders/Objects/Entities/Player/usecase.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -14,11 +14,11 @@ expanDesc = "+"+string(pBombAmount)+" Power Bomb Capacity";
 
 CollectItem = function()
 {
-	if(instance_exists(obj_Player))
+	if (instance_exists(obj_Player))
 	{
-		isExpansion = (obj_Player.hasItem[Item.PBomb]);
-		obj_Player.hasItem[Item.PBomb] = true;
-		obj_Player.item[Item.PBomb] = true;
+		isExpansion = (items_is_enabled(obj_Player.items_state, Item.PBomb));
+		items_enable(obj_Player.items_state, Item.PBomb)
+		items_activate(obj_Player.items_state, Item.PBomb)
 		obj_Player.powerBombMax += pBombAmount;
 		obj_Player.powerBombStat += pBombAmount;
 	}

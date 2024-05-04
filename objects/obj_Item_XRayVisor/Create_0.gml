@@ -9,9 +9,9 @@ itemDesc = "Select ${hudIcon_4} and hold ${dashButton} to activate." + "\n" + "R
 
 CollectItem = function()
 {
-	if(instance_exists(obj_Player))
+	if (instance_exists(obj_Player))
 	{
-		obj_Player.hasItem[Item.XRay] = true;
-		obj_Player.item[Item.XRay] = true;
+		items_enable(obj_Player.items_state, Item.XRay)
+		items_activate(obj_Player.items_state, Item.XRay)
 	}
 }

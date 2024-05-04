@@ -855,11 +855,8 @@ enum Misc
 // 7 Misc
 misc = array_create(Misc.SIZE);
 
-// 5 Beams
-// beam = array_create(Beam.SIZE);
-
 // 5 Items
-item = array_create(Item.SIZE);
+// item = array_create(Item.SIZE);
 
 
 capabilities = {
@@ -894,10 +891,10 @@ capabilities = {
 };
 
 beam_state = new PlayerBeam()
+items_state = new PlayerItems()
 
 hasMisc = array_create(array_length(misc));
 hasBoots = array_create(array_length(boots));
-hasItem = array_create(array_length(item));
 
 hyperBeam = false;
 
@@ -3677,7 +3674,7 @@ function PostDrawPlayer(posX, posY, rot, alph)
 		screwFrameCounter = 0;
 	}
 	
-	if (itemSelected == 1 &&  hud_is_item_highlighted(hud_state, Item.Grapple) && item[Item.Grapple] && state != State.Morph && morphFrame <= 0 && instance_exists(grapple) && state != State.Somersault)
+	if (itemSelected == 1 &&  hud_is_item_highlighted(hud_state, Item.Grapple) && items_is_active(items_state, Item.Grapple) && state != State.Morph && morphFrame <= 0 && instance_exists(grapple) && state != State.Somersault)
 	{
 	    var sPosX = xx+sprtOffsetX+armOffsetX,
 	        sPosY = yy+sprtOffsetY+runYOffset+armOffsetY;

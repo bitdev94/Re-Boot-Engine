@@ -18,7 +18,7 @@ function scr_DrawHUD_Alt() {
 		}
 		var vX2 = vX+eOffX;
 
-	    var itemNum = (item[Item.Missile]+item[Item.SMissile]+item[Item.PBomb]+item[Item.Grapple]+item[Item.XRay]);
+	    var itemNum = items_active_number(items_state)
     
 	    if(selecting)
 	    {
@@ -48,7 +48,7 @@ function scr_DrawHUD_Alt() {
 	        draw_roundrect_ext(vX2+xx,vY+yy,vX2+ww+xx,vY+hh+yy,8,8,false);
 	    }
     
-	    if(item[0])
+	    if (items_is_active(items_state, Item.Missile))
 	    {
 	        xx = 108;
 	        yy = 2;
@@ -56,7 +56,7 @@ function scr_DrawHUD_Alt() {
 	        hh = 10;
 	        draw_roundrect_ext(vX2+xx,vY+yy,vX2+ww+xx,vY+hh+yy,4,4,false);
 	    }
-	    if(item[1])
+	    if (items_is_active(items_state, Item.SMissile))
 	    {
 	        xx = 148;
 	        yy = 2;
@@ -64,7 +64,7 @@ function scr_DrawHUD_Alt() {
 	        hh = 10;
 	        draw_roundrect_ext(vX2+xx,vY+yy,vX2+ww+xx,vY+hh+yy,4,4,false);
 	    }
-	    if(item[2])
+	    if (items_is_active(items_state, Item.PBomb))
 	    {
 	        xx = 182;
 	        yy = 2;
@@ -83,7 +83,7 @@ function scr_DrawHUD_Alt() {
 	    {
 	        draw_sprite_ext(sprt_HWepSlot,(itemSelected == 1),floor(vX2+94),floor(vY+10),1,1,0,c_white,1);
 	        var iconIndex = hut_state.item;
-	        if (stateFrame == State.Morph && item[2])
+	        if (stateFrame == State.Morph && items_is_active(items_state, Item.Grapple))
 	        {
 	            iconIndex = 2;
 	        }
@@ -179,7 +179,7 @@ function scr_DrawHUD_Alt() {
 	                yIPos = 38;
 	            for(var i = 0; i < 5; i += 1)
 	            {
-	                if (item[i])
+	                if (items_is_active(items_state, i))
 	                {
 	                    if (hud_is_item_highlighted(hud_state, i))
 	                    {
@@ -246,7 +246,7 @@ function scr_DrawHUD_Alt() {
 	        hudIOffsetX = 0;
 	    }
     
-	    if(item[0])
+	    if (items_is_active(items_state, Item.Missile))
 	    {
 	        draw_sprite_ext(sprt_HAmmoIcon,(itemSelected == 1 && hud_is_item_highlighted(hud_state, Item.Missile) && stateFrame != State.Morph),floor(vX2+110),floor(vY+4),1,1,0,c_white,1);
 			
@@ -262,7 +262,8 @@ function scr_DrawHUD_Alt() {
 	        var missileNum2 = floor(missileStat/100);
 	        draw_sprite_ext(sprt_HNumFont2,missileNum2,floor(vX2+125),floor(vY+5),1,1,0,col2,1);
 	    }
-	    if(item[1])
+		// items[1]
+	    if (items_is_active(items_state, Item.SMissile))
 	    {
 	        draw_sprite_ext(sprt_HAmmoIcon,2+(itemSelected == 1 && hud_is_item_highlighted(hud_state, Item.SMissile) && stateFrame != State.Morph),floor(vX2+150),floor(vY+4),1,1,0,c_white,1);
     
@@ -276,7 +277,7 @@ function scr_DrawHUD_Alt() {
 	        var superMissileNum = floor(superMissileStat/10);
 	        draw_sprite_ext(sprt_HNumFont2,superMissileNum,floor(vX2+165),floor(vY+5),1,1,0,col2,1);
 	    }
-	    if(item[2])
+	    if(items_is_active(items_sate, Item.PBomb))
 	    {
 	        draw_sprite_ext(sprt_HAmmoIcon,4+(itemSelected == 1 && (hud_is_item_highlighted(hud_state, Item.PBomb) || stateFrame == State.Morph)),floor(vX2+184),floor(vY+4),1,1,0,c_white,1);
     

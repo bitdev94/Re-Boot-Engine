@@ -7,7 +7,7 @@ cHUp = obj_Control.up;
 cHDown = obj_Control.down;
 cHToggle = obj_Control.mSelect;
 
-var itemNum = (item[Item.Missile]+item[Item.SMissile]+item[Item.PBomb]+item[Item.Grapple]+item[Item.XRay]);
+var itemNum = items_active_number(items_state)
 
 if(!global.roomTrans && !obj_PauseMenu.pause)
 {
@@ -17,8 +17,10 @@ if(!global.roomTrans && !obj_PauseMenu.pause)
 		moveHPrev = 1;
 		pauseSelect = false;
 		
-		var itemAmmo = array((item[Item.Missile] && missileStat > 0),(item[Item.SMissile] && superMissileStat > 0),(item[Item.PBomb] && powerBombStat > 0),item[Item.Grapple],item[Item.XRay]);
-		var itemNum2 = (itemAmmo[Item.Missile]+itemAmmo[Item.SMissile]+itemAmmo[Item.PBomb]+itemAmmo[Item.Grapple]+itemAmmo[Item.XRay]);
+		var _mask = [missileStat > 0, superMissileStat > 0,  powerBombStat > 0,  1, 1]
+		var itemAmmo = items_active_calculate_mask(items_state, _mask)
+		
+		var itemNum2 = array_sum(itemAmmo);
 		
 		if(itemNum2 > 0)
 		{
@@ -190,8 +192,9 @@ while (!have_highlighted_beam_enabled(hud_state, beam_state) && hud_is_beam_high
 	hudIOffsetX += 28*moveHPrev;
 	numH--;
 }
+
 numH = 5;
-while(!item[hud_find_active_item(hud_state)] && numH > 0)
+while(!items_is_active(items_state, hud_find_active_item(hud_state)) && numH > 0)
 {
 	hud_increment_item(hud_state, moveHPrev)
 	hudBOffsetX += 28*moveHPrev;

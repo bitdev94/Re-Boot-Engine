@@ -45,7 +45,7 @@ function scr_LoadGame()
 				}
 				for(var i = 0; i < array_length(capabilities.suits); i++)
 				{
-					capabilities.suits[i].obtained = _map[? "hasSuit"+string(i)];
+					capabilities.suits[i].enabled = _map[? "hasSuit"+string(i)];
 				}
 	
 				for(var i = 0; i < array_length(boots); i++)
@@ -68,15 +68,7 @@ function scr_LoadGame()
 
 				load_beam_from_map(_map, beam_state)
 	
-				for(var i = 0; i < array_length(item); i++)
-				{
-					item[i] = _map[? "item"+string(i)];
-				}
-				for(var i = 0; i < array_length(hasItem); i++)
-				{
-					//ds_map_add(_map, "hasItem"+string(i), hasItem[i]);
-					hasItem[i] = _map[? "hasItem"+string(i)];
-				}
+				load_items_from_map(_map, items_state)
 			
 				instance_create_layer(x-(global.resWidth/2),y-(global.resHeight/2),"Camera",obj_Camera);
 			}

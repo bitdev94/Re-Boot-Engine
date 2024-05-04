@@ -121,11 +121,9 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 
 			beam_activate_all(beam_state)
 
-			for(var i = 0; i < array_length(item); i++)
-			{
-				item[i] = true;
-				hasItem[i] = item[i];
-			}
+			items_enable_all(items_state)
+			
+			items_activate_all(items_state)
 		}
 		#endregion
 		#region 6
@@ -141,19 +139,19 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 			{
 				missileMax += 5;
 				missileStat = missileMax;
-				item[Item.Missile] = true;
+				items_activate(items_state, Item.Missile)
 			}
 			else if(rand == 2 && superMissileMax < 50)
 			{
 				superMissileMax += 5;
 				superMissileStat = superMissileMax;
-				item[Item.SMissile] = true;
+				items_activate(items_state, Item.SMissile)
 			}
 			else if(rand == 3 && powerBombMax < 50)
 			{
 				powerBombMax += 5;
 				powerBombStat = powerBombMax;
-				item[Item.PBomb] = true;
+				items_activate(items_state, Item.PBomb)
 			}
 			else
 			{
@@ -178,17 +176,18 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 				}
 				else if(rand == 5 || rand == 1)
 				{
-					if(!hasItem[Item.Grapple] && !hasItem[Item.XRay])
+					if (!items_is_enabled(items_state, Item.Grapple) && !items_is_enabled(items_state,Item.XRay))
 					{
-						item[irandom_range(Item.Grapple,Item.XRay)] = true;
+						var _item_index = irandom_range(Item.Grapple, Item.XRay)
+						items_activate(items_state, _item_index)
 					}
-					else if(!hasItem[Item.Grapple])
+					else if (!items_is_enabled(items_state, Item.Grapple))
 					{
-						item[Item.Grapple] = true;
+						items_activate(items_state, Item.Grapple)
 					}
 					else
 					{
-						item[Item.XRay] = true;
+						items_activate(items_state, Item.XRay)
 					}
 				}
 				else if(rand == 6 || rand == 2)
@@ -236,7 +235,7 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 						rnum2 = ilen;
 					while(rnum2 > 0)
 					{
-						if(!capabilities.suits[rnum].obtained)
+						if(!capabilities.suits[rnum].enabled)
 						{
 							suit[rnum] = true;
 							break;
@@ -252,9 +251,9 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 		
 			for(var i = 0; i < array_length(suit); i++)
 			{
-				if(!capabilities.suits[i].obtained && suit[i])
+				if(!capabilities.suits[i].enabled && suit[i])
 				{
-					capabilities.suits[i].obtained = true;
+					capabilities.suits[i].enabled = true;
 				}
 			}
 			for(var i = 0; i < array_length(beam); i++)
@@ -266,9 +265,9 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 			}
 			for(var i = 0; i < array_length(item); i++)
 			{
-				if(!hasItem[i] && item[i])
+				if (!items_is_enabled(items_state, i) && items_is_active(items_state, i))
 				{
-					hasItem[i] = true;
+					items_enable(items_state, i)
 				}
 			}
 			for(var i = 0; i < array_length(misc); i++)

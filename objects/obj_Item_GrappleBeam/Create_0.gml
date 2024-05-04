@@ -9,9 +9,9 @@ itemDesc = "Select ${hudIcon_3} and press ${shootButton} to fire a Grapple Beam.
 
 CollectItem = function()
 {
-	if(instance_exists(obj_Player))
+	if (instance_exists(obj_Player))
 	{
-		obj_Player.hasItem[Item.Grapple] = true;
-		obj_Player.item[Item.Grapple] = true;
+		items_enable(obj_Player.items_state, Item.Grapple)
+		items_activate(obj_Player.items_state, Item.Grapple)
 	}
 }

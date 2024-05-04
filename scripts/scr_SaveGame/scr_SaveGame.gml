@@ -53,7 +53,7 @@ function scr_SaveGame()
 		}
 		for(var i = 0; i < array_length(capabilities.suits); i++)
 		{
-			ds_map_add(_map, "hasSuit"+string(i), capabilities.suits[i].obtained);
+			ds_map_add(_map, "hasSuit"+string(i), capabilities.suits[i].enabled);
 		}
 	
 		for(var i = 0; i < array_length(boots); i++)
@@ -76,14 +76,8 @@ function scr_SaveGame()
 
 		save_beam_to_map(_map, beam_state)
 	
-		for(var i = 0; i < array_length(item); i++)
-		{
-			ds_map_add(_map, "item"+string(i), item[i]);
-		}
-		for(var i = 0; i < array_length(hasItem); i++)
-		{
-			ds_map_add(_map, "hasItem"+string(i), hasItem[i]);
-		}
+		save_items_to_map(_map, items_state)
+
 	}
 
 	var _map_map = ds_map_create();
