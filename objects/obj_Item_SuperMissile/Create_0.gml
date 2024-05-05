@@ -16,10 +16,10 @@ CollectItem = function()
 {
 	if (instance_exists(obj_Player))
 	{
+		var _player_items = obj_Player.items_state
 		isExpansion = (items_is_enabled(obj_Player.items_state, Item.SMissile));
 		items_enable(obj_Player.items_state, Item.SMissile)
 		items_activate(obj_Player.items_state, Item.SMissile)
-		obj_Player.superMissileMax += sMissileAmount;
-		obj_Player.superMissileStat += sMissileAmount;
+		items_add_more(obj_Player.items_state, Item.SMissile, sMissileAmount)
 	}
 }

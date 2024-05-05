@@ -260,7 +260,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 	
 	drawMissileArm = false;
 	// TODO: IMPROVE THIS to not use hud_state._selected directly
-	shootFrame = (gunReady || justShot > 0 || instance_exists(grapple) || (cShoot && (rShoot || (beam_is_active(beam_state, Beam.Charge) && !unchargeable)) && (hud_state._selected == HUD.ITEMS || ((hud_is_item_highlighted(hud_state, Item.Missile) || missileStat > 0) && (hud_is_item_highlighted(hud_state, Item.SMissile) || superMissileStat > 0)))));
+	shootFrame = (gunReady || justShot > 0 || instance_exists(grapple) || (cShoot && (rShoot || (beam_is_active(beam_state, Beam.Charge) && !unchargeable)) && (hud_state._selected == HUD.ITEMS || ((hud_is_item_highlighted(hud_state, Item.Missile) || items_still_has(items_state, Item.Missile)) && (hud_is_item_highlighted(hud_state, Item.SMissile) || items_still_has(items_state, Item.SMissile))))));
 	sprtOffsetX = 0;
 	sprtOffsetY = 0;
 	torsoR = sprt_StandCenter;
@@ -2550,7 +2550,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 			
 		if (hud_have_missile_selected(hud_state))
 		{
-			if (hud_is_item_highlighted(hud_state, Item.Missile) && missileStat > 0 && items_is_active(items_state, Item.Missile))
+			if (hud_is_item_highlighted(hud_state, Item.Missile) && items_still_has(items_state, Item.Missile) && items_is_active(items_state, Item.Missile))
 			{
 				shotIndex = obj_MissileShot;
 				damage = 100;
@@ -2560,7 +2560,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 				sound = snd_Missile_Shot;
 				autoFire = 0;
 			}
-			if (hud_is_item_highlighted(hud_state, Item.SMissile) && superMissileStat > 0 && items_is_active(items_state, Item.SMissile))
+			if (hud_is_item_highlighted(hud_state, Item.SMissile) && items_still_has(items_state, Item.SMissile) && items_is_active(items_state, Item.SMissile))
 			{
 				shotIndex = obj_SuperMissileShot;
 				damage = 300;
@@ -2635,7 +2635,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 					grappleDist = 0;
 					
 					// TODO: Improve this to not use hud_state._selected directly
-					if (canShoot && (hud_state._selected == HUD.BEAMS || ((!hud_is_item_highlighted(hud_state, Item.Missile) || missileStat > 0) && (!hud_is_item_highlighted(hud_state, Item.SMissile) || superMissileStat > 0))))
+					if (canShoot && (hud_state._selected == HUD.BEAMS || ((!hud_is_item_highlighted(hud_state, Item.Missile) || items_still_has(items_state, Item.Missile)) && (!hud_is_item_highlighted(hud_state, Item.SMissile) || items_still_has(items_state, Item.SMissile)))))
 					{
 						if(autoFire > 0)
 						{
@@ -2649,13 +2649,13 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 							{
 								if (hud_have_missile_selected(hud_state))
 								{
-									if (hud_is_item_highlighted(hud_state, Item.Missile) && missileStat > 0 && items_is_active(items_state, Item.Missile))
+									if (hud_is_item_highlighted(hud_state, Item.Missile) && items_still_has(items_state, Item.Missile) && items_is_active(items_state, Item.Missile))
 									{
-										missileStat--;
+										items_add_amount(items_state, Item.Missile, -1)
 									}
-									if (hud_is_item_highlighted(hud_state, Item.SMissile) && superMissileStat > 0 && items_is_active(items_state, Item.SMissile))
+									if (hud_is_item_highlighted(hud_state, Item.SMissile) && items_still_has(items_state, Item.SMissile) && items_is_active(items_state, Item.SMissile))
 									{
-										superMissileStat--;
+										items_add_amount(items_state, Item.SMissile, -1)
 									}
 								}
 								if(!rShoot && !enqueShot && autoFire == 1)
@@ -2714,12 +2714,12 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 			else if(bombDelayTime <= 0 && canShoot && rShoot)
 			{
 				// TODO: Check if the expression with hud_state._selected is needed
-				if ((hud_is_item_selected(hud_state, Item.PBomb) || (hud_state._selected == HUD.ITEMS && global.HUD > 0)) && powerBombStat > 0 && items_is_active(items_state, Item.PBomb))
+				if ((hud_is_item_selected(hud_state, Item.PBomb) || (hud_state._selected == HUD.ITEMS && global.HUD > 0)) && items_still_has(items_state, Item.PBomb) && items_is_active(items_state, Item.PBomb))
 				{
 					var pBomb = instance_create_layer(x,y+11,"Projectiles_fg",obj_PowerBomb);
 					pBomb.damage = 20;
 					bombDelayTime = 30;
-					powerBombStat--;
+					items_add_amount(items_state, Item.PBomb, -1)
 					cFlashStartCounter++;
 					//audio_play_sound(snd_PowerBombSet,0,false);
 				}

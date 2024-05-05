@@ -17,8 +17,7 @@ if(!global.roomTrans && !obj_PauseMenu.pause)
 		moveHPrev = 1;
 		pauseSelect = false;
 		
-		var _mask = [missileStat > 0, superMissileStat > 0,  powerBombStat > 0,  1, 1]
-		var itemAmmo = items_active_calculate_mask(items_state, _mask)
+		var itemAmmo = items_active_and_still_has(items_state)
 		
 		var itemNum2 = array_sum(itemAmmo);
 		

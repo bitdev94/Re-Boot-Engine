@@ -60,23 +60,23 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 		#region debug keys
 		
 		#region 0, 9, 8
-		if(keyboard_check(ord("0")))
+		if (keyboard_check(ord("0")))
 		{
 		    energy = energyMax;
-		    missileStat = missileMax;
-		    superMissileStat = superMissileMax;
-		    powerBombStat = powerBombMax;
+			items_set_item_to_max(items_state, Item.Missile)
+			items_set_item_to_max(items_state, Item.SMissile)
+			items_set_item_to_max(items_state, Item.PBomb)
 		}
 		if(keyboard_check(ord("9")))
 		{
 		    dir = 0;
 		}
-		if(keyboard_check(ord("8")))
+		if (keyboard_check(ord("8")))
 		{
 		    energy = 1;
-			//missileStat = 1;
-			//superMissileStat = 1;
-			//powerBombStat = 1;
+			items_amount_set(items_state, Item.Missile, 1)
+			items_amount_set(items_state, Item.SMissile, 1)
+			items_amount_set(items_state, Item.PBomb, 1)
 		}
 		#endregion
 		#region 7
@@ -85,14 +85,14 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 			energyMax = 1499;//99 + (100 * energyTanks);
 			energy = energyMax;
 
-			missileMax = 250;//5 * missileTanks;
-			missileStat = missileMax;
+			items_set_max_to_limit(items_state, Item.Missile)
+			items_set_item_to_max(items_state, Item.Missile)
+			
+			items_set_max_to_limit(items_state, Item.SMissile)
+			items_set_item_to_max(items_state, Item.SMissile)
 
-			superMissileMax = 50;//2 * superMissileTanks;
-			superMissileStat = superMissileMax;
-
-			powerBombMax = 50;//2 * powerBombTanks;
-			powerBombStat = powerBombMax;
+			items_set_max_to_limit(items_state, Item.PBomb)
+			items_set_item_to_max(items_state, Item.PBomb)
 		
 		/*
 			for(var i = 0; i < array_length(suit); i++)
@@ -127,7 +127,7 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 		}
 		#endregion
 		#region 6
-		if(keyboard_check_pressed(ord("6")))
+		if (keyboard_check_pressed(ord("6")))
 		{
 			var rand = irandom(9);
 			if(rand == 0 && energyMax < 1499)
@@ -135,22 +135,22 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 				energyMax += 100;
 				energy = energyMax;
 			}
-			else if(rand == 1 && missileMax < 250)
+			else if(rand == 1 && !items_is_at_limit(items_state, Item.Missile))
 			{
-				missileMax += 5;
-				missileStat = missileMax;
+				items_add_max_amount(items_state, Item.Missile, 5)
+				items_set_item_to_max(items_state, Item.Missile)
 				items_activate(items_state, Item.Missile)
 			}
-			else if(rand == 2 && superMissileMax < 50)
+			else if(rand == 2 && !items_is_at_limit(items_state, Item.SMissile))
 			{
-				superMissileMax += 5;
-				superMissileStat = superMissileMax;
+				items_add_max_amount(items_state, Item.SMissile, 5)
+				items_set_item_to_max(items_state, Item.SMissile)
 				items_activate(items_state, Item.SMissile)
 			}
-			else if(rand == 3 && powerBombMax < 50)
+			else if(rand == 3 && !items_is_at_limit(items_state, Item.PBomb))
 			{
-				powerBombMax += 5;
-				powerBombStat = powerBombMax;
+				items_add_max_amount(items_state, Item.PBomb, 5)
+				items_set_item_to_max(items_state, Item.PBomb)
 				items_activate(items_state, Item.PBomb)
 			}
 			else
@@ -2394,14 +2394,14 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 			morphSpinJump = false;
 		}
 		
-		var ammo = missileStat+superMissileStat+powerBombStat;
+		var ammo = items_get_ammo_amount(items_state)
 		if((CanChangeState(mask_Crouch) || crystalClip) && energy < lowEnergyThresh && ammo > 0 && cFlashStartCounter > 0 && cShoot && cDown)
 		{
 			cFlashStartCounter++;
 			
-			if(cFlashStartCounter > 70+60)
+			if (cFlashStartCounter > 70+60)
 			{
-				ChangeState(State.CrystalFlash,State.CrystalFlash,mask_Crouch,true);
+				ChangeState(State.CrystalFlash, State.CrystalFlash, mask_Crouch, true);
 			}
 		}
 		else
@@ -3849,7 +3849,7 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 			}
 		}
 		
-		var ammo = missileStat+superMissileStat+powerBombStat;
+		var ammo = items_get_ammo_amount(items_state)
 		if(ammo > 0 && energy < energyMax && cFlashDuration < cFlashDurationMax)
 		{
 			var energyPerAmmo = 50;
@@ -3859,9 +3859,9 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 			{
 				energy = min(energy+scr_round(energyPerAmmo/cFlashStep), eMax);
 			}
-			if(energy >= eMax)
+			if (energy >= eMax)
 			{
-				while(ammo > 0 && ((cFlashAmmoUse == 0 && missileStat <= 0) || (cFlashAmmoUse == 1 && superMissileStat <= 0) || (cFlashAmmoUse == 2 && powerBombStat <= 0)))
+				while (ammo > 0 && ((cFlashAmmoUse == 0 && !items_still_has(items_state, Item.Missile)) || (cFlashAmmoUse == 1 && !items_still_has(items_state, Item.SMissile)) || (cFlashAmmoUse == 2 && !items_still_has(items_state, Item.PBomb))))
 				{
 					cFlashAmmoUse = scr_wrap(cFlashAmmoUse+1,0,3);
 				}
@@ -3869,17 +3869,18 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 				{
 					case 0:
 					{
-						missileStat -= 1;
+						
+						items_add_amount(items_state, Item.Missile, -1)
 						break;
 					}
 					case 1:
 					{
-						superMissileStat -= 1;
+						items_add_amount(items_state, Item.SMissile, -1)
 						break;
 					}
 					case 2:
 					{
-						powerBombStat -= 1;
+						items_add_amount(items_state, Item.PBomb, -1)
 						break;
 					}
 				}

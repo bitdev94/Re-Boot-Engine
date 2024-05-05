@@ -7,9 +7,9 @@ bombGive = 1;
 
 function OnPlayerPickup()
 {
-	if(instance_exists(obj_Player))
+	if (instance_exists(obj_Player))
 	{
-		obj_Player.powerBombStat = min(obj_Player.powerBombStat+bombGive,obj_Player.powerBombMax);
+		 items_add_amount(obj_Player.items_state, Item.PBomb, bombGive)
 	}
 	audio_stop_sound(snd_Pickup_MissileDrop);
 	audio_play_sound(snd_Pickup_MissileDrop,0,false);

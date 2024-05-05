@@ -19,7 +19,6 @@ CollectItem = function()
 		isExpansion = (items_is_enabled(obj_Player.items_state, Item.Missile));
 		items_enable(obj_Player.items_state, Item.Missile)
 		items_activate(obj_Player.items_state, Item.Missile)
-		obj_Player.missileMax += missileAmount;
-		obj_Player.missileStat += missileAmount;
+		items_add_more(obj_Player.items_state, Item.Missile, missileAmount)
 	}
 }

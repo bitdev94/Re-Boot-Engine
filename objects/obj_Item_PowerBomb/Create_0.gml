@@ -19,7 +19,6 @@ CollectItem = function()
 		isExpansion = (items_is_enabled(obj_Player.items_state, Item.PBomb));
 		items_enable(obj_Player.items_state, Item.PBomb)
 		items_activate(obj_Player.items_state, Item.PBomb)
-		obj_Player.powerBombMax += pBombAmount;
-		obj_Player.powerBombStat += pBombAmount;
+		items_add_more(obj_Player.items_state, Item.PBomb, pBombAmount)
 	}
 }

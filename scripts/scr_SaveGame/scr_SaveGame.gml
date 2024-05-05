@@ -40,12 +40,6 @@ function scr_SaveGame()
 	
 		ds_map_add(_map, "energyMax", energyMax);
 		ds_map_add(_map, "energy", energy);
-		ds_map_add(_map, "missileMax", missileMax);
-		ds_map_add(_map, "missileStat", missileStat);
-		ds_map_add(_map, "superMissileMax", superMissileMax);
-		ds_map_add(_map, "superMissileStat", superMissileStat);
-		ds_map_add(_map, "powerBombMax", powerBombMax);
-		ds_map_add(_map, "powerBombStat", powerBombStat);
 
 		for(var i = 0; i < array_length(suit); i++)
 		{

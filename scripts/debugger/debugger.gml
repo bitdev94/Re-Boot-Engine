@@ -9,8 +9,8 @@ function Debugger() constructor {
 	_tag = "DEFAULT"
 }
 
-function log_info(_debugger, _message ) {
+function log_info(_debugger, _message) {
 	if (_debugger._debug_is_enable) {
-		show_debug_message("{0} INFO: {1} ", _debugger._tag, _message)
+		show_debug_message("{0} INFO: {1}", _debugger._tag, _message)
 	}
 }

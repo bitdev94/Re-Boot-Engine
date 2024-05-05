@@ -32,12 +32,6 @@ function scr_LoadGame()
 			
 				energyMax = _map[? "energyMax"];
 				energy = _map[? "energy"];
-				missileMax = _map[? "missileMax"];
-				missileStat = _map[? "missileStat"];
-				superMissileMax = _map[? "superMissileMax"];
-				superMissileStat = _map[? "superMissileStat"];
-				powerBombMax = _map[? "powerBombMax"];
-				powerBombStat = _map[? "powerBombStat"];
 
 				for(var i = 0; i < array_length(suit); i++)
 				{

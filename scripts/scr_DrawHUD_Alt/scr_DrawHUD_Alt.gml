@@ -251,29 +251,30 @@ function scr_DrawHUD_Alt() {
 	        draw_sprite_ext(sprt_HAmmoIcon, (hud_is_item_selected(hud_state, Item.Missile) && stateFrame != State.Morph),floor(vX2+110),floor(vY+4),1,1,0,c_white,1);
 			
 			var col2 = c_white;
-			if(missileStat >= missileMax)
+			if (items_is_maximazed(items_state, Item.Missile))
 			{
 				col2 = c_lime;
 			}
     
-	        draw_sprite_ext(sprt_HNumFont2,missileStat,floor(vX2+137),floor(vY+5),1,1,0,col2,1);
-	        var missileNum = floor(missileStat/10);
-	        draw_sprite_ext(sprt_HNumFont2,missileNum,floor(vX2+131),floor(vY+5),1,1,0,col2,1);
-	        var missileNum2 = floor(missileStat/100);
-	        draw_sprite_ext(sprt_HNumFont2,missileNum2,floor(vX2+125),floor(vY+5),1,1,0,col2,1);
+			// TODO: Remove the directly access of items_state._amount
+	        draw_sprite_ext(sprt_HNumFont2, items_state._amount[Item.Missile], floor(vX2 + 137), floor(vY + 5), 1, 1, 0, col2, 1);
+	        var missileNum = floor(items_state._amount[Item.Missile]/10);
+	        draw_sprite_ext(sprt_HNumFont2, missileNum, floor(vX2+131), floor(vY+5), 1, 1, 0, col2, 1);
+	        var missileNum2 = floor(items_state._amount[Item.Missile]/100);
+	        draw_sprite_ext(sprt_HNumFont2, missileNum2, floor(vX2+125), floor(vY+5), 1, 1, 0, col2, 1);
 	    }
 	    if (items_is_active(items_state, Item.SMissile))
 	    {
 	        draw_sprite_ext(sprt_HAmmoIcon,2+(hud_is_item_selected(hud_state, Item.SMissile) && stateFrame != State.Morph),floor(vX2+150),floor(vY+4),1,1,0,c_white,1);
     
 	        var col2 = c_white;
-			if(superMissileStat >= superMissileMax)
+			if (items_is_maximazed(items_state, Item.SMissile))
 			{
 				col2 = c_lime;
 			}
 			
-			draw_sprite_ext(sprt_HNumFont2,superMissileStat,floor(vX2+171),floor(vY+5),1,1,0,col2,1);
-	        var superMissileNum = floor(superMissileStat/10);
+			draw_sprite_ext(sprt_HNumFont2, items_state._amount[Item.SMissile],floor(vX2+171),floor(vY+5),1,1,0,col2,1);
+	        var superMissileNum = floor(items_state._amount[Item.SMissile]/10);
 	        draw_sprite_ext(sprt_HNumFont2,superMissileNum,floor(vX2+165),floor(vY+5),1,1,0,col2,1);
 	    }
 	    if (items_is_active(items_state, Item.PBomb))
@@ -281,13 +282,12 @@ function scr_DrawHUD_Alt() {
 	        draw_sprite_ext(sprt_HAmmoIcon,4+((hud_is_item_selected(hud_state, Item.PBomb) || stateFrame == State.Morph)),floor(vX2+184),floor(vY+4),1,1,0,c_white,1);
     
 			var col2 = c_white;
-			if(powerBombStat >= powerBombMax)
+			if (items_is_maximazed(items_state, Item.PBomb))
 			{
 				col2 = c_lime;
 			}
-			
-	        draw_sprite_ext(sprt_HNumFont2,powerBombStat,floor(vX2+199),floor(vY+5),1,1,0,col2,1);
-	        var powerBombNum = floor(powerBombStat/10);
+	        draw_sprite_ext(sprt_HNumFont2, items_state._amount[Item.PBomb], floor(vX2+199), floor(vY+5), 1, 1, 0, col2, 1);
+	        var powerBombNum = floor(items_state._amount[Item.PBomb] / 10);
 	        draw_sprite_ext(sprt_HNumFont2,powerBombNum,floor(vX2+193),floor(vY+5),1,1,0,col2,1); 
 	    }
 	}

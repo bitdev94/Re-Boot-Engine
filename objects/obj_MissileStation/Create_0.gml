@@ -6,17 +6,14 @@ stationMessage = "AMMO REPLENISHED";
 Condition = function()
 {
 	var p = obj_Player;
-	return (p.missileStat < p.missileMax || 
-			p.superMissileStat < p.superMissileMax || 
-			p.powerBombStat < p.powerBombMax);
+	return (!items_is_maximazed(p.items_state, Item.Missile) || 
+			!items_is_maximazed(p.items_state, Item.SMissile) || 
+			!items_is_maximazed(p.items_state, Item.PBomb));
 }
 Interact = function()
 {
 	var p = obj_Player;
-	//p.missileStat = p.missileMax;
-	//p.superMissileStat = p.superMissileMax;
-	//p.powerBombStat = p.powerBombMax;
-	p.missileStat = clamp(lerp(p.missileStat,p.missileMax,0.25),p.missileStat+1,p.missileMax);
-	p.superMissileStat = clamp(lerp(p.superMissileStat,p.superMissileMax,0.25),p.superMissileStat+1,p.superMissileMax);
-	p.powerBombStat = clamp(lerp(p.powerBombStat,p.powerBombMax,0.25),p.powerBombStat+1,p.powerBombMax);
+	items_amount_iterate_with_max_value(p.items_state, Item.Missile, 0.25, 1)
+	items_amount_iterate_with_max_value(p.items_state, Item.SMissile, 0.25, 1)
+	items_amount_iterate_with_max_value(p.items_state, Item.PBomb, 0.25, 1)
 }

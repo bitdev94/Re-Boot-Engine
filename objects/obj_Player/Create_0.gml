@@ -810,15 +810,6 @@ lowEnergyThresh = 30;
 
 damageReduct = 1;
 
-missileMax = 0;//250;//5 * missileTanks;
-missileStat = missileMax;
-
-superMissileMax = 0;//50;//2 * superMissileTanks;
-superMissileStat = superMissileMax;
-
-powerBombMax = 0;//50;//2 * powerBombTanks;
-powerBombStat = powerBombMax;
-
 
 enum Suit
 {

@@ -136,3 +136,11 @@ function array_sum(_array = []) {
 		_sum += _array[_index]
 	return _sum
 }
+
+function array_is_value_inside(_array = [], _value) {
+	var _ret = false
+	for (var _index = 0; !_ret && _index < array_length(_array); ++_index)
+		if (_array[_index] == _value)
+			_ret = true
+	return _ret
+}

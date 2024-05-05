@@ -170,18 +170,9 @@ if(room != rm_MainMenu && instance_exists(obj_Player))
 						text = itemName[index];
 						enabled = items_is_active(P.items_state, index);
 						isItem = true;
-						if(text == itemName[0])
-						{
-							text = string(P.missileStat)+"/"+string(P.missileMax);
-						}
-						if(text == itemName[1])
-						{
-							text = string(P.superMissileStat)+"/"+string(P.superMissileMax);
-						}
-						if(text == itemName[2])
-						{
-							text = string(P.powerBombStat)+"/"+string(P.powerBombMax);
-						}
+						
+						if (array_is_value_inside(items_get_countables(P.items_state), index))
+							text = items_get_display_amount(P.items_state, index)
 					}
 					
 					draw_sprite_ext(sprt_Sub_ItemBox,!enabled,iBoxX,iBoxY,1,1,0,c_white,1);
