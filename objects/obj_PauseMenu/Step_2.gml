@@ -117,14 +117,8 @@ if(canPause && pause && pauseFade >= 1 && !loadGame && !gameEnd)
 			invListL = ds_list_create();
 		}
 		else if(ds_list_empty(invListL))
-		{
-			for(var i = 0; i < array_length(P.capabilities.suits); i++)
-			{
-				if (P.capabilities.suits[i].enabled)
-				{
-					ds_list_add(invListL,"Suit_"+string(i));
-				}
-			}
+		{			
+			save_suits_to_list(invListL, P.suits_state)
 			
 			save_beam_to_list(invListL, P.beam_state)
 			
@@ -322,9 +316,9 @@ if(canPause && pause && pauseFade >= 1 && !loadGame && !gameEnd)
 					}
 					if(toggleItem)
 					{
-						if(string_pos("Suit",ability) != 0)
+						if (string_pos("Suit", ability) != 0)
 						{
-							P.suit[index] = !P.suit[index];
+							suits_toggle_active(P.suits_state, index)
 						}
 						if (string_pos("Beam", ability) != 0)
 						{

@@ -13,5 +13,6 @@ CollectItem = function()
 	{
 		items_enable(obj_Player.items_state, Item.XRay)
 		items_activate(obj_Player.items_state, Item.XRay)
+		items_add_more(obj_Player.items_state, Item.Grapple, 1)
 	}
 }

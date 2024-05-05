@@ -49,5 +49,3 @@ function load_items_from_map(_map, _items_state) {
 	items_amount_set(_items_state, Item.PBomb, _map[? items_get_amount_map_tag(_items_state, Item.PBomb)])
 	items_max_amount_set(_items_state, Item.PBomb, _map[? items_get_max_amount_map_tag(_items_state, Item.PBomb)])
 }
-
-

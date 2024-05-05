@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"persist_suits",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"persist_suits",
+  "parent":{
+    "name":"usecase",
+    "path":"folders/Objects/Entities/Player/usecase.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

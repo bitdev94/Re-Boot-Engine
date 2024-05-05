@@ -156,7 +156,7 @@ if(room != rm_MainMenu && instance_exists(obj_Player))
 					if(i < suitMax)
 					{
 						text = suitName[index];
-						enabled = P.suit[index];
+						enabled = suits_is_active(P.suits_state, index)
 					}
 					else if(i-suitMax < beamMax)
 					{

@@ -276,10 +276,10 @@ function DrawInventoryPlayer()
 		surface_set_target(playerInvSurf);
 		draw_clear_alpha(c_black,0);
 		
-		var i = P.suit[Suit.Varia];
-		if(P.suit[Suit.Gravity])
+		var i = suits_is_active(P.suits_state, Suit.Varia)
+		if (suits_is_active(P.suits_state, Suit.Gravity))
 		{
-			i = 2+P.suit[Suit.Varia];
+			i = 2 + suits_is_active(P.suits_state, Suit.Varia);
 		}
 		draw_sprite(sprt_Sub_Samus,i,xx,yy);
 		if(P.misc[Misc.PowerGrip])
@@ -471,23 +471,23 @@ function DrawInventoryPlayer()
 				}
 			}
 			
-			if(highlight_Suit)
+			if (highlight_Suit)
 			{
-				draw_sprite(sprt_Sub_Samus_GlowMask,P.suit[Suit.Varia],xx,yy);
+				draw_sprite(sprt_Sub_Samus_GlowMask, suits_is_active(P.suits_state, Suit.Varia), xx, yy);
 			}
-			if(highlight_Beam)
+			if (highlight_Beam)
 			{
 				draw_sprite(sprt_Sub_Samus_GlowMask,2,xx,yy);
 			}
-			if(highlight_Grip)
+			if (highlight_Grip)
 			{
 				draw_sprite(sprt_Sub_Samus_GlowMask,3+P.misc[Misc.PowerGrip],xx,yy);
 			}
-			if(highlight_Torso)
+			if (highlight_Torso)
 			{
 				draw_sprite(sprt_Sub_Samus_GlowMask,5,xx,yy);
 			}
-			if(highlight_Boots1)
+			if (highlight_Boots1)
 			{
 				draw_sprite(sprt_Sub_Samus_GlowMask,6+P.boots[Boots.SpaceJump],xx,yy);
 			}
@@ -742,10 +742,10 @@ function DrawInventoryPlayer_Retro()
 		surface_set_target(playerInvSurf);
 		draw_clear_alpha(c_black,0);
 		
-		var i = P.suit[Suit.Varia];
-		if(P.suit[Suit.Gravity])
+		var i = suits_is_active(P.suits_state, Suit.Varia)
+		if (suits_is_active(P.suits_state, Suit.Gravity))
 		{
-			i = 2+P.suit[Suit.Varia];
+			i = 2 + suits_is_active(P.suits_state, Suit.Varia);
 		}
 		
 		var b = 0;
@@ -936,24 +936,24 @@ function DrawInventoryPlayer_Retro()
 			
 			if (highlight_Beam)
 			{
-				var _sprite_index = 2 + beam_is_active(P.beam_state, Beam.Charge) + 2 * P.suit[Suit.Varia]
+				var _sprite_index = 2 + beam_is_active(P.beam_state, Beam.Charge) + 2 * suits_is_active(P.suits_state, Suit.Varia)
 				draw_sprite(sprt_Sub_Samus_GlowMask_Retro, _sprite_index, xx, yy);
 			}
-			if(highlight_Suit)
+			if (highlight_Suit)
 			{
-				draw_sprite(sprt_Sub_Samus_GlowMask_Retro,P.suit[Suit.Varia],xx,yy);
+				draw_sprite(sprt_Sub_Samus_GlowMask_Retro, suits_is_active(P.suits_state, Suit.Varia), xx, yy);
 			}
-			if(highlight_Grip)
+			if (highlight_Grip)
 			{
-				draw_sprite(sprt_Sub_Samus_GlowMask_Retro,6+P.suit[Suit.Varia],xx,yy);
+				draw_sprite(sprt_Sub_Samus_GlowMask_Retro, 6 + suits_is_active(P.suits_state, Suit.Varia), xx, yy);
 				if(P.misc[Misc.PowerGrip])
 				{
 					draw_sprite(sprt_Sub_Samus_GlowMask_Retro,8,xx,yy);
 				}
 			}
-			if(highlight_Torso)
+			if (highlight_Torso)
 			{
-				draw_sprite(sprt_Sub_Samus_GlowMask_Retro,9+P.suit[Suit.Varia],xx,yy);
+				draw_sprite(sprt_Sub_Samus_GlowMask_Retro, 9 + suits_is_active(P.suits_state, Suit.Varia), xx, yy);
 			}
 			if(highlight_Boots1)
 			{

@@ -41,14 +41,7 @@ function scr_SaveGame()
 		ds_map_add(_map, "energyMax", energyMax);
 		ds_map_add(_map, "energy", energy);
 
-		for(var i = 0; i < array_length(suit); i++)
-		{
-			ds_map_add(_map, "suit"+string(i), suit[i]);
-		}
-		for(var i = 0; i < array_length(capabilities.suits); i++)
-		{
-			ds_map_add(_map, "hasSuit"+string(i), capabilities.suits[i].enabled);
-		}
+		save_suits_to_map(_map, suits_state)
 	
 		for(var i = 0; i < array_length(boots); i++)
 		{

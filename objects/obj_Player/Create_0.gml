@@ -810,25 +810,9 @@ lowEnergyThresh = 30;
 
 damageReduct = 1;
 
+suits_state = new PlayerSuits()
 
-enum Suit
-{
-	Varia,
-	Gravity,
-	SIZE
-};
-// 2 Suits
-suit = array_create(Suit.SIZE);
 
-enum Boots
-{
-	HiJump,
-	SpaceJump,
-	Dodge,
-	SpeedBoost,
-	ChainSpark,
-	SIZE
-};
 // 5 Boots
 boots = array_create(Boots.SIZE);
 
@@ -2188,8 +2172,8 @@ function EntityLiquid_Large(_velX, _velY)
 			    }
 			}
 		}
-
-		if(state == State.Somersault && misc[Misc.ScrewAttack] && suit[Suit.Gravity])
+		
+		if (state == State.Somersault && misc[Misc.ScrewAttack] && suits_is_active(P.suits_state, Suit.Gravity))
 		{
 			repeat(3)
 			{
@@ -2811,11 +2795,11 @@ function PaletteSurface()
 		
 		var palSprite = pal_PowerSuit,
 			palSprite2 = pal_MiscSuit;
-		if(suit[Suit.Varia])
+		if (suits_is_active(suits_state, Suit.Varia))
 		{
 			palSprite = pal_VariaSuit;
 		}
-		if(suit[Suit.Gravity])
+		if (suits_is_active(suits_state, Suit.Gravity))
 		{
 			palSprite = pal_GravitySuit;
 		}
@@ -3457,11 +3441,11 @@ function PostDrawPlayer(posX, posY, rot, alph)
 		//	glowSpeed = -0.45;
 		//}
 		var palSet = pal_BallGlow;
-		if(suit[0])
+		if (suits_is_active(suits_state, Suit.Varia ))
 		{
 			palSet = pal_BallGlow_Varia;
 		}
-		if(suit[1])
+		if (suits_is_active(suits_state, Suit.Gravity))
 		{
 			palSet = pal_BallGlow_Gravity;
 		}

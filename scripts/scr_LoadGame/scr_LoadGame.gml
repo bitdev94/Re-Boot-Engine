@@ -33,15 +33,8 @@ function scr_LoadGame()
 				energyMax = _map[? "energyMax"];
 				energy = _map[? "energy"];
 
-				for(var i = 0; i < array_length(suit); i++)
-				{
-					suit[i] = _map[? "suit"+string(i)];
-				}
-				for(var i = 0; i < array_length(capabilities.suits); i++)
-				{
-					capabilities.suits[i].enabled = _map[? "hasSuit"+string(i)];
-				}
-	
+				load_suits_from_map(_map, suits_state)
+
 				for(var i = 0; i < array_length(boots); i++)
 				{
 					boots[i] = _map[? "boots"+string(i)];

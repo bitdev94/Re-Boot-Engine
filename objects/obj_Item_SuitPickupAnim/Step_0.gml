@@ -27,15 +27,15 @@ if(instance_exists(player))
 	}
 	player.x = scr_round(player.position.X);
 	player.y = scr_round(player.position.Y);
-	if(animCounter == animCounterMax)
+	if (animCounter == animCounterMax)
 	{
-		player.capabilities.suits[animType].enabled = true;
-		player.suit[animType] = true;
+		suits_enable(player.suits_state, animType)
+		suits_active(player.suits_state, animType)
 	}
 }
 if(animCounter == 1)
 {
-	audio_play_sound(snd_SuitFlash,0,false);
+	audio_play_sound(snd_SuitFlash, 0, false);
 }
 animCounter++;
 if(animCounter > animCounterMax*2)

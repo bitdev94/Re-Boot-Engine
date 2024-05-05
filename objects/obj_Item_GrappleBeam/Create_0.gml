@@ -13,5 +13,6 @@ CollectItem = function()
 	{
 		items_enable(obj_Player.items_state, Item.Grapple)
 		items_activate(obj_Player.items_state, Item.Grapple)
+		items_add_more(obj_Player.items_state, Item.Grapple, 1)
 	}
 }

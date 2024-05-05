@@ -133,7 +133,7 @@ function scr_DrawHUD() {
 	        draw_text_transformed(vX+tX, vY+21, strg, 1, 1, 0);
 			var xx = 69,
 				yy = 38;
-			for(var i = 0; i < array_length(item); i++)
+			for(var i = 0; i < array_length(items_state._is_active); i++)
 			{
 				xx = 50 + 36*i;
 				if (items_is_active(items_state, i))

@@ -22,11 +22,11 @@ if(instance_exists(obj_Player))
 	if(animSequence[frame] <= 0)
 	{
 		var palSprite = pal_PowerSuit;
-		if(obj_Player.suit[Suit.Varia])
+		if (suits_is_active(obj_Player.suits_state, Suit.Varia))
 		{
 			palSprite = pal_VariaSuit;
 		}
-		if(obj_Player.suit[Suit.Gravity])
+		if (suits_is_active(obj_Player.suits_state, Suit.Gravity))
 		{
 			palSprite = pal_GravitySuit;
 		}

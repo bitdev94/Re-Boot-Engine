@@ -399,7 +399,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 		fDir = 1;
 		torsoR = sprt_StandCenter;
 		torsoL = torsoR;
-		bodyFrame = suit[Suit.Varia];
+		bodyFrame = suits_is_active(suits_state, Suit.Varia)
 		
 		// --- Uncomment this code to DAB while in elevator pose ---
 			/*torsoR = sprt_Dab;
@@ -2468,11 +2468,6 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 				mbTrailColor_Start = merge_color(c_lime,c_yellow,0.6);
 				mbTrailColor_End = c_green;
 			}
-			/*else if(suit[Suit.Gravity])
-			{
-				mbTrailColor_Start = c_aqua;
-				mbTrailColor_End = c_teal;
-			}*/
 			
 			if(speedFXCounter > 0)
 			{
@@ -3019,11 +3014,11 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 		
 		var palFlag = false;
 		
-		if(global.rmHeated && !suit[Suit.Varia])
+		if (global.rmHeated && !suits_is_active(suits_state, Suit.Varia))
 		{
-			ConstantDamage(1, 4 + (2 * suit[Suit.Gravity]));
+			ConstantDamage(1, 4 + (2 * suits_is_active(suits_state, Suit.Gravity)));
 			
-			if(!audio_is_playing(snd_HeatDamageLoop))
+			if (!audio_is_playing(snd_HeatDamageLoop))
 	        {
 	            var snd = audio_play_sound(snd_HeatDamageLoop,0,true);
 	            audio_sound_gain(snd,0.7,0);
@@ -3036,9 +3031,9 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 			audio_stop_sound(snd_HeatDamageLoop);
 		}
 		
-		if(liquid && liquid.liquidType == LiquidType.Lava && !suit[Suit.Gravity])
+		if (liquid && liquid.liquidType == LiquidType.Lava && !suits_is_active(suits_state, Suit.Gravity))
 	    {
-	        ConstantDamage(1, 2 + (1 * (suit[Suit.Varia])));
+	        ConstantDamage(1, 2 + (1 * (suits_is_active(suits_state, Suit.Varia))));
         
 	        if(!audio_is_playing(snd_LavaDamageLoop))
 	        {

@@ -17,7 +17,6 @@ function PlayerItems(): Debugger() constructor {
 	_is_active = array_create(Item.SIZE, false)
 	_is_enable = array_create(Item.SIZE, false)
 	_amount = array_create(Item.SIZE, 0)
-	// _current_max_amount = array_create(Item.SIZE, 0)
 	_max_amount = array_create(Item.SIZE, 0)
 }
 

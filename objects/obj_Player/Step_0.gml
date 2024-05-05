@@ -94,16 +94,11 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 			items_set_max_to_limit(items_state, Item.PBomb)
 			items_set_item_to_max(items_state, Item.PBomb)
 		
-		/*
-			for(var i = 0; i < array_length(suit); i++)
-			{
-				suit[i] = true;
-				hasSuit[i] = suit[i];
-			}
-			*/
-			for (var _index = 0; _index < array_length(capabilities.suits); ++_index) {
-				suit[_index] = true;
-				capabilities.suits[_index] = suit[_index];
+			suits_active_all(suits_state)
+
+			for (var _index = 0; _index < suits_length(suits_state); ++_index) {
+				suits_active(suits_state, _index)
+				suits_enable(suits_state, _index)
 			}
 			
 			for(var i = 0; i < array_length(misc); i++)
@@ -157,7 +152,7 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 			{
 				if(rand == 4 || rand == 0)
 				{
-					var ilen = array_length(beam);
+					var ilen = array_length(beam_state._is_active);
 					var rnum = irandom(ilen-1),
 						rnum2 = ilen;
 					while(rnum2 > 0)
@@ -230,40 +225,39 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 				}
 				else if(rand >= 8)
 				{
-					var ilen = array_length(suit);
-					var rnum = irandom(ilen-1),
-						rnum2 = ilen;
-					while(rnum2 > 0)
-					{
-						if(!capabilities.suits[rnum].enabled)
+					var _length = suits_length(suits_state)
+					var _rand_index = irandom(_length - 1)
+					for (var _index = _length; _index > 0; _index--) {
+						
+						if (!suits_is_enable(suits_state, _rand_index))
 						{
-							suit[rnum] = true;
+							suits_active(suits_state, _rand_index)
 							break;
 						}
 						else
 						{
-							rnum = scr_wrap(rnum+1,0,ilen);
+							_rand_index = scr_wrap(_rand_index + 1, 0, _length);
 						}
-						rnum2--;
+						
 					}
 				}
 			}
 		
-			for(var i = 0; i < array_length(suit); i++)
+			for(var i = 0; i < suits_length(suits_state); i++)
 			{
-				if(!capabilities.suits[i].enabled && suit[i])
+				if (!suits_is_enable(suits_state, i) && suits_is_active(suits_state, i))
 				{
-					capabilities.suits[i].enabled = true;
+					suits_enable(suits_state, i)
 				}
 			}
-			for(var i = 0; i < array_length(beam); i++)
+			for(var i = 0; i < array_length(beam_state._is_active); i++)
 			{
 				if (!beam_is_enabled(beam_state, i) && beam_is_active(beam_state, i))
 				{
 					beam_enable(beam_state, i)
 				}
 			}
-			for(var i = 0; i < array_length(item); i++)
+			for(var i = 0; i < array_length(items_state._is_active); i++)
 			{
 				if (!items_is_enabled(items_state, i) && items_is_active(items_state, i))
 				{
@@ -366,11 +360,11 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 	}
 	
 	damageReduct = 1;
-	if(suit[Suit.Varia])
+	if (suits_is_active(suits_state, Suit.Varia))
 	{
 		damageReduct *= 0.5;
 	}
-	if(suit[Suit.Gravity])
+	if (suits_is_active(suits_state, Suit.Gravity))
 	{
 		damageReduct *= 0.5;
 	}
@@ -387,7 +381,7 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 	    {
 	        dph = 3;
 	    }
-	    liquidMovement = (liquidLevel > dph && !suit[Suit.Gravity]);
+	    liquidMovement = (liquidLevel > dph && !suits_is_active(suits_state, Suit.Gravity));
 		
 		if(liquidMovement)
 		{
