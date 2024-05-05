@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"player_items",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"player_items",
+  "parent":{
+    "name":"data",
+    "path":"folders/Objects/Entities/Player/data.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

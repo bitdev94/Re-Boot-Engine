@@ -63,11 +63,11 @@ function scr_DrawHUD() {
 				var index = 0;
 				if((hud_is_item_highlighted(hud_state, i) && (global.HUD == 0 || stateFrame != State.Morph)) || (global.HUD == 1 && stateFrame == State.Morph && i == 2))
 				{
-					if(global.HUD == 1)
+					if (global.HUD == 1)
 					{
 						index = 2;
 					}
-					if(itemSelected == 1)
+					if (hud_state._selected == HUD.ITEMS)
 					{
 						index = 1;
 					}

@@ -2683,7 +2683,7 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 		else
 		{
 			landFrame = 0;
-			var unchargeable = ((itemSelected == 1 && hud_have_projectile_highlighted(hud_state)) || xRayActive || hyperBeam);
+			var unchargeable = ((hud_have_projectile_item_highlighted(hud_state)) || xRayActive || hyperBeam);
 			if(prAngle || (cUp && rUp) || (cDown && rDown) || (cShoot && rShoot) || (!cShoot && !rShoot && !unchargeable))
 			{
 				if(!CanChangeState(mask_Jump))
@@ -3738,7 +3738,7 @@ if(!global.gamePaused || (xRayActive && !global.roomTrans && !obj_PauseMenu.paus
 		ledgeFall = true;
 		ledgeFall2 = true;
 		
-		var unchargeable = ((itemSelected == 1 && hud_have_projectile_highlighted(hud_state)) || xRayActive || hyperBeam);
+		var unchargeable = ((hud_have_projectile_item_highlighted(hud_state)) || xRayActive || hyperBeam);
 		var shoot = (cShoot && rShoot) || (!cShoot && !rShoot && !unchargeable);
 		if(dodgeLength >= dodgeLengthMax || shoot)
 		{

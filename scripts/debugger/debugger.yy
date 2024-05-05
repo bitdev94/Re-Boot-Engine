@@ -1,9 +1,9 @@
 {
   "$GMScript":"",
-  "%Name":"scr_items",
+  "%Name":"debugger",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_items",
+  "name":"debugger",
   "parent":{
     "name":"data",
     "path":"folders/Objects/Entities/Player/data.yy",

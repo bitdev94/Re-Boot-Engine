@@ -925,12 +925,7 @@ rHToggle = !cHToggle;
 moveH = 0;
 moveHPrev = 1;
 
-itemSelected = 0;
 /** Player Item Hud */
-player_hud = {
-	_beam: Beam.Charge,
-	_item: Item.Grapple
-}
 
 hud_state = new PlayerHud()
 
@@ -3313,7 +3308,7 @@ function UpdatePlayerSurface(_palSurface)
 			}
 		}
 	
-		if(itemSelected == 1 && hud_have_projectile_highlighted(hud_state))
+		if (hud_have_projectile_item_highlighted(hud_state))
 		{
 			missileArmFrame = min(missileArmFrame + 1, 4);
 		}
@@ -3674,7 +3669,7 @@ function PostDrawPlayer(posX, posY, rot, alph)
 		screwFrameCounter = 0;
 	}
 	
-	if (itemSelected == 1 &&  hud_is_item_highlighted(hud_state, Item.Grapple) && items_is_active(items_state, Item.Grapple) && state != State.Morph && morphFrame <= 0 && instance_exists(grapple) && state != State.Somersault)
+	if (hud_is_item_selected(hud_state, Item.Grapple) && items_is_active(items_state, Item.Grapple) && state != State.Morph && morphFrame <= 0 && instance_exists(grapple) && state != State.Somersault)
 	{
 	    var sPosX = xx+sprtOffsetX+armOffsetX,
 	        sPosY = yy+sprtOffsetY+runYOffset+armOffsetY;

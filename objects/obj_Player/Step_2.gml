@@ -9,7 +9,7 @@ var sndFlag = false;
 if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTrans && stateFrame != State.Grapple)) && !obj_PauseMenu.pause && !pauseSelect))
 {
 	#region X-Ray
-	if ((cDash || global.HUD == 1) && itemSelected == 1 && hud_is_item_highlighted(hud_state, Item.XRay)  && dir != 0 && fVelX == 0 && fVelY == 0 && (state == State.Stand || state == State.Crouch) && grounded && (move2 == 0 || instance_exists(XRay)))
+	if ((cDash || global.HUD == 1) && hud_is_item_selected(hud_state, Item.XRay)  && dir != 0 && fVelX == 0 && fVelY == 0 && (state == State.Stand || state == State.Crouch) && grounded && (move2 == 0 || instance_exists(XRay)))
     {
         if(instance_exists(XRay))
         {
@@ -61,7 +61,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
     }
 	#endregion // X-ray
 
-	var unchargeable = ((itemSelected == 1 && hud_have_projectile_highlighted(hud_state)) || xRayActive || hyperBeam);
+	var unchargeable = ((hud_have_projectile_item_highlighted(hud_state)) || xRayActive || hyperBeam);
 	
 	if(!global.roomTrans)
 	{
@@ -259,8 +259,8 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 	#region Update Anims
 	
 	drawMissileArm = false;
-	shootFrame = (gunReady || justShot > 0 || instance_exists(grapple) || (cShoot && (rShoot || (beam_is_active(beam_state, Beam.Charge) && !unchargeable)) && (itemSelected == 1 ||
-				((hud_is_item_highlighted(hud_state, Item.Missile) || missileStat > 0) && (hud_is_item_highlighted(hud_state, Item.SMissile) || superMissileStat > 0)))));
+	// TODO: IMPROVE THIS to not use hud_state._selected directly
+	shootFrame = (gunReady || justShot > 0 || instance_exists(grapple) || (cShoot && (rShoot || (beam_is_active(beam_state, Beam.Charge) && !unchargeable)) && (hud_state._selected == HUD.ITEMS || ((hud_is_item_highlighted(hud_state, Item.Missile) || missileStat > 0) && (hud_is_item_highlighted(hud_state, Item.SMissile) || superMissileStat > 0)))));
 	sprtOffsetX = 0;
 	sprtOffsetY = 0;
 	torsoR = sprt_StandCenter;
@@ -2548,7 +2548,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 			sound = get_shoot_sound(beam_state._sound_index),
 			autoFire = 1;
 			
-		if(itemSelected == 1 && hud_have_missile_highlighted(hud_state))
+		if (hud_have_missile_selected(hud_state))
 		{
 			if (hud_is_item_highlighted(hud_state, Item.Missile) && missileStat > 0 && items_is_active(items_state, Item.Missile))
 			{
@@ -2586,7 +2586,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 		{
 			if(state != State.Morph && stateFrame != State.Morph)
 			{
-				if (itemSelected == 1 && hud_is_item_highlighted(hud_state, Item.Grapple) && items_is_active(items_state, Item.Grapple) && canShoot)
+				if (hud_is_item_selected(hud_state, Item.Grapple) && items_is_active(items_state, Item.Grapple) && canShoot)
 				{
 					delay = 14;
 					
@@ -2634,7 +2634,8 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 					instance_destroy(grapple);
 					grappleDist = 0;
 					
-					if (canShoot && (itemSelected == 0 || ((!hud_is_item_highlighted(hud_state, Item.Missile) || missileStat > 0) && (!hud_is_item_highlighted(hud_state, Item.SMissile) || superMissileStat > 0))))
+					// TODO: Improve this to not use hud_state._selected directly
+					if (canShoot && (hud_state._selected == HUD.BEAMS || ((!hud_is_item_highlighted(hud_state, Item.Missile) || missileStat > 0) && (!hud_is_item_highlighted(hud_state, Item.SMissile) || superMissileStat > 0))))
 					{
 						if(autoFire > 0)
 						{
@@ -2646,7 +2647,7 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 						{
 							if(rShoot || enqueShot || (!beam_is_active(beam_state, Beam.Charge) && autoFire > 0) || autoFire == 2)
 							{
-								if (itemSelected == 1 && hud_have_missile_highlighted(hud_state) )
+								if (hud_have_missile_selected(hud_state))
 								{
 									if (hud_is_item_highlighted(hud_state, Item.Missile) && missileStat > 0 && items_is_active(items_state, Item.Missile))
 									{
@@ -2712,7 +2713,8 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 			}
 			else if(bombDelayTime <= 0 && canShoot && rShoot)
 			{
-				if (itemSelected == 1 && (hud_is_item_highlighted(hud_state, Item.PBomb) || global.HUD > 0) && powerBombStat > 0 && items_is_active(items_state, Item.PBomb))
+				// TODO: Check if the expression with hud_state._selected is needed
+				if ((hud_is_item_selected(hud_state, Item.PBomb) || (hud_state._selected == HUD.ITEMS && global.HUD > 0)) && powerBombStat > 0 && items_is_active(items_state, Item.PBomb))
 				{
 					var pBomb = instance_create_layer(x,y+11,"Projectiles_fg",obj_PowerBomb);
 					pBomb.damage = 20;
@@ -2759,8 +2761,9 @@ if(!global.gamePaused || (((xRayActive && !global.roomTrans) || (global.roomTran
 					bombDelayTime = 8;
 				}
 			}
+			// TODO: Improve this to remove hud_state._selected directly access
 			if (beam_is_active(beam_state, Beam.Charge) && !unchargeable && !enqueShot && !isPushing && 
-			((state != State.Morph && stateFrame != State.Morph) || (statCharge >= 10 && (itemSelected == 0 || (global.HUD <= 0 && hud_is_item_highlighted(hud_state, Item.XRay) )) && misc[Misc.Bomb])))
+			((state != State.Morph && stateFrame != State.Morph) || (statCharge >= 10 && (hud_state._selected == HUD.BEAMS || (global.HUD <= 0 && hud_is_item_highlighted(hud_state, Item.XRay) )) && misc[Misc.Bomb])))
 			{
 				statCharge = min(statCharge + 1, maxCharge);
 				if(statCharge >= 10)
